@@ -5,7 +5,8 @@ import re, os, json, hashlib, urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAT = re.compile(r'https?://(?:images\.squarespace-cdn\.com|static1\.squarespace\.com)/[^"\'\s<>)\\]+')
 files = [os.path.join(ROOT, 'data', f) for f in os.listdir(os.path.join(ROOT, 'data'))] + \
-        [os.path.join(ROOT, f) for f in os.listdir(ROOT) if f.endswith('.html')]
+        [os.path.join(ROOT, f) for f in os.listdir(ROOT) if f.endswith('.html')] + \
+        [os.path.join(ROOT, 'src', f) for f in os.listdir(os.path.join(ROOT, 'src')) if f.endswith('.html')]
 urls = set()
 for f in files: urls.update(PAT.findall(open(f, encoding='utf-8').read()))
 os.makedirs(os.path.join(ROOT, 'media', 'sq'), exist_ok=True)
