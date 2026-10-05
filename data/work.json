@@ -1,0 +1,158 @@
+{
+  "_help": "Portfolio videos, in order. categories: Commercial, Content, Sports, Real Estate. src is the MP4, poster an optional thumbnail.",
+  "videos": [
+    {
+      "slug": "pro-ambassador-reel",
+      "title": "Pro Ambassador Reel",
+      "categories": [
+        "Content"
+      ],
+      "src": "/media/videos/pro-ambassador-reel.mp4",
+      "poster": ""
+    },
+    {
+      "slug": "real-estate-cinematic-showreel",
+      "title": "Cinematic Showreel",
+      "categories": [
+        "Real Estate"
+      ],
+      "src": "/media/videos/real-estate-cinematic-showreel.mp4",
+      "poster": ""
+    },
+    {
+      "slug": "txhs-football-intro",
+      "title": "TXHS Football Intro",
+      "categories": [
+        "Sports"
+      ],
+      "src": "/media/videos/txhs-football-intro.mp4",
+      "poster": ""
+    },
+    {
+      "slug": "tige-boats-award-announcement-2",
+      "title": "Tigé Boats Award Announcement",
+      "categories": [
+        "Commercial"
+      ],
+      "src": "/media/videos/tige-boats-award-announcement-2.mp4",
+      "poster": ""
+    },
+    {
+      "slug": "acu-basketball-recap",
+      "title": "ACU Basketball Recap",
+      "categories": [
+        "Sports"
+      ],
+      "src": "/media/videos/acu-basketball-recap.mp4",
+      "poster": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/70cbe63b-5757-4269-873a-04ad8596c5a2/Screenshot+2025-07-30+at+1.51.22%E2%80%AFPM.png"
+    },
+    {
+      "slug": "abilene-chamber-brand-film",
+      "title": "Abilene Chamber Brand Film",
+      "categories": [
+        "Commercial"
+      ],
+      "src": "/media/videos/abilene-chamber-brand-film.mp4",
+      "poster": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/c942216d-9c2d-4e1b-8a5d-03510b4fdbd4/Screenshot+2026-09-22+at+9.22.59%E2%80%AFAM.png"
+    },
+    {
+      "slug": "acu-football-recap",
+      "title": "ACU Football Recap",
+      "categories": [
+        "Sports"
+      ],
+      "src": "/media/videos/acu-football-recap.mp4",
+      "poster": ""
+    },
+    {
+      "slug": "tige-boats-award-announcement",
+      "title": "Tigé Boats Award Announcement",
+      "categories": [
+        "Commercial"
+      ],
+      "src": "/media/videos/tige-boats-award-announcement.mp4",
+      "poster": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/232f2fbe-18db-444f-9f09-fd16ccc43aa8/Screenshot+2026-09-04+at+9.00.02%E2%80%AFAM.png"
+    },
+    {
+      "slug": "tige-boats-new-product-teaser",
+      "title": "Tigé Boats New Product Teaser",
+      "categories": [
+        "Commercial"
+      ],
+      "src": "/media/videos/tige-boats-new-product-teaser.mp4",
+      "poster": ""
+    },
+    {
+      "slug": "tige-boats-social-content",
+      "title": "Tigé Boats Social Content",
+      "categories": [
+        "Content"
+      ],
+      "src": "/media/videos/tige-boats-social-content.mp4",
+      "poster": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/4b96e35a-536d-49f9-8210-f4fa06e8db07/Timeline+4_01_00_0"
+    },
+    {
+      "slug": "acu-mbb-intro-video",
+      "title": "ACU MBB Intro Video",
+      "categories": [
+        "Sports"
+      ],
+      "src": "/media/videos/acu-mbb-intro-video.mp4",
+      "poster": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/c17c0730-51c1-42aa-9da1-b2d01b7fbbe5/Screenshot+2025-08-04+at+8.42.11%E2%80%AFAM.png"
+    },
+    {
+      "slug": "landon-talley-music-video",
+      "title": "Landon Talley Music Video",
+      "categories": [
+        "Content"
+      ],
+      "src": "/media/videos/landon-talley-music-video.mp4",
+      "poster": ""
+    },
+    {
+      "slug": "acu-womens-basketball-recap",
+      "title": "ACU Women's Basketball Recap",
+      "categories": [
+        "Sports"
+      ],
+      "src": "/media/videos/acu-womens-basketball-recap.mp4",
+      "poster": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/a3ded1ac-d162-4fb8-8089-3db75fc45868/Timeline+3_01_00_13_10.png"
+    },
+    {
+      "slug": "fraternity-event-recap",
+      "title": "Fraternity Event Recap",
+      "categories": [
+        "Content"
+      ],
+      "src": "/media/videos/fraternity-event-recap.mp4",
+      "poster": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/d0b3dd35-f649-4457-abcc-6a233ddb5ba9/IMG_6438.jpg"
+    },
+    {
+      "slug": "ice-house-event-recap",
+      "title": "Ice House Event Recap",
+      "categories": [
+        "Content"
+      ],
+      "src": "/media/videos/ice-house-event-recap.mp4",
+      "poster": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/bea5ad17-dd42-4d13-acc2-2967711983c5/IMG_8370-Enhanced-NR.jpg"
+    },
+    {
+      "slug": "ice-house-social-content",
+      "title": "Ice House Social Content",
+      "categories": [
+        "Content"
+      ],
+      "src": "/media/videos/ice-house-social-content.mp4",
+      "poster": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/b21bee5c-663a-4d0c-8df1-a56fa9c2294e/IMG_8368-Enhanced-NR.jpg"
+    },
+    {
+      "slug": "abilene-community-foundation-event-recap",
+      "title": "Abilene Community Foundation Event Recap",
+      "categories": [
+        "Content"
+      ],
+      "src": "/media/videos/abilene-community-foundation-event-recap.mp4",
+      "poster": ""
+    }
+  ]
+}

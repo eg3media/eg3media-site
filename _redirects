@@ -1,0 +1,8 @@
+# old Squarespace addresses -> new pages (keeps Google links working)
+/home            /             301
+/work            /portfolio    301
+/work/*          /portfolio    301
+/site-media      /             301
+/rephotos        /realestate   301
+/real-estate     /realestate   301
+/index           /             301

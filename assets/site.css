@@ -1,0 +1,52 @@
+/* EG3 Media shared styles: page basics, header, footer */
+html { background: #000; -webkit-text-size-adjust: 100%; overflow-x: clip; }
+body { margin: 0; background: #000; color: #fff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; overflow-x: clip; }
+img, video { max-width: 100%; }
+.eg3-bgvid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; z-index: 0; }
+.eg3-skip { position: absolute; left: -9999px; top: 0; z-index: 10001; background: #fff; color: #000; padding: 10px 14px; font-weight: 700; }
+.eg3-skip:focus { left: 12px; top: 12px; }
+
+/* header */
+.eg3-hdr { position: fixed; top: 0; left: 0; right: 0; z-index: 9000; display: flex; align-items: center; gap: 24px;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) clamp(16px, 3vw, 40px) 14px;
+  background: linear-gradient(to bottom, rgba(0,0,0,.72), rgba(0,0,0,0)); transition: transform .4s cubic-bezier(.22,1,.36,1), background .3s; }
+.eg3-hdr.is-solid { background: rgba(8,8,8,.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.eg3-hdr.is-hidden { transform: translateY(-110%); }
+.eg3-hdr__logo { display: block; width: 74px; flex: none; }
+.eg3-hdr__logo svg { display: block; width: 100%; height: auto; overflow: visible; }
+.eg3-hdr__links { display: flex; gap: clamp(14px, 2vw, 28px); margin-left: auto; align-items: center; }
+.eg3-hdr a { color: #fff; text-decoration: none; }
+.eg3-hdr__links a { font-family: 'Anton', 'Impact', sans-serif; font-size: 16px; letter-spacing: .1em; text-transform: uppercase; opacity: .82; transition: opacity .2s; }
+.eg3-hdr__links a:hover, .eg3-hdr__links a[aria-current="page"] { opacity: 1; }
+.eg3-hdr__links a[aria-current="page"] { box-shadow: 0 2px 0 #fff; }
+.eg3-hdr__quote { padding: 9px 16px; border: 2px solid #fff; border-radius: 999px; opacity: 1 !important; }
+.eg3-hdr__quote:hover { background: #fff; color: #000 !important; }
+.eg3-hdr__toggle { display: none; margin-left: auto; appearance: none; background: none; border: 0; color: #fff; width: 44px; height: 44px; cursor: pointer; padding: 10px; }
+.eg3-hdr__toggle span { display: block; height: 2px; background: #fff; margin: 6px 0; transition: transform .3s, opacity .3s; }
+.eg3-hdr.is-open .eg3-hdr__toggle span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.eg3-hdr.is-open .eg3-hdr__toggle span:nth-child(2) { opacity: 0; }
+.eg3-hdr.is-open .eg3-hdr__toggle span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+@media (max-width: 900px) {
+  .eg3-hdr__toggle { display: block; }
+  .eg3-hdr__links { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; gap: 18px;
+    background: rgba(0,0,0,.97); opacity: 0; pointer-events: none; transition: opacity .3s; margin: 0; }
+  .eg3-hdr.is-open .eg3-hdr__links { opacity: 1; pointer-events: auto; }
+  .eg3-hdr__links a { font-size: 38px; opacity: 1; }
+  .eg3-hdr__quote { font-size: 22px !important; margin-top: 10px; }
+  html.eg3-hdr-lock, html.eg3-hdr-lock body { overflow: hidden; }
+}
+.eg3-hdr a:focus-visible, .eg3-hdr button:focus-visible, .eg3-foot a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* footer */
+.eg3-foot { position: relative; z-index: 2; background: #0a0a0a; border-top: 1px solid #222; padding: clamp(40px, 6vw, 70px) clamp(16px, 4vw, 48px) calc(28px + env(safe-area-inset-bottom, 0px)); color: #bbb; font-size: 15px; }
+.eg3-foot__in { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 32px; }
+@media (max-width: 760px) { .eg3-foot__in { grid-template-columns: 1fr; } }
+.eg3-foot__logo { width: 110px; display: block; margin-bottom: 14px; }
+.eg3-foot__logo svg { width: 100%; height: auto; display: block; }
+.eg3-foot h2 { margin: 0 0 12px; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 16px; letter-spacing: .14em; text-transform: uppercase; color: #fff; }
+.eg3-foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.eg3-foot a { color: #ddd; text-decoration: none; }
+.eg3-foot a:hover { color: #fff; text-decoration: underline; }
+.eg3-foot__bottom { max-width: 1280px; margin: 32px auto 0; padding-top: 18px; border-top: 1px solid #1d1d1d; font-size: 13px; color: #777; display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+/* page content sits above the topo background layer */
+.eg3bg-host > *:not(.eg3bg) { position: relative; z-index: 1; }

@@ -1,0 +1,425 @@
+<!-- EG3 "Get a quote" button: paste in a Code block in your site FOOTER so it shows on every page -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+  .eg3w, .eg3w * { box-sizing: border-box; }
+  .eg3w {
+    --w-bg: #111; --w-card: #161616; --w-line: #2a2a2a; --w-line2: #3a3a3a;
+    --w-text: #fff; --w-muted: #a3a3a0; --w-faint: #6f6f6b;
+    --w-green: #4f8a58; --w-green-deep: #355e3b; --w-green-bg: #121a14;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: var(--w-text);
+    font-size: 16px; line-height: 1.45; text-align: left;
+  }
+  .eg3w h2, .eg3w h3, .eg3w p { margin: 0; }
+  .eg3w-top { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+  .eg3w-bar { flex: 1; height: 3px; background: rgba(255,255,255,.14); border-radius: 3px; overflow: hidden; }
+  .eg3w-bar span { display: block; height: 100%; width: 0; background: #fff; transition: width .45s cubic-bezier(.22,1,.36,1); }
+  .eg3w-count { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--w-muted); white-space: nowrap; }
+  .eg3w-step { display: grid; gap: 18px; animation: eg3wIn .4s cubic-bezier(.22,1,.36,1); }
+  @keyframes eg3wIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .eg3w-q { font-family: 'Anton', 'Impact', sans-serif !important; font-weight: 400 !important; font-size: clamp(30px, 4.2vw, 54px) !important; line-height: 1.02 !important; letter-spacing: .02em; text-transform: uppercase; color: #fff !important; }
+  .eg3w-sub { color: var(--w-muted); font-size: 15px; max-width: 60ch; }
+  .eg3w-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  .eg3w-card {
+    appearance: none; cursor: pointer; text-align: left; font: inherit; color: #fff;
+    background: var(--w-card); border: 2px solid var(--w-line); border-radius: 8px; padding: 18px 16px;
+    display: grid; gap: 6px; align-content: start;
+    transition: border-color .2s, background .2s, box-shadow .2s, transform .25s cubic-bezier(.34,1.56,.64,1);
+  }
+  .eg3w-card:hover { border-color: #555; transform: translateY(-2px); }
+  .eg3w-card[aria-pressed="true"] { border-color: var(--w-green); background: var(--w-green-bg); box-shadow: 0 0 0 1px var(--w-green), 0 0 18px rgba(79,138,88,.25); }
+  .eg3w-card b { font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: .03em; text-transform: uppercase; line-height: 1.05; }
+  .eg3w-card small { color: var(--w-muted); font-size: 13px; }
+  .eg3w-card .from { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--w-faint); margin-top: 4px; }
+  .eg3w-card:focus-visible, .eg3w button:focus-visible, .eg3w input:focus-visible, .eg3w textarea:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .eg3w-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--w-muted); }
+  .eg3w textarea, .eg3w input[type=text], .eg3w input[type=email], .eg3w input[type=tel] {
+    width: 100%; background: #0c0c0c; border: 1px solid var(--w-line2); color: #fff; font: inherit; font-size: 16px;
+    padding: 12px 14px; border-radius: 6px; min-width: 0;
+  }
+  .eg3w textarea { min-height: 130px; resize: vertical; }
+  .eg3w ::placeholder { color: var(--w-faint); }
+  .eg3w-f { display: grid; gap: 7px; }
+  .eg3w-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 560px) { .eg3w-two { grid-template-columns: 1fr; } }
+  .eg3w-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; background: var(--w-card); border: 1px solid var(--w-line); border-radius: 8px; padding: 14px 16px; }
+  .eg3w-row.off { opacity: .6; }
+  .eg3w-row .nm b { font-size: 16px; }
+  .eg3w-row .nm small { display: block; color: var(--w-muted); font-size: 13px; }
+  .eg3w-row output { font-family: 'Anton', 'Impact', sans-serif; font-size: 28px; font-variant-numeric: tabular-nums; }
+  .eg3w-row .rng { grid-column: 1 / -1; }
+  .eg3w input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 26px; background: transparent; cursor: pointer; margin: 0; --fill: 0%; }
+  .eg3w input[type=range]::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(to right, #fff 0 var(--fill), rgba(255,255,255,.2) var(--fill) 100%); }
+  .eg3w input[type=range]::-moz-range-track { height: 2px; background: rgba(255,255,255,.2); }
+  .eg3w input[type=range]::-moz-range-progress { height: 2px; background: #fff; }
+  .eg3w input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #fff; margin-top: -9px; box-shadow: 0 0 12px rgba(255,255,255,.35); }
+  .eg3w input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border: 0; border-radius: 50%; background: #fff; }
+  .eg3w-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .eg3w-chip { appearance: none; cursor: pointer; font: inherit; font-size: 14px; font-weight: 600; color: #fff; background: var(--w-card); border: 1.5px solid var(--w-line2); border-radius: 999px; padding: 9px 16px; }
+  .eg3w-chip:hover { border-color: #666; }
+  .eg3w-chip[aria-pressed="true"] { border-color: var(--w-green); background: var(--w-green-bg); box-shadow: 0 0 0 1px var(--w-green); }
+  .eg3w-check { display: flex; gap: 10px; align-items: center; font-size: 15px; cursor: pointer; }
+  .eg3w-check input { width: 18px; height: 18px; accent-color: var(--w-green); margin: 0; }
+  .eg3w-nav { display: flex; gap: 12px; align-items: center; justify-content: space-between; margin-top: 8px; flex-wrap: wrap; }
+  .eg3w-btn {
+    appearance: none; cursor: pointer; display: inline-block; padding: .75em 1.4em; border: 4px solid #fff; border-radius: 10px;
+    font-family: 'Anton', 'Impact', sans-serif; font-size: 20px; line-height: 1; letter-spacing: .06em; text-transform: uppercase;
+    color: #fff; background: transparent; text-decoration: none;
+    transition: transform .35s cubic-bezier(.34,1.56,.64,1), background .25s, color .25s, opacity .2s;
+  }
+  .eg3w-btn:hover { transform: scale(1.06); background: #fff; color: #000; }
+  .eg3w-btn[disabled] { opacity: .35; cursor: default; transform: none; background: transparent; color: #fff; }
+  .eg3w-back { appearance: none; background: none; border: 0; color: var(--w-muted); font: inherit; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; padding: 8px 0; }
+  .eg3w-back:hover { color: #fff; }
+  .eg3w-live { font-size: 14px; color: var(--w-muted); }
+  .eg3w-live b { color: #fff; font-variant-numeric: tabular-nums; }
+  .eg3w-note { font-size: 13px; color: var(--w-faint); }
+  .eg3w-note a { color: var(--w-muted); }
+  .eg3w-result { display: grid; gap: 18px; }
+  .eg3w-range { font-family: 'Anton', 'Impact', sans-serif; font-size: clamp(44px, 7vw, 92px); line-height: 1; letter-spacing: .01em; font-variant-numeric: tabular-nums; }
+  .eg3w-per { font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--w-muted); }
+  .eg3w-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; border-top: 1px solid var(--w-line); padding-top: 14px; }
+  .eg3w-list li { display: flex; gap: 10px; }
+  .eg3w-list li::before { content: ''; flex: none; width: 6px; height: 6px; margin-top: .55em; border-radius: 50%; background: var(--w-green); }
+  .eg3w-status { font-size: 14px; }
+  .eg3w-status.ok { color: #a9d8b1; }
+  .eg3w-status.err { color: #f0b3a9; }
+  .eg3w-honey { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
+</style>
+
+<script>
+window.EG3Quote = window.EG3Quote || function (mount, opts) {
+  opts = opts || {};
+  /* ========= SETTINGS (keep in sync with your invoice builder rates) ========= */
+  var EMAIL = 'elijah@eg3media.com';          // where quote requests go
+  var RANGE_LOW = 0.90, RANGE_HIGH = 1.15;    // range shown = estimate x these
+  var SHOOT = { partial: 495, halfDay: 695, fullDay: 1195, fullPlus: 1795 };
+  var COM = { editBasic: 700, editStandard: 1100, editPremium: 1600, social: 350, testimonial: 650, recap: 850, drone: 400, sound: 300 };
+  var CON = { quick: 100, short: 250, medium: 350, long5: 510, long10: 715, long15: 850 };
+  var BULK = [[4, 5], [6, 8], [8, 10], [10, 12], [12, 15]];   // [videos, % off videos]
+  var SPO = { game: 500, reel: 150, hype: 500, senior: 400, recruit: 300, recap: 850 };
+  var TURN = { standard: 0, rush: 200, nextday: 400 };
+  /* ========================================================================== */
+
+  var LENGTHS = [['partial', 'Partial', '1-2 hours'], ['halfDay', 'Half day', 'Up to 4 hours'], ['fullDay', 'Full day', 'Up to 8 hours'], ['fullPlus', 'Full+ day', '10-12 hours']];
+  var S = {
+    cat: '', desc: '',
+    com: { len: 'halfDay', days: 1, main: 'standard', social: 0, testimonial: 0, recap: 0, drone: false, sound: false, turn: 'standard' },
+    con: { type: 'once', freq: 'monthly', len: 'halfDay', days: 1, quick: 0, short: 3, medium: 0, long5: 0, long10: 0, long15: 0, longOn: false, turn: 'standard' },
+    spo: { type: 'games', games: 1, reels: 0, project: 'hype', turn: 'standard' },
+    who: { name: '', email: '', phone: '', org: '', when: '', nonprofit: false }
+  };
+  var step = 0, sent = null;
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  function r50(n) { return Math.round(n / 50) * 50; }
+  function lenName(k) { return (LENGTHS.filter(function (x) { return x[0] === k; })[0] || LENGTHS[1]); }
+  var CATS = { commercial: 'Commercial', content: 'Content', sports: 'Sports' };
+  var FREQ = { monthly: ['Monthly', 'month'], quarterly: ['Quarterly', 'quarter'] };
+
+  /* ---------- steps per project type ---------- */
+  function steps() {
+    if (S.cat === 'sports') return ['type', 'describe', 'coverage', 'extras', 'contact', 'result'];
+    if (S.cat === 'content') return ['type', 'describe', 'plan', 'shoot', 'deliver', 'contact', 'result'];
+    return ['type', 'describe', 'shoot', 'deliver', 'contact', 'result'];
+  }
+
+  /* ---------- the math ---------- */
+  function estimate() {
+    var items = [], total = 0, per = '';
+    function add(label, amt) { items.push(label); total += amt; }
+    if (S.cat === 'commercial') {
+      var c = S.com, L = lenName(c.len);
+      add(c.days + ' ' + L[1].toLowerCase() + ' shoot' + (c.days > 1 ? 's' : '') + ' (' + L[2].toLowerCase() + ')', SHOOT[c.len] * c.days);
+      if (c.main !== 'none') add({ basic: 'Main video edit, up to 2 min', standard: 'Main video edit, 2-5 min', premium: 'Main video edit, 5+ min or complex' }[c.main], COM['edit' + c.main.charAt(0).toUpperCase() + c.main.slice(1)]);
+      if (c.social) add(c.social + ' social cutdown' + (c.social > 1 ? 's' : ''), c.social * COM.social);
+      if (c.testimonial) add(c.testimonial + ' testimonial video' + (c.testimonial > 1 ? 's' : ''), c.testimonial * COM.testimonial);
+      if (c.recap) add(c.recap + ' event recap' + (c.recap > 1 ? 's' : ''), c.recap * COM.recap);
+      if (c.drone) add('Drone footage', COM.drone);
+      if (c.sound) add('Premium sound design', COM.sound);
+      if (TURN[c.turn]) add(c.turn === 'rush' ? 'Rush delivery (3-5 days)' : 'Next day delivery', TURN[c.turn]);
+    }
+    if (S.cat === 'content') {
+      var k = S.con, L2 = lenName(k.len), n = 0, vids = 0;
+      if (k.days) add(k.days + ' ' + L2[1].toLowerCase() + ' shoot' + (k.days > 1 ? 's' : '') + (k.type === 'retainer' ? ' per ' + FREQ[k.freq][1] : ''), SHOOT[k.len] * k.days);
+      [['quick', 'quick-hit video'], ['short', 'short-form video (up to 2 min)'], ['medium', 'medium-form video (3-5 min)'], ['long5', 'long-form video (5+ min)'], ['long10', 'long-form video (10+ min)'], ['long15', 'long-form video (15+ min)']].forEach(function (d) {
+        if (/^long/.test(d[0]) && !k.longOn) return;
+        var q = k[d[0]]; if (!q) return;
+        n += q; vids += q * CON[d[0]];
+        add(q + ' ' + d[1].replace('video', q > 1 ? 'videos' : 'video'), q * CON[d[0]]);
+      });
+      var pct = 0; BULK.forEach(function (t) { if (n >= t[0]) pct = t[1]; });
+      if (pct) { var off = vids * pct / 100; total -= off; items.push(pct + '% bulk discount on ' + n + ' videos'); }
+      if (k.type === 'once' && TURN[k.turn]) add(k.turn === 'rush' ? 'Rush delivery (3-5 days)' : 'Next day delivery', TURN[k.turn]);
+      if (k.type === 'retainer') per = FREQ[k.freq][1];
+    }
+    if (S.cat === 'sports') {
+      var p = S.spo;
+      if (p.type === 'games') {
+        add(p.games + ' game' + (p.games > 1 ? 's' : '') + ' covered, each with a 60-90 second highlight', p.games * SPO.game);
+        if (p.reels) add(p.reels + ' extra highlight reel' + (p.reels > 1 ? 's' : ''), p.reels * SPO.reel);
+      } else {
+        add({ hype: 'Hype video', senior: 'Senior night video', recruit: 'Recruiting reel', recap: 'Season recap' }[p.project], SPO[p.project]);
+      }
+      if (TURN[p.turn]) add(p.turn === 'rush' ? 'Rush delivery (3-5 days)' : 'Next day delivery', TURN[p.turn]);
+    }
+    total = Math.max(0, total);
+    var low = r50(total * RANGE_LOW), high = Math.max(low + 50, r50(total * RANGE_HIGH));
+    return { items: items, total: total, low: low, high: high, per: per };
+  }
+
+  /* ---------- building blocks ---------- */
+  function card(group, val, title, sub, from, on) {
+    return '<button type="button" class="eg3w-card" data-pick="' + group + '" data-v="' + val + '" aria-pressed="' + !!on + '"><b>' + title + '</b>' + (sub ? '<small>' + sub + '</small>' : '') + (from ? '<span class="from">' + from + '</span>' : '') + '</button>';
+  }
+  function chip(group, val, label, on) { return '<button type="button" class="eg3w-chip" data-pick="' + group + '" data-v="' + val + '" aria-pressed="' + !!on + '">' + label + '</button>'; }
+  function counter(path, title, sub, val, max) {
+    return '<div class="eg3w-row' + (val ? '' : ' off') + '"><div class="nm"><b>' + title + '</b>' + (sub ? '<small>' + sub + '</small>' : '') + '</div><output>' + val + '</output>' +
+      '<input class="rng" type="range" min="0" max="' + max + '" step="1" value="' + val + '" data-num="' + path + '" aria-label="' + esc(title) + '"></div>';
+  }
+  function live() { var e = estimate(); return '<div class="eg3w-live" data-live>Running estimate: <b>' + money(e.low) + ' - ' + money(e.high) + '</b>' + (e.per ? ' per ' + e.per : '') + '</div>'; }
+  function lengthCards(group, cur) { return '<div class="eg3w-grid">' + LENGTHS.map(function (L) { return card(group, L[0], L[1], L[2], 'From ' + money(SHOOT[L[0]] * RANGE_LOW), cur === L[0]); }).join('') + '</div>'; }
+  function turnChips(group, cur) { return '<div class="eg3w-f"><span class="eg3w-label">How fast do you need it?</span><div class="eg3w-chips">' + chip(group, 'standard', 'Standard, 1-2 weeks', cur === 'standard') + chip(group, 'rush', 'Rush, 3-5 days', cur === 'rush') + chip(group, 'nextday', 'Next day', cur === 'nextday') + '</div></div>'; }
+
+  function stepHTML(name) {
+    switch (name) {
+      case 'type':
+        return '<h2 class="eg3w-q">What are we making?</h2><p class="eg3w-sub">Pick the closest fit. You\'ll get a rough price range in about a minute.</p>' +
+          '<div class="eg3w-grid">' + card('cat', 'commercial', 'Commercial', 'Brand films, ads, promos, testimonials', '', S.cat === 'commercial') + card('cat', 'content', 'Content', 'Social videos, reels, ongoing content', '', S.cat === 'content') + card('cat', 'sports', 'Sports', 'Game coverage, highlights, hype videos', '', S.cat === 'sports') + '</div>' +
+          '<p class="eg3w-note">Real estate listing? <a href="/realestate">Use the real estate price calculator</a>.</p>';
+      case 'describe':
+        return '<h2 class="eg3w-q">Tell us about it</h2><p class="eg3w-sub">What\'s the project, who\'s it for, and where will it live? A couple sentences is plenty.</p>' +
+          '<div class="eg3w-f"><textarea data-text="desc" placeholder="' + ({ commercial: 'e.g. A 60-90 second brand video for our restaurant, plus a few cutdowns for Instagram.', content: 'e.g. We want a few short videos a month for TikTok and Instagram showing our shop and team.', sports: 'e.g. Highlight videos for our varsity football season, 10 home games.' }[S.cat] || '') + '">' + esc(S.desc) + '</textarea></div>';
+      case 'plan':
+        return '<h2 class="eg3w-q">One time or ongoing?</h2><p class="eg3w-sub">Ongoing content is planned on a regular schedule, and bigger batches get a bulk discount.</p>' +
+          '<div class="eg3w-grid">' + card('con.type', 'once', 'One-time shoot', 'A single shoot and a batch of videos', '', S.con.type === 'once') + card('con.type', 'retainer', 'Ongoing content', 'A shoot and new videos on a schedule', '', S.con.type === 'retainer') + '</div>' +
+          (S.con.type === 'retainer' ? '<div class="eg3w-f"><span class="eg3w-label">How often?</span><div class="eg3w-chips">' + chip('con.freq', 'monthly', 'Monthly', S.con.freq === 'monthly') + chip('con.freq', 'quarterly', 'Quarterly', S.con.freq === 'quarterly') + '</div></div>' : '');
+      case 'shoot':
+        var o = S.cat === 'content' ? S.con : S.com, pre = S.cat === 'content' ? 'con' : 'com';
+        return '<h2 class="eg3w-q">How long is the shoot?</h2><p class="eg3w-sub">' + (S.cat === 'content' && S.con.type === 'retainer' ? 'Per ' + FREQ[S.con.freq][1] + '. ' : '') + 'Not sure? Pick your best guess. We\'ll firm it up together.</p>' +
+          lengthCards(pre + '.len', o.len) +
+          counter(pre + '.days', S.cat === 'content' && S.con.type === 'retainer' ? 'Shoot days per ' + FREQ[S.con.freq][1] : 'How many days?', '', o.days, 5) + live();
+      case 'deliver':
+        if (S.cat === 'content') {
+          var k = S.con;
+          return '<h2 class="eg3w-q">What videos do you need?</h2><p class="eg3w-sub">' + (k.type === 'retainer' ? 'Per ' + FREQ[k.freq][1] + '. ' : '') + '4 or more videos unlock a bulk discount.</p>' +
+            '<div class="eg3w-f" style="gap:10px">' + counter('con.quick', 'Quick hits', 'Very short clips', k.quick, 12) + counter('con.short', 'Short form', 'Social videos, up to 1-2 minutes', k.short, 12) + counter('con.medium', 'Medium form', '3-5 minutes', k.medium, 8) +
+            '<label class="eg3w-check"><input type="checkbox" data-bool="con.longOn"' + (k.longOn ? ' checked' : '') + '> I need long-form videos (5+ minutes)</label>' +
+            (k.longOn ? counter('con.long5', 'Long form, 5+ min', '', k.long5, 6) + counter('con.long10', 'Long form, 10+ min', '', k.long10, 6) + counter('con.long15', 'Long form, 15+ min', '', k.long15, 6) : '') + '</div>' +
+            (k.type === 'once' ? turnChips('con.turn', k.turn) : '') + live();
+        }
+        var c = S.com;
+        return '<h2 class="eg3w-q">What do you need delivered?</h2><p class="eg3w-sub">Start with the main video, then add anything else.</p>' +
+          '<div class="eg3w-f"><span class="eg3w-label">Main video</span><div class="eg3w-grid">' +
+            card('com.main', 'basic', 'Short', 'Up to 2 minutes', '', c.main === 'basic') + card('com.main', 'standard', 'Standard', '2-5 minutes with titles and graphics', '', c.main === 'standard') + card('com.main', 'premium', 'Premium', '5+ minutes or a complex story', '', c.main === 'premium') + card('com.main', 'none', 'No main video', 'Just the pieces below', '', c.main === 'none') + '</div></div>' +
+          '<div class="eg3w-f" style="gap:10px">' + counter('com.social', 'Social cutdowns', 'Short versions for social', c.social, 10) + counter('com.testimonial', 'Testimonial videos', 'Customer or team interviews', c.testimonial, 6) + counter('com.recap', 'Event recaps', '', c.recap, 4) + '</div>' +
+          '<div class="eg3w-f"><span class="eg3w-label">Extras</span><label class="eg3w-check"><input type="checkbox" data-bool="com.drone"' + (c.drone ? ' checked' : '') + '> Drone footage</label><label class="eg3w-check"><input type="checkbox" data-bool="com.sound"' + (c.sound ? ' checked' : '') + '> Premium sound design</label></div>' +
+          turnChips('com.turn', c.turn) + live();
+      case 'coverage':
+        var p = S.spo;
+        return '<h2 class="eg3w-q">What kind of coverage?</h2>' +
+          '<div class="eg3w-grid">' + card('spo.type', 'games', 'Game coverage', 'Each game includes a 60-90 second highlight', 'About ' + money(SPO.game) + ' a game', p.type === 'games') + card('spo.type', 'project', 'Single video', 'Hype video, senior night, recruiting reel', '', p.type === 'project') + '</div>' +
+          (p.type === 'games' ? counter('spo.games', 'How many games?', '', p.games, 15) :
+            '<div class="eg3w-chips">' + chip('spo.project', 'hype', 'Hype video', p.project === 'hype') + chip('spo.project', 'senior', 'Senior night', p.project === 'senior') + chip('spo.project', 'recruit', 'Recruiting reel', p.project === 'recruit') + chip('spo.project', 'recap', 'Season recap', p.project === 'recap') + '</div>') + live();
+      case 'extras':
+        return '<h2 class="eg3w-q">Anything extra?</h2>' +
+          (S.spo.type === 'games' ? counter('spo.reels', 'Extra highlight reels', 'Beyond the one per game', S.spo.reels, 6) : '') +
+          turnChips('spo.turn', S.spo.turn) + live();
+      case 'contact':
+        var w = S.who;
+        return '<h2 class="eg3w-q">Where should we send it?</h2><p class="eg3w-sub">You\'ll see your range on the next screen, and we\'ll email you a copy.</p>' +
+          '<div class="eg3w-two"><label class="eg3w-f"><span class="eg3w-label">Name *</span><input type="text" data-text="who.name" value="' + esc(w.name) + '" autocomplete="name"></label>' +
+          '<label class="eg3w-f"><span class="eg3w-label">Email *</span><input type="email" data-text="who.email" value="' + esc(w.email) + '" autocomplete="email"></label></div>' +
+          '<div class="eg3w-two"><label class="eg3w-f"><span class="eg3w-label">Business or organization</span><input type="text" data-text="who.org" value="' + esc(w.org) + '" autocomplete="organization"></label>' +
+          '<label class="eg3w-f"><span class="eg3w-label">Phone</span><input type="tel" data-text="who.phone" value="' + esc(w.phone) + '" autocomplete="tel"></label></div>' +
+          '<label class="eg3w-f"><span class="eg3w-label">When do you need it?</span><input type="text" data-text="who.when" value="' + esc(w.when) + '" placeholder="Shoot date or deadline, if you know it"></label>' +
+          '<label class="eg3w-check"><input type="checkbox" data-bool="who.nonprofit"' + (w.nonprofit ? ' checked' : '') + '> We\'re a nonprofit</label>' +
+          '<input type="text" class="eg3w-honey" tabindex="-1" autocomplete="off" aria-hidden="true" data-honey>' +
+          '<div class="eg3w-status" data-status></div>';
+      case 'result':
+        var e = estimate();
+        return '<div class="eg3w-result"><span class="eg3w-per">Your rough range' + (e.per ? ', per ' + e.per : '') + '</span>' +
+          '<div class="eg3w-range">' + money(e.low) + ' - ' + money(e.high) + '</div>' +
+          '<p class="eg3w-sub">Based on what you picked. Your final quote depends on the details, and Elijah will follow up within 1-2 business days to lock it in.' + (S.who.nonprofit ? ' Nonprofits get 15% off the final quote.' : '') + '</p>' +
+          '<ul class="eg3w-list">' + e.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>' +
+          '<div class="eg3w-status ' + (sent === false ? 'err' : 'ok') + '">' + (sent === false ? 'We couldn\'t send the email copy. Reach us at ' + EMAIL + ' and we\'ll get you sorted.' : 'A copy is on its way to ' + esc(S.who.email) + '.') + '</div>' +
+          '<div class="eg3w-nav"><button type="button" class="eg3w-back" data-restart>Start a new quote</button><a class="eg3w-btn" href="/portfolio#' + S.cat + '">See our ' + CATS[S.cat].toLowerCase() + ' work</a></div></div>';
+    }
+    return '';
+  }
+
+  function canNext(name) {
+    if (name === 'type') return !!S.cat;
+    if (name === 'contact') return S.who.name.trim().length > 1 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.who.email.trim());
+    if (name === 'deliver' && S.cat === 'content') { var k = S.con; return (k.quick + k.short + k.medium + (k.longOn ? k.long5 + k.long10 + k.long15 : 0)) > 0 || k.days > 0; }
+    return true;
+  }
+
+  function render(focus) {
+    var list = steps(), name = list[step], total = list.length - 1;
+    var html = '';
+    if (name !== 'result') {
+      html += '<div class="eg3w-top"><div class="eg3w-bar"><span style="width:' + Math.round(step / total * 100) + '%"></span></div><span class="eg3w-count">Step ' + (step + 1) + ' of ' + total + '</span></div>';
+    }
+    html += '<div class="eg3w-step">' + stepHTML(name);
+    if (name !== 'result') {
+      html += '<div class="eg3w-nav">' + (step ? '<button type="button" class="eg3w-back" data-back>Back</button>' : '<span></span>') +
+        '<button type="button" class="eg3w-btn" data-next' + (canNext(name) ? '' : ' disabled') + '>' + (name === 'contact' ? 'See my range' : name === 'describe' && !S.desc.trim() ? 'Skip' : 'Next') + '</button></div>';
+    }
+    html += '</div>';
+    mount.innerHTML = html;
+    Array.prototype.forEach.call(mount.querySelectorAll('input[type=range]'), paintRange);
+    if (focus !== false) {
+      var f = mount.querySelector('textarea, input[type=text]:not([data-honey])');
+      if (f && (name === 'describe' || name === 'contact')) setTimeout(function () { try { f.focus({ preventScroll: true }); } catch (e) {} }, 60);
+    }
+    if (opts.onStep) opts.onStep(name);
+  }
+  function paintRange(el) { el.style.setProperty('--fill', (el.value - el.min) / (el.max - el.min || 1) * 100 + '%'); }
+  function setPath(path, v) { var ks = path.split('.'); var o = S; while (ks.length > 1) o = o[ks.shift()]; o[ks[0]] = v; }
+  function getPath(path) { return path.split('.').reduce(function (o, k) { return o[k]; }, S); }
+  function refreshNav() {
+    var name = steps()[step], nb = mount.querySelector('[data-next]');
+    if (nb) { nb.disabled = !canNext(name); if (name === 'describe') nb.textContent = S.desc.trim() ? 'Next' : 'Skip'; }
+    var lv = mount.querySelector('[data-live]');
+    if (lv) { var e = estimate(); lv.innerHTML = 'Running estimate: <b>' + money(e.low) + ' - ' + money(e.high) + '</b>' + (e.per ? ' per ' + e.per : ''); }
+  }
+
+  function sendEmail() {
+    var e = estimate(), w = S.who;
+    var nm = w.name.trim(), rangeTxt = money(e.low) + ' - ' + money(e.high) + (e.per ? ' per ' + e.per : '');
+    var body = {
+      _subject: 'Quote request: ' + CATS[S.cat] + ' from ' + nm + (w.org ? ' (' + w.org + ')' : ''),
+      _template: 'table',
+      _replyto: w.email.trim(),
+      email: w.email.trim(),
+      _autoresponse: 'Hi ' + nm.split(' ')[0] + ', thanks for reaching out to EG3 Media!\n\nBased on what you told us, your ' + CATS[S.cat].toLowerCase() + ' project will likely land between ' + rangeTxt + '.\n\nWhat you picked:\n- ' + e.items.join('\n- ') + '\n\nThis is a rough range. Elijah will follow up within 1-2 business days to talk through the details and send an exact quote.\n\nEG3 Media\nAbilene, Texas\neg3media.com',
+      Name: nm,
+      Organization: w.org || '-',
+      Phone: w.phone || '-',
+      Timeline: w.when || '-',
+      Nonprofit: w.nonprofit ? 'Yes' : 'No',
+      'Project type': CATS[S.cat] + (S.cat === 'content' ? (S.con.type === 'retainer' ? ', ongoing (' + FREQ[S.con.freq][0].toLowerCase() + ')' : ', one-time') : ''),
+      Description: S.desc.trim() || '-',
+      Selections: e.items.join(' | '),
+      'Estimate (calculated)': money(e.total) + (e.per ? ' per ' + e.per : ''),
+      'Range shown': rangeTxt
+    };
+    return fetch('https://formsubmit.co/ajax/' + EMAIL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (d) { if (!r.ok || String(d.success) === 'false') throw 0; }); });
+  }
+
+  mount.classList.add('eg3w');
+  mount.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button'); if (!b || !mount.contains(b)) return;
+    if (b.dataset.pick) {
+      var g = b.dataset.pick;
+      if (g === 'cat') { if (S.cat !== b.dataset.v) { S.cat = b.dataset.v; } render(false); setTimeout(function () { step = 1; render(); scrollTop(); }, 180); return; }
+      setPath(g, b.dataset.v); render(false); return;
+    }
+    if (b.hasAttribute('data-back')) { step = Math.max(0, step - 1); render(); scrollTop(); return; }
+    if (b.hasAttribute('data-restart')) { step = 0; sent = null; render(); scrollTop(); return; }
+    if (b.hasAttribute('data-next')) {
+      var name = steps()[step]; if (!canNext(name)) return;
+      if (name === 'contact') {
+        if (mount.querySelector('[data-honey]').value) return;
+        b.disabled = true; b.textContent = 'Working it out...';
+        sendEmail().then(function () { sent = true; }, function () { sent = false; }).then(function () { step++; render(); scrollTop(); });
+        return;
+      }
+      step++; render(); scrollTop();
+    }
+  });
+  mount.addEventListener('input', function (ev) {
+    var el = ev.target;
+    if (el.dataset.num) {
+      var v = parseInt(el.value, 10) || 0; setPath(el.dataset.num, v); paintRange(el);
+      var row = el.closest('.eg3w-row'); row.querySelector('output').textContent = v; row.classList.toggle('off', !v);
+    }
+    if (el.dataset.text) setPath(el.dataset.text, el.value);
+    refreshNav();
+  });
+  mount.addEventListener('change', function (ev) {
+    var el = ev.target;
+    if (el.dataset.bool) { setPath(el.dataset.bool, el.checked); if (el.dataset.bool === 'con.longOn') render(false); else refreshNav(); }
+  });
+  function scrollTop() {
+    if (opts.scroller) { opts.scroller.scrollTop = 0; return; }
+    var r = mount.getBoundingClientRect(); if (r.top < 0) window.scrollTo({ top: window.pageYOffset + r.top - 90, behavior: 'smooth' });
+  }
+  render(false);
+  return { reset: function () { step = 0; sent = null; render(false); } };
+};
+</script>
+
+<style>
+  .eg3qb-btn { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 9998;
+    appearance: none; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 14px 20px; border: 3px solid #fff; border-radius: 999px;
+    background: rgba(12,12,12,.88); color: #fff; font-family: 'Anton', 'Impact', sans-serif; font-size: 18px; letter-spacing: .08em; text-transform: uppercase; line-height: 1;
+    box-shadow: 0 10px 30px rgba(0,0,0,.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    transition: transform .35s cubic-bezier(.34,1.56,.64,1), background .25s, color .25s, opacity .4s, translate .5s cubic-bezier(.22,1,.36,1); }
+  .eg3qb-btn:hover { transform: scale(1.06); background: #fff; color: #000; }
+  .eg3qb-btn .dot { width: 9px; height: 9px; border-radius: 50%; background: #4f8a58; box-shadow: 0 0 10px #4f8a58; }
+  .eg3qb-btn.is-hidden { opacity: 0; translate: 0 30px; pointer-events: none; }
+  .eg3qb-modal { position: fixed; inset: 0; z-index: 9999; display: flex; justify-content: center; align-items: flex-start; background: rgba(0,0,0,.72); opacity: 0; transition: opacity .3s ease; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: clamp(0px, 4vw, 48px) clamp(0px, 3vw, 32px); }
+  .eg3qb-modal.open { opacity: 1; }
+  .eg3qb-modal[hidden] { display: none; }
+  .eg3qb-panel { position: relative; width: min(880px, 100%); min-height: min(640px, 100%); background: #141414; border: 1px solid #2c2c2c; border-radius: 14px; padding: clamp(22px, 4vw, 44px); padding-top: 64px; transform: translateY(24px); transition: transform .45s cubic-bezier(.22,1,.36,1); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+  .eg3qb-modal.open .eg3qb-panel { transform: none; }
+  @media (max-width: 640px) { .eg3qb-panel { border-radius: 0; min-height: 100%; border: 0; } .eg3qb-btn { padding: 12px 16px; font-size: 16px; } }
+  .eg3qb-x { position: absolute; top: 14px; right: 14px; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #444; background: none; color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+  .eg3qb-x:hover { background: #fff; color: #000; }
+  .eg3qb-tag { position: absolute; top: 24px; left: clamp(22px, 4vw, 44px); font-family: 'Anton', 'Impact', sans-serif; font-size: 16px; letter-spacing: .12em; text-transform: uppercase; color: #a3a3a0; }
+  html.eg3qb-lock, html.eg3qb-lock body { overflow: hidden !important; }
+</style>
+<script>
+(function () {
+  if (window.__eg3qb) return; window.__eg3qb = 1;
+  var path = location.pathname.replace(/\/+$/, '').toLowerCase();
+  // no pop-up on the real estate page (it has its own calculator) or on the quote page itself
+  var SKIP = ['/realestate', '/quote'];
+  if (SKIP.indexOf(path) !== -1) return;
+
+  function start() {
+    var btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'eg3qb-btn'; btn.innerHTML = '<span class="dot"></span>Get a quote';
+    btn.setAttribute('aria-haspopup', 'dialog');
+    var modal = document.createElement('div');
+    modal.className = 'eg3qb-modal'; modal.hidden = true;
+    modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true'); modal.setAttribute('aria-label', 'Get a quote');
+    modal.innerHTML = '<div class="eg3qb-panel"><span class="eg3qb-tag">EG3 Media · Quote</span><button type="button" class="eg3qb-x" aria-label="Close">&times;</button><div class="eg3qb-form"></div></div>';
+    document.body.appendChild(btn); document.body.appendChild(modal);
+    var form = null, lastFocus = null;
+
+    function open() {
+      lastFocus = document.activeElement;
+      if (!form) form = window.EG3Quote(modal.querySelector('.eg3qb-form'), { scroller: modal });
+      modal.hidden = false; document.documentElement.classList.add('eg3qb-lock');
+      requestAnimationFrame(function () { modal.classList.add('open'); });
+      btn.classList.add('is-hidden');
+      setTimeout(function () { var f = modal.querySelector('.eg3w-card, .eg3qb-x'); if (f) f.focus(); }, 80);
+    }
+    function close() {
+      modal.classList.remove('open'); document.documentElement.classList.remove('eg3qb-lock');
+      setTimeout(function () { modal.hidden = true; }, 300);
+      btn.classList.remove('is-hidden');
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    btn.addEventListener('click', open);
+    modal.querySelector('.eg3qb-x').addEventListener('click', close);
+    modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
+    // any "Get a quote" link to /quote opens the pop-up instead
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href]'); if (!a) return;
+      var h = a.getAttribute('href') || '';
+      if (/^(https?:\/\/(www\.)?eg3media\.com)?\/quote\/?(#.*)?$/i.test(h)) { e.preventDefault(); open(); }
+    });
+    // stay out of the way during page intros: show after a short delay
+    btn.classList.add('is-hidden');
+    setTimeout(function () { btn.classList.remove('is-hidden'); }, 2500);
+  }
+  function go() { if (window.EG3Quote && document.body) start(); else setTimeout(go, 50); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+})();
+</script>

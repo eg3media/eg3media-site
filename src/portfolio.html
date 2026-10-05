@@ -1,0 +1,837 @@
+<div class="eg3-pintro" id="eg3-pintro"><div class="eg3-pintro-word" id="eg3-pintro-word">Portfolio</div></div>
+
+<h1 class="eg3-sr">EG3 Media Portfolio: Abilene, Texas Video Production and Photography</h1>
+
+<nav class="eg3-filters" id="eg3-filters" hidden></nav>
+
+<div class="eg3-grid" id="eg3-grid"></div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+  html, body { overflow-x: clip; }
+
+  .eg3-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    background: #000;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+  }
+  @media (max-width: 1024px) { .eg3-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px)  { .eg3-grid { grid-template-columns: 1fr; } }
+
+  .eg3-tile {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #111;
+    text-decoration: none !important;
+    cursor: pointer;
+  }
+  .eg3-tile img,
+  .eg3-tile video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    transition: transform .6s ease, filter .4s ease, opacity .4s ease;
+  }
+  .eg3-tile img { filter: brightness(0.8); }
+  .eg3-tile video { opacity: 0; }
+  .eg3-tile.is-playing video,
+  .eg3-tile.has-poster video { opacity: 1; }
+
+  /* grow on hover */
+  .eg3-tile:hover img,
+  .eg3-tile:hover video { transform: scale(1.05); filter: brightness(1); }
+
+  .eg3-tile span {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 16px 20px;
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(18px, 2vw, 30px);
+    line-height: 1;
+    text-transform: uppercase;
+    color: #fff;
+    mix-blend-mode: difference;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .3s ease, transform .3s ease;
+    pointer-events: none;
+  }
+  .eg3-tile:hover span { opacity: 1; transform: none; }
+  .eg3-tile:not(:has(img)):not(.is-playing) span { opacity: 1; transform: none; }
+
+  .eg3-filters {
+    display: flex;
+    justify-content: center;
+    padding: 36px 16px 32px;
+    background: #000;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    box-sizing: border-box;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .eg3-filters::-webkit-scrollbar { display: none; }
+  .eg3-filters[hidden] { display: none; }
+
+  .eg3-tabs {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    gap: clamp(20px, 4vw, 56px);
+    padding: 0 clamp(12px, 3vw, 40px) 22px;
+  }
+  .eg3-tabs button {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(16px, 2vw, 28px);
+    line-height: 1;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: #fff;
+    opacity: .35;
+    transform-origin: 50% 100%;
+    transition: opacity .35s ease, transform .45s cubic-bezier(.65, 0, .35, 1);
+  }
+  .eg3-tabs button:hover { opacity: .7; }
+  .eg3-tabs button.is-active { opacity: 1; transform: scale(1.3); }
+
+  /* the line */
+  .eg3-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, .3);
+  }
+  /* the dot */
+  .eg3-dot {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 9px;
+    height: 9px;
+    margin: 0 0 -4px -4.5px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, .6);
+  }
+  .eg3-dot { transition: opacity .35s ease, transform .5s cubic-bezier(.34, 1.56, .64, 1); }
+  .eg3-dot.is-animated {
+    transition: left .6s cubic-bezier(.65, 0, .35, 1), opacity .35s ease, transform .5s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .eg3-line { transform-origin: 0 50%; transition: transform .9s cubic-bezier(.65, 0, .35, 1); }
+
+  /* ---- intro states ---- */
+  .eg3-tabs.pre button { opacity: 0 !important; }
+  .eg3-tabs.noline .eg3-line { transform: scaleX(0); }
+  .eg3-tabs.noactive button.is-active { opacity: .35; transform: none; }
+  .eg3-tabs.noactive .eg3-dot { opacity: 0; transform: scale(0); }
+  .eg3-tabs button.menu-in { animation: eg3MenuIn .7s cubic-bezier(.2, .7, .2, 1) backwards; }
+  @keyframes eg3MenuIn { from { opacity: 0; translate: -28px 0; } }
+
+  .eg3-grid.pre .eg3-tile { opacity: 0; }
+  .eg3-tile.float {
+    animation: eg3Float 1s cubic-bezier(.2, .7, .2, 1) backwards;
+    animation-delay: var(--d, 0s);
+  }
+  @keyframes eg3Float {
+    from { opacity: 0; translate: var(--dx, 0) var(--dy, 40px); scale: .9; }
+  }
+
+  /* ---- black screen intro (same moves as the homepage Welcome) ---- */
+  .eg3-pintro {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    pointer-events: none;
+    /* safety: never leave the screen black if something goes wrong */
+    animation: eg3Failsafe 0s 7s forwards;
+  }
+  @keyframes eg3Failsafe { to { opacity: 0; visibility: hidden; } }
+  .eg3-pintro-word,
+  .eg3-pintro-word span { transition: none !important; animation: none !important; }
+  .eg3-pintro-word {
+    margin: 0;
+    font-family: 'Anton', 'Impact', sans-serif !important;
+    font-weight: 400 !important;
+    font-size: clamp(2.6rem, 11vw, 10rem);
+    line-height: 1;
+    letter-spacing: 0.12em;
+    padding-left: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #fff !important;
+    opacity: 0;
+    will-change: opacity, letter-spacing;
+  }
+  .eg3-pintro-word span {
+    display: inline-block;
+    opacity: 0;
+    will-change: transform, opacity, filter;
+  }
+
+  .eg3-tile.is-hidden { display: none; }
+  .eg3-tile.is-in { animation: eg3In .45s ease both; }
+  @keyframes eg3In { from { opacity: 0; } to { opacity: 1; } }
+
+  .eg3-debug2 {
+    position: absolute; right: 8px; bottom: 8px; z-index: 3; max-width: 92%;
+    font: 11px/1.3 monospace; color: #ff0; background: rgba(0,0,0,.8);
+    padding: 3px 6px; pointer-events: none; word-break: break-all;
+  }
+  .eg3-debug {
+    position: absolute; top: 8px; left: 8px; z-index: 3;
+    font: 12px/1.3 monospace; color: #0f0; background: rgba(0,0,0,.75);
+    padding: 3px 6px; pointer-events: none;
+  }
+
+  /* heading for search engines and screen readers (not shown on screen) */
+  .eg3-sr {
+    position: absolute !important; width: 1px !important; height: 1px !important;
+    padding: 0 !important; margin: -1px !important; overflow: hidden !important;
+    clip: rect(0 0 0 0) !important; white-space: nowrap !important; border: 0 !important;
+  }
+</style>
+
+<script>
+(function () {
+  // true = every video plays on its own while on screen (hover still grows it)
+  // false = videos play on hover (phones still play whatever is on screen)
+  var ALWAYS_AUTOPLAY = false;
+
+  // true = plays the black "PORTFOLIO" intro every time the page opens
+  var INTRO = true;
+
+  // intro timing in milliseconds (matches the homepage Welcome)
+  var LETTER_STAGGER = 80;   // delay between letters
+  var LETTER_DUR = 600;      // how long each letter takes to rise in
+  var WORD_HOLD = 320;       // wait after the last letter starts before it widens
+  var WORD_OUT = 700;        // widen and fade
+  var SCREEN_OUT = 600;      // black screen fades away
+
+  // true = shows a small green status label on each tile so we can see what's failing.
+  // Set to false once it's working.
+  var DEBUG = false;
+
+  var grid = document.getElementById('eg3-grid');
+  if (!grid || grid.dataset.ready) return;
+  grid.dataset.ready = '1';
+
+  var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var useHover = canHover && !ALWAYS_AUTOPLAY;
+  var hlsReady = null;
+
+  function status(tile, msg) {
+    if (!DEBUG) return;
+    var el = tile.querySelector('.eg3-debug');
+    if (!el) { el = document.createElement('div'); el.className = 'eg3-debug'; tile.appendChild(el); }
+    el.textContent = msg;
+  }
+
+  function loadHls() {
+    if (window.Hls) return Promise.resolve(window.Hls);
+    if (hlsReady) return hlsReady;
+    hlsReady = new Promise(function (resolve) {
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js';
+      s.onload = function () { resolve(window.Hls || null); };
+      s.onerror = function () { resolve(null); };
+      document.head.appendChild(s);
+    });
+    return hlsReady;
+  }
+
+
+
+
+  var POSTER_AT = 1.5;   // seconds into the video used as the still for tiles without a thumbnail
+  var posterIO = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting && e.target._prime) { e.target._prime(); posterIO.unobserve(e.target); }
+    });
+  }, { rootMargin: '400px 0px' }) : null;
+
+  function wire(tile, base, file) {
+    var video = null;
+    var wantPlay = false;
+    var triedFile = false;
+    var primed = false;
+    var timer;
+
+    status(tile, 'ready (' + (base ? 'stream' : '') + (base && file ? '+' : '') + (file ? 'file' : '') + ')');
+
+    function makeVideo() {
+      video = document.createElement('video');
+      video.muted = true;
+      video.defaultMuted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('preload', 'auto');
+      tile.insertBefore(video, tile.querySelector('span'));
+      video.addEventListener('playing', function () {
+        status(tile, 'playing');
+        if (wantPlay) tile.classList.add('is-playing');
+      });
+      video.addEventListener('error', function () {
+        status(tile, 'video error ' + (video.error ? video.error.code : ''));
+        useFile();
+      });
+      // still frame for tiles with no thumbnail
+      video.addEventListener('loadedmetadata', function () {
+        if (primed || wantPlay || !(tile._v && tile._v.frameThumb)) return;
+        primed = true;
+        try { video.currentTime = Math.min(POSTER_AT, (video.duration || 10) * 0.2); } catch (e) {}
+      });
+      video.addEventListener('seeked', function () {
+        if (tile._v && tile._v.frameThumb) tile.classList.add('has-poster');
+      });
+    }
+
+    function useFile() {
+      if (triedFile || !file) { if (!file) status(tile, 'failed, no file fallback'); return; }
+      triedFile = true;
+      status(tile, 'trying file');
+      if (video && video._hls) { video._hls.destroy(); }
+      if (video) video.remove();
+      makeVideo();
+      video.src = file;
+      tryPlay();
+    }
+
+    function build() {
+      makeVideo();
+      if (!base) { useFile(); return; }
+      var src = base + '/playlist.m3u8';
+      var v = video;
+      status(tile, 'loading player');
+      loadHls().then(function (Hls) {
+        if (v !== video) return;
+        if (!Hls || !Hls.isSupported()) {
+          // only phones without the player library use the browser's built-in streaming
+          if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            status(tile, 'loading (native)');
+            video.src = src;
+            tryPlay();
+          } else { status(tile, 'hls.js blocked'); useFile(); }
+          return;
+        }
+        var hls = new Hls({ capLevelToPlayerSize: true });
+        video._hls = hls;
+        hls.on(Hls.Events.MANIFEST_PARSED, function () { status(tile, 'loaded'); tryPlay(); });
+        hls.on(Hls.Events.ERROR, function (e, data) {
+          if (data.fatal) { status(tile, 'stream error: ' + data.details); useFile(); }
+        });
+        hls.loadSource(src);
+        hls.attachMedia(video);
+      });
+    }
+
+    function tryPlay() {
+      if (!wantPlay || !video) return;
+      var v = video;
+      var p = v.play();
+      if (p && p.catch) p.catch(function (err) {
+        if (v === video && err.name !== 'AbortError') status(tile, 'play blocked: ' + err.name);
+      });
+    }
+
+    function play() {
+      wantPlay = true;
+      status(tile, 'hover');
+      if (!video) build(); else tryPlay();
+    }
+
+    function stop() {
+      wantPlay = false;
+      clearTimeout(timer);
+      tile.classList.remove('is-playing');
+      if (video) video.pause();
+    }
+
+    tile._stop = stop;
+    if (base) {
+      tile._prime = function () {
+        if (posterIO) { tile._prime = function () { if (!video) build(); }; posterIO.observe(tile); }
+        else if (!video) build();
+      };
+      if (tile._v && tile._v.frameThumb) tile._prime();
+    }
+    if (useHover) {
+      tile.addEventListener('mouseenter', function () { timer = setTimeout(play, 80); });
+      tile.addEventListener('mouseleave', stop);
+    } else {
+      tile._eg3 = { play: play, stop: stop };
+    }
+  }
+
+  function addThumb(tile, base) {
+    if (tile.querySelector('img')) return;
+    var img = document.createElement('img');
+    img.src = base + '/thumbnail';
+    img.alt = '';
+    img.onerror = function () { img.remove(); };
+    tile.insertBefore(img, tile.firstChild);
+  }
+
+  // category buttons, in this order. Categories with no videos are left out.
+  var CATEGORY_ORDER = ['Commercial', 'Content', 'Sports', 'Real Estate'];
+
+  function buildFilters(tiles) {
+    var bar = document.getElementById('eg3-filters');
+    if (!bar) return;
+    var found = {};
+    tiles.forEach(function (t) { t._cats.forEach(function (c) { found[c] = true; }); });
+
+    var names = CATEGORY_ORDER.filter(function (n) { return found[n.toLowerCase()]; });
+    Object.keys(found).forEach(function (c) {
+      var known = CATEGORY_ORDER.some(function (n) { return n.toLowerCase() === c; });
+      if (!known) names.push(c.replace(/\b\w/g, function (l) { return l.toUpperCase(); }));
+    });
+    if (!names.length) return null;
+
+    var tabs = document.createElement('div');
+    tabs.className = 'eg3-tabs';
+    var line = document.createElement('div');
+    line.className = 'eg3-line';
+    var dot = document.createElement('div');
+    dot.className = 'eg3-dot';
+    tabs.appendChild(line);
+    tabs.appendChild(dot);
+    bar.appendChild(tabs);
+
+    function moveDot() {
+      var active = tabs.querySelector('button.is-active');
+      if (!active) return;
+      dot.style.left = (active.offsetLeft + active.offsetWidth / 2) + 'px';
+    }
+
+    ['All'].concat(names).forEach(function (name) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = name;
+      b.dataset.cat = name === 'All' ? '' : name.toLowerCase();
+      b.addEventListener('click', function () { apply(b.dataset.cat, true); });
+      tabs.insertBefore(b, line);
+    });
+    bar.hidden = false;
+    window.addEventListener('resize', moveDot);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(moveDot);
+
+    function apply(cat, fromClick) {
+      tabs.querySelectorAll('button').forEach(function (b) {
+        b.classList.toggle('is-active', b.dataset.cat === cat);
+      });
+      moveDot();
+      if (!fromClick) requestAnimationFrame(function () { dot.classList.add('is-animated'); });
+      var act = tabs.querySelector('button.is-active');
+      if (fromClick && act && act.scrollIntoView) act.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+      tiles.forEach(function (t) {
+        var show = !cat || t._cats.indexOf(cat) !== -1;
+        if (!show && t._stop) t._stop();
+        t.classList.toggle('is-hidden', !show);
+        t.classList.remove('is-in');
+        if (show && fromClick) { void t.offsetWidth; t.classList.add('is-in'); }
+      });
+      if (fromClick) {
+        try { history.replaceState(null, '', cat ? '#' + cat.replace(/\s+/g, '-') : location.pathname); } catch (e) {}
+      }
+    }
+
+    // /portfolio#sports opens with Sports selected
+    var hash = decodeURIComponent(location.hash.slice(1)).replace(/-/g, ' ').toLowerCase();
+    apply(names.some(function (n) { return n.toLowerCase() === hash; }) ? hash : '', false);
+
+    // intro: items float in left to right, line draws, then the active one lights up with the dot
+    tabs.classList.add('pre', 'noline', 'noactive');
+    return function startMenu() {
+      var buttons = tabs.querySelectorAll('button');
+      buttons.forEach(function (b, i) {
+        b.style.animationDelay = (i * 0.1) + 's';
+        b.classList.add('menu-in');
+      });
+      tabs.classList.remove('pre');
+      var lineStart = 150 + buttons.length * 60;
+      setTimeout(function () { tabs.classList.remove('noline'); }, lineStart);
+      setTimeout(function () { moveDot(); tabs.classList.remove('noactive'); }, lineStart + 850);
+      setTimeout(function () {
+        buttons.forEach(function (b) { b.classList.remove('menu-in'); b.style.animationDelay = ''; });
+      }, 2000);
+    };
+  }
+
+
+  /* the still Squarespace shows when a video's page is shared (used when no custom thumbnail is saved) */
+  var eg3OgCache = {};
+  function eg3PageStill(url) {
+    if (!eg3OgCache[url]) {
+      eg3OgCache[url] = fetch(url, { credentials: 'same-origin' })
+        .then(function (r) { return r.text(); })
+        .then(function (html) {
+          var m = html.match(/<meta[^>]+property=["']og:image["'][^>]*content=["']([^"']+)["']/i) ||
+                  html.match(/<meta[^>]+content=["']([^"']+)["'][^>]*property=["']og:image["']/i);
+          if (!m) return null;
+          var u = m[1].replace(/&amp;/g, '&').replace(/^http:/, 'https:');
+          if (/EG3MEDIA\.png/i.test(u) || /\/(\?|$)/.test(u.split('?')[0] + '?')) return null;   // logo or placeholder
+          return u.indexOf('?') === -1 ? u + '?format=1500w' : u;
+        })
+        .catch(function () { return null; });
+    }
+    return eg3OgCache[url];
+  }
+
+  /* ---------- read everything from /work (titles, thumbnails, videos, categories) ---------- */
+  function eg3LoadWork(path) {
+    path = path || '/work';
+    var items = [], catNames = {}, catList = [];
+
+    function collectCats(obj, depth) {
+      if (!obj || typeof obj !== 'object' || depth > 4) return;
+      if (Array.isArray(obj.categories)) {
+        obj.categories.forEach(function (c) {
+          if (c && typeof c === 'object' && c.id && (c.displayName || c.name)) {
+            if (!catNames[c.id]) catList.push(c);
+            catNames[c.id] = c.displayName || c.name;
+          }
+        });
+      }
+      Object.keys(obj).forEach(function (k) {
+        if (k !== 'items' && obj[k] && typeof obj[k] === 'object') collectCats(obj[k], depth + 1);
+      });
+    }
+
+    function getPage(url) {
+      return fetch(url, { credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          collectCats(d, 0);
+          items = items.concat(d.items || []);
+          if (d.pagination && d.pagination.nextPage && d.pagination.nextPageUrl) {
+            var u = new URL(d.pagination.nextPageUrl, location.origin);
+            u.searchParams.set('format', 'json');
+            return getPage(u.pathname + u.search);
+          }
+        });
+    }
+
+    function videoBase(it) {
+      var sc = it.structuredContent || {};
+      var alex = sc.alexandriaUrl || it.alexandriaUrl;
+      if (alex) return alex.replace('{variant}', '').replace(/\/$/, '');
+      var m = JSON.stringify(it).match(/https?:\/\/video\.squarespace-cdn\.com\/content\/v1\/[\w-]+\/[\w-]+/);
+      return m ? m[0] : null;
+    }
+
+    function norm(it) {
+      var slug = (it.urlId || it.fullUrl || '').split('/').pop();
+      var base = videoBase(it);
+      var names = [];
+      (it.categoryIds || []).forEach(function (id) { if (catNames[id]) names.push(catNames[id]); });
+      (it.categories || []).forEach(function (c) {
+        if (typeof c === 'string') names.push(catNames[c] || c);
+        else if (c && (c.displayName || c.name)) names.push(c.displayName || c.name);
+      });
+      // custom thumbnail if one is saved; otherwise the still from the video's own page is fetched later
+      var thumb = (it.assetUrl || '').replace(/^http:/, 'https:');
+      if (/\.(mov|mp4|m4v|webm)(\?|$)/i.test(thumb)) thumb = '';
+      if (/\/(\?|$)/.test(thumb)) thumb = '';            // folder with no file = Squarespace placeholder
+      if (thumb && thumb.indexOf('?') === -1) thumb += '?format=1500w';
+      return {
+        slug: slug,
+        title: it.title || '',
+        url: it.fullUrl || (path + '/v/' + slug),
+        base: base,
+        thumb: thumb,
+        frameThumb: false,
+        cats: names.map(function (n) { return String(n).trim().toLowerCase(); }).filter(Boolean)
+      };
+    }
+
+    return getPage(path + '?format=json').then(function () {
+      var list = items.map(norm).filter(function (v) { return v.slug; });
+      var anyCats = list.some(function (v) { return v.cats.length; });
+      if (anyCats || !catList.length) return list;
+      // backup: ask each category page which videos it holds
+      return Promise.all(catList.map(function (c) {
+        var url = (c.fullUrl || (path + '/' + (c.shortSlug || c.urlId || ''))) + '?format=json';
+        return fetch(url, { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (d) {
+          var got = (d.items || []);
+          if (!got.length || got.length >= items.length) return;   // page isn't filtered, ignore it
+          got.forEach(function (it) {
+            var s = (it.urlId || it.fullUrl || '').split('/').pop();
+            list.forEach(function (v) { if (v.slug === s) v.cats.push(String(c.displayName || c.name).toLowerCase()); });
+          });
+        }).catch(function () {});
+      })).then(function () { return list; });
+    });
+  }
+
+  function makeTile(v) {
+    var a = document.createElement('a');
+    a.className = 'eg3-tile';
+    a.href = v.url;
+    a.dataset.slug = v.slug;
+    a._cats = v.cats;
+    a._v = v;
+    function note(msg) {
+      if (!DEBUG) return;
+      var el = a.querySelector('.eg3-debug2');
+      if (!el) { el = document.createElement('div'); el.className = 'eg3-debug2'; a.appendChild(el); }
+      el.textContent = msg;
+    }
+    function tail(u) { return String(u).split('/').slice(-2).join('/').slice(0, 70); }
+    function addImg(src, onFail, kind) {
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = v.title;
+      note(kind + ' loading: ' + tail(src));
+      img.onload = function () {
+        note(kind + ' OK ' + img.naturalWidth + 'x' + img.naturalHeight + ': ' + tail(src));
+        if (img.naturalWidth === img.naturalHeight && img.naturalWidth <= 300) {   // Squarespace placeholder
+          note(kind + ' was a placeholder');
+          img.remove();
+          if (onFail) onFail();
+        }
+      };
+      img.onerror = function () { note(kind + ' FAILED: ' + tail(src)); img.remove(); if (onFail) onFail(); };
+      a.insertBefore(img, a.firstChild);
+    }
+    function useFrame() { note('using video frame'); v.frameThumb = true; if (a._prime) a._prime(); }
+    function usePageStill() {
+      note('checking page still');
+      eg3PageStill(v.url).then(function (u) { if (u) addImg(u, useFrame, 'page still'); else { note('no page still'); useFrame(); } });
+    }
+    if (v.thumb) addImg(v.thumb, usePageStill, 'custom'); else usePageStill();
+    var t = document.createElement('span');
+    t.textContent = v.title;
+    a.appendChild(t);
+    return a;
+  }
+
+  // build the grid from /work, then the menu
+  var ready = eg3LoadWork('/work').then(function (list) {
+    list.forEach(function (v) { grid.appendChild(makeTile(v)); });
+    var tiles = grid.querySelectorAll('.eg3-tile');
+    tiles.forEach(function (t) {
+      status(t, 'mode: ' + (useHover ? 'hover' : 'autoplay'));
+      if (t._v.base) wire(t, t._v.base, null);
+      else status(t, 'no video found');
+    });
+    var startMenu = buildFilters(tiles);
+
+    if (!useHover && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var c = e.target._eg3;
+          if (c) e.isIntersecting ? c.play() : c.stop();
+        });
+      }, { threshold: 0.5 });
+      tiles.forEach(function (t) { io.observe(t); });
+    }
+    return { tiles: tiles, startMenu: startMenu };
+  }).catch(function (err) {
+    console.warn('EG3 grid: could not load /work', err);
+    return { tiles: [], startMenu: null };
+  });
+
+  runIntro(ready);
+
+  function runIntro(ready) {
+    var overlay = document.getElementById('eg3-pintro');
+    var word = document.getElementById('eg3-pintro-word');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!INTRO || reduce || !overlay) {
+      if (overlay) overlay.remove();
+      ready.then(function () {
+        var tabs = document.querySelector('#eg3-filters .eg3-tabs');
+        if (tabs) tabs.classList.remove('pre', 'noline', 'noactive');
+      });
+      return;
+    }
+
+    // keep the black screen above everything on the page
+    document.body.appendChild(overlay);
+    var html = document.documentElement;
+    var oldOverflow = html.style.overflow;
+    html.style.overflow = 'hidden';
+    grid.classList.add('pre');
+
+    // split the word into letters
+    var letterEls = word.textContent.trim().split('').map(function (ch) {
+      var sp = document.createElement('span');
+      sp.textContent = ch === ' ' ? ' ' : ch;
+      return sp;
+    });
+    word.innerHTML = '';
+    letterEls.forEach(function (sp) { word.appendChild(sp); });
+    word.style.opacity = 1;
+
+    var OUT_AT = LETTER_STAGGER * (letterEls.length - 1) + WORD_HOLD;
+    var SCREEN_AT = OUT_AT + WORD_OUT * 0.55;
+    var END = SCREEN_AT + SCREEN_OUT;
+
+    function clamp01(x) { return Math.min(1, Math.max(0, x)); }
+    function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+    function easeIn(t) { return t * t; }
+    function easeInOutSine(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
+
+    var start = null, contentStarted = false;
+    function begin() { if (start === null) { start = performance.now(); requestAnimationFrame(frame); } }
+
+    function frame(now) {
+      var e = now - start;
+      function span(at, dur) { return clamp01((e - at) / dur); }
+
+      // letters rise in out of a blur
+      letterEls.forEach(function (el, i) {
+        var a = easeOut(span(LETTER_STAGGER * i, LETTER_DUR));
+        el.style.opacity = a;
+        el.style.transform = 'translateY(' + ((1 - a) * 40) + '%)';
+        el.style.filter = 'blur(' + ((1 - a) * 8).toFixed(2) + 'px)';
+      });
+
+      // then the word eases wider and fades
+      var wOut = span(OUT_AT, WORD_OUT);
+      var ls = (0.12 + 0.3 * easeInOutSine(wOut)).toFixed(4) + 'em';
+      word.style.opacity = (1 - easeIn(wOut)).toFixed(3);
+      word.style.letterSpacing = ls;
+      word.style.paddingLeft = ls;
+      word.style.filter = 'blur(' + (wOut * 6).toFixed(2) + 'px)';
+
+      // black screen fades and the page builds in underneath
+      overlay.style.opacity = (1 - easeIn(span(SCREEN_AT, SCREEN_OUT))).toFixed(3);
+      if (!contentStarted && e >= SCREEN_AT) {
+        contentStarted = true;
+        html.style.overflow = oldOverflow;
+        ready.then(function (r) {
+          buildMosaic(r.tiles);
+          if (r.startMenu) r.startMenu();
+        });
+      }
+
+      if (e < END) requestAnimationFrame(frame);
+      else overlay.remove();
+    }
+
+    // wait for the Anton font so the letters don't jump
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(begin);
+    setTimeout(begin, 1500);
+
+    function buildMosaic(tiles) {
+      var order = Array.prototype.slice.call(tiles).filter(function (t) {
+        return !t.classList.contains('is-hidden');
+      });
+      // shuffle so they land in a random order
+      for (var k = order.length - 1; k > 0; k--) {
+        var j = Math.floor(Math.random() * (k + 1));
+        var tmp = order[k]; order[k] = order[j]; order[j] = tmp;
+      }
+      order.forEach(function (t, n) {
+        var angle = Math.random() * Math.PI * 2;
+        var dist = 40 + Math.random() * 60;
+        t.style.setProperty('--dx', Math.round(Math.cos(angle) * dist) + 'px');
+        t.style.setProperty('--dy', Math.round(Math.sin(angle) * dist) + 'px');
+        t.style.setProperty('--d', (n * 0.07 + Math.random() * 0.15).toFixed(2) + 's');
+        t.classList.add('float');
+      });
+      grid.classList.remove('pre');
+      setTimeout(function () {
+        order.forEach(function (t) { t.classList.remove('float'); });
+      }, 3200);
+    }
+  }
+})();
+</script>
+
+<!-- business details for Google -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://www.eg3media.com/#business",
+  "name": "EG3 Media",
+  "url": "https://www.eg3media.com/",
+  "logo": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/ddfe30a3-ba17-4c4d-95a5-c6f1e8a38099/EG3MEDIA.png",
+  "image": "https://images.squarespace-cdn.com/content/v1/688a355192f29964dd10e9a4/ddfe30a3-ba17-4c4d-95a5-c6f1e8a38099/EG3MEDIA.png",
+  "description": "Video production, commercial video, social media content, sports video and real estate photography in Abilene, Texas.",
+  "email": "elijah@eg3media.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Abilene",
+    "addressRegion": "TX",
+    "addressCountry": "US"
+  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Abilene, TX"
+    },
+    {
+      "@type": "Place",
+      "name": "Big Country, Texas"
+    }
+  ],
+  "priceRange": "$$",
+  "sameAs": [
+    "https://www.instagram.com/eg3.media"
+  ],
+  "makesOffer": [
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Commercial and brand video production",
+        "url": "https://www.eg3media.com/commercial"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Social media content creation",
+        "url": "https://www.eg3media.com/content"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Sports video production",
+        "url": "https://www.eg3media.com/sports"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Real estate photography and video",
+        "url": "https://www.eg3media.com/realestate"
+      }
+    }
+  ]
+}
+</script>

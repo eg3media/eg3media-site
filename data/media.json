@@ -1,0 +1,13 @@
+{
+  "_help": "Header media. Each value is an image, GIF or MP4 address. Homepage: 'base' is the first picture, 'home.<page>' is the background behind each word. 'header.<page>' is that landing page's header. Put new files in /media and use /media/filename.",
+  "base": "https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f3031e2c007323771453/1790178052002/NolanP-TIGE-4AM-0189+2.JPG",
+  "home.portfolio": "https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f2213cf5be632256e654/1790177826153/eg3header-ezgif.com-video-to-gif-converter.gif",
+  "home.commercial": "https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f08da7c93d41c6144604/1790177423045/commercialgif-ezgif.com-video-to-gif-converter.gif",
+  "home.content": "https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f08dba789a3e4fd3a22d/1790177423088/contentgif-ezgif.com-video-to-gif-converter.gif",
+  "home.sports": "https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3eabd6ccba835ad57f212/1790175933837/sportsgif-ezgif.com-video-to-gif-converter.gif",
+  "home.realestate": "https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f08de3068e5fd2860c12/1790177423020/realestategif-ezgif.com-video-to-gif-converter.gif",
+  "header.commercial": "https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f08da7c93d41c6144604/1790177423045/commercialgif-ezgif.com-video-to-gif-converter.gif",
+  "header.content": "https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f08dba789a3e4fd3a22d/1790177423088/contentgif-ezgif.com-video-to-gif-converter.gif",
+  "header.sports": "https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3eabd6ccba835ad57f212/1790175933837/sportsgif-ezgif.com-video-to-gif-converter.gif",
+  "header.realestate": "https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f08de3068e5fd2860c12/1790177423020/realestategif-ezgif.com-video-to-gif-converter.gif"
+}

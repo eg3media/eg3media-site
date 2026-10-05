@@ -1,0 +1,746 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+  /* Hide the site header on the homepage only */
+  #header,
+  header.header {
+    display: none !important;
+  }
+
+  /* Remove the leftover space at the top of the homepage */
+  #page,
+  #sections,
+  .page-section:has(.eg3-scroll),
+  .page-section:has(.eg3-scroll) .content-wrapper,
+  .page-section:has(.eg3-scroll) .content,
+  .page-section:has(.eg3-scroll) .sqs-block,
+  .page-section:has(.eg3-scroll) .sqs-block-content {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+  .page-section:has(.eg3-scroll) .section-border,
+  .page-section:has(.eg3-scroll) .section-background {
+    top: 0 !important;
+  }
+
+  .eg3-scroll {
+    --count: 8;
+    --step: 70vh;       /* scroll distance per word: lower = faster */
+    --tracking: 0.08em; /* space between letters: try 0.05em to 0.15em */
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    height: calc(var(--count) * var(--step) + 100vh);
+    background: #000;
+  }
+
+  .eg3-stage {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    isolation: isolate;
+  }
+
+  /* Backup pinning if Squarespace blocks sticky */
+  .eg3-scroll.use-fixed .eg3-stage {
+    position: absolute;
+    top: 0;
+  }
+  .eg3-scroll.use-fixed .eg3-stage.is-pinned {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+  }
+  .eg3-scroll.use-fixed .eg3-stage.is-after {
+    top: auto;
+    bottom: 0;
+  }
+
+  .eg3-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    will-change: opacity, transform;
+    pointer-events: none;
+  }
+
+  /* Tint over the photos: raise the last number to darken, set to 0 to remove */
+  .eg3-shade {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.15);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* No z-index here on purpose, so the words can blend with the photos */
+  .eg3-nav {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 0 16px;
+    text-align: center;
+  }
+
+  .eg3-scroll .eg3-link {
+    display: inline-block;
+    width: fit-content;
+    font-family: 'Anton', 'Impact', sans-serif !important;
+    font-size: clamp(2rem, min(11vw, 11vh), 7rem);
+    font-weight: 400 !important;
+    line-height: 1;
+    letter-spacing: var(--tracking);
+    padding-left: var(--tracking);   /* balances the extra space after the last letter */
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #fff;
+    text-decoration: none !important;
+    background-image: none !important;
+    transform-origin: center center;
+    opacity: 0;                      /* hidden until the intro brings them in */
+    will-change: transform, opacity;
+  }
+  .eg3-scroll .eg3-link.is-blend {
+    mix-blend-mode: difference;
+  }
+
+  /* ---------- Opening sequence ---------- */
+  .eg3-intro {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  /* Stop Squarespace's own animations from slowing down the intro */
+  .eg3-intro,
+  .eg3-intro * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .eg3-logo {
+    position: absolute;
+    width: min(56vw, 640px);
+    opacity: 0;
+    will-change: transform, opacity, filter;
+  }
+  .eg3-logo svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .eg3-logo path,
+  .eg3-logo polygon {
+    fill: #fff;
+    fill-opacity: 0;
+    stroke: #fff;
+    stroke-linejoin: round;   /* smooth corners where lines meet */
+    stroke-linecap: round;    /* smooth ends on the tracing line */
+  }
+
+  .eg3-welcome {
+    position: absolute;
+    margin: 0;
+    font-family: 'Anton', 'Impact', sans-serif !important;
+    font-weight: 400 !important;
+    font-size: clamp(3rem, 13vw, 12rem);
+    line-height: 1;
+    letter-spacing: 0.12em;
+    padding-left: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #fff !important;
+    will-change: opacity, letter-spacing;
+  }
+  .eg3-welcome span {
+    display: inline-block;
+    opacity: 0;
+    will-change: transform, opacity, filter;
+  }
+</style>
+
+<div class="eg3-scroll" data-base-bg="https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f3031e2c007323771453/1790178052002/NolanP-TIGE-4AM-0189+2.JPG">
+  <div class="eg3-stage">
+    <div class="eg3-shade"></div>
+    <nav class="eg3-nav">
+      <a class="eg3-link" href="https://www.eg3media.com/portfolio" data-bg="https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f2213cf5be632256e654/1790177826153/eg3header-ezgif.com-video-to-gif-converter.gif">Portfolio</a>
+      <a class="eg3-link" href="https://www.eg3media.com/commercial" data-bg="https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f08da7c93d41c6144604/1790177423045/commercialgif-ezgif.com-video-to-gif-converter.gif">Commercial</a>
+      <a class="eg3-link" href="https://www.eg3media.com/content" data-bg="https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f08dba789a3e4fd3a22d/1790177423088/contentgif-ezgif.com-video-to-gif-converter.gif">Content</a>
+      <a class="eg3-link" href="https://www.eg3media.com/sports" data-bg="https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3eabd6ccba835ad57f212/1790175933837/sportsgif-ezgif.com-video-to-gif-converter.gif">Sports</a>
+      <a class="eg3-link" href="https://www.eg3media.com/realestate" data-bg="https://static1.squarespace.com/static/688a355192f29964dd10e9a4/t/6ab3f08de3068e5fd2860c12/1790177423020/realestategif-ezgif.com-video-to-gif-converter.gif">Real Estate</a>
+      <a class="eg3-link" href="https://www.eg3media.com/about" data-bg="PASTE-ABOUT-IMAGE-URL">About</a>
+      <a class="eg3-link" href="https://www.eg3media.com/contact" data-bg="PASTE-CONTACT-IMAGE-URL">Contact</a>
+    </nav>
+
+    <div class="eg3-intro">
+      <div class="eg3-logo">
+        <svg viewBox="665 325 520 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EG3 Media">
+          <path stroke-width="10" d="M959.75,447.45l-9,36h46.38c13.01,0,22.56,12.23,19.4,24.85l-8,32.02c-2.22,8.9-10.21,15.14-19.38,15.15l-236.67.24,18.27-72.26h72s9-36,9-36h-108l-36,144h324l36-144h-36s-72,0-72,0Z"/>
+          <path stroke-width="10" d="M887.75,519.45l32.22-128.87c2.22-8.9,10.21-15.14,19.38-15.15l210.46-.22c13.04-.01,22.61,12.26,19.41,24.9l-8.15,32.23c-2.24,8.88-10.23,15.1-19.39,15.1h-56.43s-9,36-9,36h108l36-144h-323.5l-45,180h36Z"/>
+          <polygon stroke-width="10" points="879.25 339.43 869.75 375.45 797.75 375.45 784.25 429.45 748.25 429.45 770.75 339.45 879.25 339.43"/>
+          <path stroke-width="10" d="M1049.25,591.46l9.5-36.02h56.38c9.18,0,17.18-6.25,19.4-15.15l9.71-38.85h36l-22.5,90-108.5.02Z"/>
+          <polygon stroke-width="3" points="698.75 609.75 716.75 609.75 698.75 681.75 680.75 681.75 698.75 609.75"/>
+          <polygon stroke-width="3" points="725.75 609.75 743.75 609.75 725.75 681.75 707.75 681.75 725.75 609.75"/>
+          <polygon stroke-width="3" points="752.75 609.75 770.75 609.75 752.75 681.75 734.75 681.75 752.75 609.75"/>
+          <polygon stroke-width="3" points="847.25 627.75 851.75 609.75 779.75 609.75 775.25 627.33 847.25 627.75"/>
+          <polygon stroke-width="3" points="840.5 654.75 845 636.75 773 636.75 768.5 654.33 840.5 654.75"/>
+          <polygon stroke-width="3" opacity=".56" points="840.5 654.75 845 636.75 773 636.75 768.5 654.33 840.5 654.75"/>
+          <polygon stroke-width="3" points="833.75 681.75 838.25 663.75 766.25 663.75 761.75 681.33 833.75 681.75"/>
+          <path stroke-width="3" d="M860.75,609.75l-4.5,18h9c20.06.25,20.25,3.27,20.25,18s-.19,18-29.25,18h-9l-4.5,18h9c33.56,0,51.75,0,51.75-36,0-42.07-18.19-36-33.75-36h-9Z"/>
+          <polygon stroke-width="3" points="923.75 609.75 941.75 609.75 923.75 681.75 905.75 681.75 923.75 609.75"/>
+          <polygon stroke-width="3" points="955.25 609.75 973.25 609.75 955.25 681.75 937.25 681.75 955.25 609.75"/>
+          <polygon stroke-width="3" points="982.25 609.75 964.25 609.75 982.25 681.75 1000.25 681.75 982.25 609.75"/>
+          <polygon stroke-width="3" points="1155.5 609.45 993.5 609.45 1011.5 681.45 1142 681.45 1155.5 609.45"/>
+        </svg>
+      </div>
+      <div class="eg3-welcome">Welcome</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var wrap = document.querySelector('.eg3-scroll');
+    if (!wrap) return;
+    var stage = wrap.querySelector('.eg3-stage');
+    var nav = wrap.querySelector('.eg3-nav');
+    var shade = wrap.querySelector('.eg3-shade');
+    var intro = wrap.querySelector('.eg3-intro');
+    var logo = wrap.querySelector('.eg3-logo');
+    var shapes = Array.prototype.slice.call(logo.querySelectorAll('path, polygon'));
+    var welcome = wrap.querySelector('.eg3-welcome');
+    var links = Array.prototype.slice.call(wrap.querySelectorAll('.eg3-link'));
+    var N = links.length;
+
+    var MAX_SCALE = 3.2;               // how big the active word gets
+    var DIM = 0.6;                     // how faded the other words get (0 = invisible, 1 = no fade)
+    var SMOOTH = 0.16;                 // lower = floatier, higher = snappier (0.05 to 0.25)
+    var BLEND_AT = 0.5;                // how grown a word is when Difference kicks in (0 to 1)
+    var EXTRA_TRACKING = 0.06;         // extra letter spacing (em) added at full size
+    var HOLD = 0.5;                    // share of each word's scroll spent holding at full size (0 to 0.7)
+    var RESTART_GIFS = true;           // restart each GIF when its word takes over
+
+    // Opening sequence timing (milliseconds)
+    var TRACE_AT = 200;                // 1. outline starts drawing on black
+    var TRACE_STAGGER = 70;            //    delay between each logo piece starting its trace
+    var TRACE_DUR = 1000;              //    how long each piece takes to trace
+    var FILL_AT = 1500;                //    solid logo fills in
+    var FILL_DUR = 700;
+    var GLOW = 10;                     //    glow size around the tracing line (px)
+    var LOGO_OUT_AT = 2800;            //    logo fades out
+    var LOGO_OUT = 700;
+    var LOGO_START_SIZE = 0.92;        //    logo size when it appears
+    var LOGO_END_SIZE = 1.12;          //    logo size by the time it's gone (grows steadily in between)
+    var WELCOME_AT = 3500;             // 2. Welcome writes in (after the logo is gone)
+    var LETTER_STAGGER = 80;
+    var LETTER_DUR = 600;
+    var WELCOME_OUT_AT = 4300;         //    Welcome eases wider and fades
+    var WELCOME_OUT = 700;
+    var WELCOME_GONE = WELCOME_OUT_AT + WELCOME_OUT;
+    var BASE_AT = WELCOME_OUT_AT;      // 3. base picture fades in while Welcome fades out
+    var BASE_DUR = 1600;
+    var WORDS_AT = WELCOME_GONE + 500; // 4. list words fly in, only after Welcome is fully gone
+    var WORD_STAGGER = 130;
+    var WORD_DUR = 1000;
+    var INTRO_ZOOM = 0.25;             // how zoomed in the base picture starts
+    var FLY_DISTANCE = 0.6;            // how far off-screen words start (share of screen width)
+    var FULL_INTRO_ONCE = false;       // false = full intro plays on every reload
+
+    var layers = [];
+    var urls = [];
+    var blobs = [];
+    var blobUrls = [];
+    var wasShowing = [];
+    var lengths = [];
+    var baseLayer = null;
+    var hs = [], smax = [];
+    var cur = null, running = false;
+    var useFixed = false;
+
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var introStart = null;
+    var introDone = reduceMotion;
+    var INTRO_TOTAL = WORDS_AT + WORD_STAGGER * (N - 1) + WORD_DUR;
+
+    function real(url) { return url && url.indexOf('PASTE-') !== 0; }
+    function clamp01(x) { return Math.min(1, Math.max(0, x)); }
+    function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+    function easeIn(t) { return t * t; }
+    function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+    function easeInOutSine(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
+
+    /* ---------- /site-media: the heading above each image decides where it goes ---------- */
+    function eg3SiteMedia(cb) {
+      var PAGE = '/site-media', KEY = 'eg3SiteMediaV1';
+      var NAMES = [['realestate', /realestate/], ['commercial', /commercial/], ['content', /content/],
+        ['sports', /sport/], ['portfolio', /portfolio/], ['about', /about/], ['contact', /contact/]];
+      function slotFor(text) {
+        var t = (text || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (!t) return null;
+        for (var i = 0; i < NAMES.length; i++) {
+          if (NAMES[i][1].test(t)) return (/header|banner|hero|landing/.test(t) ? 'header.' : 'home.') + NAMES[i][0];
+        }
+        if (/home|base/.test(t)) return 'base';
+        return '';   // some other heading: images under it are ignored
+      }
+      function clean(u) {
+        if (!u || !/^(https?:)?\/\//.test(u)) return null;
+        if (u.indexOf('//') === 0) u = 'https:' + u;
+        var bare = u.split('?')[0];
+        // GIFs load at full size so they keep animating; photos load at a sensible size
+        if (/\.gif$/i.test(bare) || !/squarespace-cdn\.com/.test(bare)) return bare;
+        return bare + '?format=2500w';
+      }
+      function imgUrl(el) {
+        var u = el.getAttribute('data-src') || el.getAttribute('data-image') || el.getAttribute('src') || '';
+        if (!u && el.getAttribute('srcset')) u = el.getAttribute('srcset').split(',')[0].trim().split(' ')[0];
+        return clean(u);
+      }
+      // Fluid Engine places blocks with CSS grid, so put blocks in their on-screen order (row, then column)
+      function gridOrder(doc) {
+        var pos = {}, css = '';
+        Array.prototype.forEach.call(doc.querySelectorAll('style'), function (s) { css += s.textContent + '\n'; });
+        var re = /\.fe-block-([\w-]+)\s*\{[^}]*?grid-area:\s*(\d+)\s*\/\s*(\d+)/g, m;
+        while ((m = re.exec(css))) pos[m[1]] = [+m[2], +m[3]];   // later rules (desktop) win
+        Array.prototype.forEach.call(doc.querySelectorAll('.fluid-engine'), function (grid) {
+          var blocks = Array.prototype.filter.call(grid.children, function (c) { return /\bfe-block\b/.test(c.className); });
+          var keyed = blocks.map(function (b, i) {
+            var id = (b.className.match(/fe-block-([\w-]+)/) || [])[1];
+            var p = (id && pos[id]) || [9999, 9999];
+            return { el: b, r: p[0], c: p[1], i: i };
+          });
+          keyed.sort(function (a, b) { return a.r - b.r || a.c - b.c || a.i - b.i; });
+          keyed.forEach(function (k) { grid.appendChild(k.el); });
+        });
+      }
+      function parse(html) {
+        var map = {};
+        if (!html) return map;
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var scope = doc.querySelector('#sections') || doc.querySelector('main') || doc.body;
+        if (!scope) return map;
+        gridOrder(doc);
+        var cur = null;
+        Array.prototype.forEach.call(scope.querySelectorAll('h1,h2,h3,h4,h5,h6,img'), function (el) {
+          if (el.closest('[data-eg3-ignore], noscript, header, footer')) return;
+          if (el.tagName !== 'IMG') { cur = slotFor(el.textContent); return; }
+          if (!cur || map[cur]) return;
+          var u = imgUrl(el);
+          if (u) map[cur] = u;
+        });
+        return map;
+      }
+      var cached = null;
+      try { cached = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+      if (cached) cb(cached);
+      if (!window.fetch || !window.DOMParser) return;
+      fetch(PAGE + '?format=json', { credentials: 'same-origin' })
+        .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+        .then(function (j) { var m = parse(j && j.mainContent); if (!Object.keys(m).length) throw 0; return m; })
+        .catch(function () {
+          return fetch(PAGE, { credentials: 'same-origin' })
+            .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+            .then(parse);
+        })
+        .then(function (map) {
+          if (!map || !Object.keys(map).length) return;
+          var s = JSON.stringify(map);
+          if (cached && s === JSON.stringify(cached)) return;
+          try { localStorage.setItem(KEY, s); } catch (e) {}
+          cb(map);
+        })
+        .catch(function () {});
+    }
+
+    // read /site-media first (instant from the last visit), so pictures come from there
+    var media = null, layersReady = false;
+    eg3SiteMedia(function (map) { media = map; if (layersReady) applyMedia(); });
+    function slotOf(link) {
+      return link.getAttribute('data-slot') ||
+        (link.getAttribute('href') || '').split('?')[0].split('/').filter(Boolean).pop() || '';
+    }
+
+    function makeLayer(url) {
+      var layer = document.createElement('div');
+      layer.className = 'eg3-bg';
+      layer.style.backgroundImage = 'url("' + url + '")';
+      new Image().src = url;
+      return layer;
+    }
+
+    links.forEach(function (link) {
+      var url = (media && media['home.' + slotOf(link)]) || link.getAttribute('data-bg');
+      var layer = null;
+      if (real(url)) {
+        layer = makeLayer(url);
+        stage.insertBefore(layer, stage.firstChild);
+      }
+      layers.push(layer);
+      urls.push(real(url) ? url : null);
+      blobs.push(null);
+      blobUrls.push(null);
+      wasShowing.push(false);
+      link.style.setProperty('color', '#fff', 'important');
+    });
+
+    // Base background shown before scrolling
+    var baseUrl = (media && media.base) || wrap.getAttribute('data-base-bg');
+    if (real(baseUrl)) {
+      baseLayer = makeLayer(baseUrl);
+      baseLayer.style.opacity = 0;
+      stage.insertBefore(baseLayer, stage.firstChild);
+    }
+
+    // swap in newer pictures from /site-media once the page has read it
+    var copiesWanted = false;
+    function setLayer(j, url) {
+      if (!url || urls[j] === url) return;
+      if (layers[j]) {
+        layers[j].style.backgroundImage = 'url("' + url + '")';
+        new Image().src = url;
+      } else {
+        layers[j] = makeLayer(url);
+        stage.insertBefore(layers[j], baseLayer ? baseLayer.nextSibling : stage.firstChild);
+      }
+      urls[j] = url;
+      blobs[j] = null;
+      if (blobUrls[j]) { URL.revokeObjectURL(blobUrls[j]); blobUrls[j] = null; }
+      if (copiesWanted) loadGifCopy(j);
+    }
+    function applyMedia() {
+      if (!media) return;
+      links.forEach(function (link, j) { setLayer(j, media['home.' + slotOf(link)]); });
+      if (media.base && media.base !== baseUrl) {
+        baseUrl = media.base;
+        if (baseLayer) {
+          baseLayer.style.backgroundImage = 'url("' + baseUrl + '")';
+          new Image().src = baseUrl;
+        } else {
+          baseLayer = makeLayer(baseUrl);
+          baseLayer.style.opacity = 0;
+          stage.insertBefore(baseLayer, stage.firstChild);
+        }
+      }
+      kick();
+    }
+    layersReady = true;
+
+    // Measure each logo outline so it can be traced
+    shapes.forEach(function (el, i) {
+      var len = 2000;
+      try { len = el.getTotalLength() || len; } catch (e) {}
+      len = Math.ceil(len) + 2;
+      lengths[i] = len;
+      el.style.strokeDasharray = len + ' ' + len;
+      el.style.strokeDashoffset = len;
+    });
+
+    // Split Welcome into letters
+    var letters = welcome.textContent.trim().split('');
+    welcome.innerHTML = '';
+    var letterEls = letters.map(function (ch) {
+      var s = document.createElement('span');
+      s.textContent = ch;
+      welcome.appendChild(s);
+      return s;
+    });
+
+    /* ---------- GIF restarts ---------- */
+    function loadGifCopy(j) {
+      var url = urls[j];
+      if (!url || !/\.gif(\?|$)/i.test(url)) return;
+      fetch(url, { mode: 'cors' })
+        .then(function (r) { if (!r.ok) throw 0; return r.blob(); })
+        .then(function (b) { if (urls[j] === url) blobs[j] = b; })
+        .catch(function () {});
+    }
+    function loadGifCopies() {
+      if (!RESTART_GIFS || !window.fetch || !window.URL) return;
+      copiesWanted = true;
+      urls.forEach(function (url, j) { loadGifCopy(j); });
+    }
+
+    function restartGif(j) {
+      var layer = layers[j];
+      if (!layer || !blobs[j]) return;
+      var old = blobUrls[j];
+      blobUrls[j] = URL.createObjectURL(blobs[j]);
+      layer.style.backgroundImage = 'url("' + blobUrls[j] + '")';
+      if (old) setTimeout(function () { URL.revokeObjectURL(old); }, 1000);
+    }
+
+    /* ---------- Opening sequence clock ---------- */
+    function elapsed() {
+      if (introDone) return INTRO_TOTAL;
+      if (introStart === null) return 0;
+      return performance.now() - introStart;
+    }
+    function span(start, dur) { return clamp01((elapsed() - start) / dur); }
+
+    function introWord(j) {
+      if (introDone) return 1;
+      return easeOut(span(WORDS_AT + WORD_STAGGER * j, WORD_DUR));
+    }
+
+    function renderIntro() {
+      if (introDone) {
+        intro.style.display = 'none';
+        return;
+      }
+
+      // 1. Logo: glowing outline traces each piece, then the solid logo fills in
+      shapes.forEach(function (el, i) {
+        var t = easeInOut(span(TRACE_AT + TRACE_STAGGER * i, TRACE_DUR));
+        el.style.strokeDashoffset = (lengths[i] * (1 - t)).toFixed(2);
+      });
+      var fill = easeInOut(span(FILL_AT, FILL_DUR));
+      shapes.forEach(function (el) { el.style.fillOpacity = fill.toFixed(3); });
+
+      var lout = easeInOut(span(LOGO_OUT_AT, LOGO_OUT));
+      var shown = elapsed() >= TRACE_AT ? 1 : 0;
+      var glowA = (0.9 - 0.55 * fill) * (1 - lout);
+
+      var grow = span(TRACE_AT, LOGO_OUT_AT + LOGO_OUT - TRACE_AT);
+      var size = LOGO_START_SIZE + (LOGO_END_SIZE - LOGO_START_SIZE) * grow;
+
+      logo.style.opacity = shown * (1 - lout);
+      logo.style.transform = 'scale(' + size.toFixed(4) + ')';
+      logo.style.filter =
+        'drop-shadow(0 0 ' + GLOW + 'px rgba(255,255,255,' + glowA.toFixed(3) + ')) ' +
+        'blur(' + (lout * 10).toFixed(2) + 'px)';
+      logo.style.visibility = lout >= 1 ? 'hidden' : 'visible';
+
+      // 2. Welcome: letters rise in out of a blur, then ease into wider spacing as they fade
+      letterEls.forEach(function (el, i) {
+        var a = easeOut(span(WELCOME_AT + LETTER_STAGGER * i, LETTER_DUR));
+        el.style.opacity = a;
+        el.style.transform = 'translateY(' + ((1 - a) * 40) + '%)';
+        el.style.filter = 'blur(' + ((1 - a) * 8).toFixed(2) + 'px)';
+      });
+      var wOut = span(WELCOME_OUT_AT, WELCOME_OUT);
+      var wSpread = easeInOutSine(wOut);
+      welcome.style.opacity = (1 - easeIn(wOut)).toFixed(3);
+      var ls = (0.12 + 0.3 * wSpread).toFixed(4) + 'em';
+      welcome.style.letterSpacing = ls;
+      welcome.style.paddingLeft = ls;
+      welcome.style.filter = 'blur(' + (wOut * 6).toFixed(2) + 'px)';
+      welcome.style.visibility = wOut >= 1 ? 'hidden' : 'visible';
+    }
+
+    function scrollPos() {
+      return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    }
+
+    function setTracking(link, w) {
+      var t = 'calc(var(--tracking) + ' + (EXTRA_TRACKING * w).toFixed(4) + 'em)';
+      link.style.letterSpacing = t;
+      link.style.paddingLeft = t;
+    }
+
+    function measure() {
+      var vh = window.innerHeight;
+      links.forEach(function (link) { setTracking(link, 0); });
+      var avail = Math.max(0, vh * 0.92 - nav.offsetHeight);
+
+      links.forEach(function (link, j) {
+        hs[j] = link.offsetHeight;
+        var fs = parseFloat(getComputedStyle(link).fontSize) || 0;
+        var chars = link.textContent.length + 1;
+        var widthAtFull = link.offsetWidth + chars * EXTRA_TRACKING * fs;
+        var fitW = (stage.clientWidth * 0.95) / widthAtFull;
+        var fitH = 1 + avail / hs[j];
+        smax[j] = Math.max(1, Math.min(MAX_SCALE, fitW, fitH));
+      });
+      cur = null;
+    }
+
+    function pin() {
+      var rect = wrap.getBoundingClientRect();
+      var vh = window.innerHeight;
+
+      if (!useFixed && rect.top < -5 && rect.bottom > vh + 5) {
+        if (Math.abs(stage.getBoundingClientRect().top) > 2) {
+          useFixed = true;
+          wrap.classList.add('use-fixed');
+        }
+      }
+      if (useFixed) {
+        stage.classList.toggle('is-pinned', rect.top <= 0 && rect.bottom >= vh);
+        stage.classList.toggle('is-after', rect.bottom < vh);
+      }
+    }
+
+    function target() {
+      var rect = wrap.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var y = scrollPos();
+
+      var top = rect.top + y;
+      var begin = Math.max(0, top - vh);
+      var end = top + rect.height - vh;
+      if (end <= begin) end = begin + 1;
+
+      var progress = Math.min(1, Math.max(0, (y - begin) / (end - begin)));
+      var raw = Math.min(N - 1, progress * (N + 0.3) - 1);
+
+      var base = Math.floor(raw);
+      var f = raw - base;
+      var eased;
+
+      if (base === -1) {
+        eased = easeOut(clamp01(f / (1 - HOLD / 2)));
+      } else {
+        var g = clamp01((f - HOLD / 2) / (1 - HOLD));
+        eased = g * g * g * (g * (g * 6 - 15) + 10);
+      }
+      return Math.min(N - 1, base + eased);
+    }
+
+    function render(p) {
+      renderIntro();
+
+      var es = [], ws = [], total = 0;
+      links.forEach(function (link, j) {
+        var w = Math.max(0, 1 - Math.abs(p - j));
+        ws[j] = w;
+        es[j] = hs[j] * (smax[j] - 1) * w;
+        total += es[j];
+      });
+
+      var started = Math.min(1, Math.max(0, p + 1));
+      var restOpacity = 1 - (1 - DIM) * started;
+      var bIn = introDone ? 1 : easeInOut(span(BASE_AT, BASE_DUR));
+      var vw = window.innerWidth;
+
+      shade.style.opacity = bIn;
+
+      if (baseLayer) {
+        baseLayer.style.opacity = (1 - started) * bIn;
+        var zoom = (1 + 0.06 * started) * (1 + INTRO_ZOOM * (1 - bIn));
+        baseLayer.style.transform = 'scale(' + zoom + ')';
+      }
+
+      var acc = 0;
+      links.forEach(function (link, j) {
+        var w = ws[j];
+        var s = 1 + (smax[j] - 1) * w;
+        var ty = acc + es[j] / 2 - total / 2;
+        acc += es[j];
+
+        var a = introWord(j);
+        var side = j % 2 === 0 ? -1 : 1;
+        var ox = side * vw * FLY_DISTANCE * (1 - a);
+
+        link.style.transform = 'translateX(' + ox + 'px) translateY(' + ty + 'px) scale(' + s + ')';
+        link.style.opacity = Math.max(w, restOpacity) * a;
+        link.style.pointerEvents = a > 0.5 ? 'auto' : 'none';
+        setTracking(link, w);
+        link.classList.toggle('is-blend', w >= BLEND_AT);
+
+        var layer = layers[j];
+        if (layer) {
+          layer.style.opacity = w * bIn;
+          layer.style.transform = 'scale(' + (1.06 - 0.06 * w) + ')';
+
+          var showing = w * bIn > 0.02;
+          if (RESTART_GIFS && showing && !wasShowing[j]) restartGif(j);
+          wasShowing[j] = showing;
+        }
+      });
+    }
+
+    function tick() {
+      var t = target();
+      if (cur === null) cur = t;
+      cur += (t - cur) * SMOOTH;
+      if (Math.abs(t - cur) < 0.0005) cur = t;
+      render(cur);
+      if (cur !== t) {
+        requestAnimationFrame(tick);
+      } else {
+        running = false;
+      }
+    }
+
+    function kick() {
+      if (running) return;
+      running = true;
+      requestAnimationFrame(tick);
+    }
+
+    /* ---------- Run the opening sequence ---------- */
+    var seenBefore = false;
+    if (FULL_INTRO_ONCE) {
+      try { seenBefore = sessionStorage.getItem('eg3IntroSeenV2') === '1'; } catch (e) {}
+      try { sessionStorage.setItem('eg3IntroSeenV2', '1'); } catch (e) {}
+    }
+    // repeat visits and skips land right after Welcome is gone
+    var startOffset = seenBefore ? WELCOME_GONE : 0;
+
+    function skipAhead() {
+      if (introDone || introStart === null) return;
+      if (elapsed() < WELCOME_GONE) introStart = performance.now() - WELCOME_GONE;
+    }
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (evt) {
+      window.addEventListener(evt, skipAhead, { passive: true });
+    });
+
+    function introLoop() {
+      if (cur === null) cur = target();
+      if (!introDone && introStart !== null && elapsed() >= INTRO_TOTAL) introDone = true;
+      render(cur);
+      if (!introDone) requestAnimationFrame(introLoop);
+    }
+
+    function startIntro() {
+      if (introStart !== null || introDone) return;
+      introStart = performance.now() - startOffset;
+    }
+
+    if (!introDone) {
+      if (seenBefore && real(baseUrl)) {
+        var img = new Image();
+        img.onload = startIntro;
+        img.onerror = startIntro;
+        img.src = baseUrl;
+        if (img.complete) startIntro();
+        setTimeout(startIntro, 2000);
+      } else if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(startIntro);
+        setTimeout(startIntro, 1500);
+      } else {
+        startIntro();
+      }
+      requestAnimationFrame(introLoop);
+    } else {
+      intro.style.display = 'none';
+    }
+
+    window.addEventListener('scroll', function () { pin(); kick(); }, { passive: true });
+    window.addEventListener('resize', function () { measure(); pin(); kick(); });
+    window.addEventListener('load', function () { measure(); pin(); kick(); loadGifCopies(); });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { measure(); kick(); });
+    }
+
+    measure();
+    pin();
+    kick();
+  })();
+</script>
