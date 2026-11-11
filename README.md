@@ -6,9 +6,7 @@ The EG3 Media website. Plain HTML, hosted free on Cloudflare Pages. Every push t
 
 | What | Where |
 |---|---|
-| Portfolio videos (title, categories, order) | `data/work.json` |
-| Homepage and landing page header GIFs or MP4 loops | `data/media.json` |
-| Real estate photo strip | `data/rephotos.json` |
+| Portfolio videos, header media, real estate photos | Website tab in EG3 Billing (billing.eg3media.com). It saves `site/work.json`, `site/media.json` and `site/rephotos.json` in the R2 bucket `eg3-media`; the pages read those live from media.eg3media.com. The copies in `data/` are only a fallback. |
 | Images, GIFs, header loops | drop files in `media/` and use `/media/filename` |
 | Page code | `tools/build.py` builds the pages from the source files |
 

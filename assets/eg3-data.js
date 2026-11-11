@@ -3,12 +3,19 @@
 (function () {
   if (window.EG3) return;
   var cache = {};
+  // The live copies are in storage (media.eg3media.com/site/*.json), edited from the Website tab in EG3 Billing.
+  // The /data copies in this repo are only a fallback (previews, or if storage can't be reached).
+  var LIVE = 'https://media.eg3media.com/site/';
+  function fetchJSON(url) {
+    return fetch(url, { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) throw new Error(url + ' ' + r.status);
+      return r.json();
+    });
+  }
   function getJSON(path) {
     if (!cache[path]) {
-      cache[path] = fetch(path, { cache: 'no-cache' }).then(function (r) {
-        if (!r.ok) throw new Error(path + ' ' + r.status);
-        return r.json();
-      });
+      var name = path.split('/').pop();
+      cache[path] = fetchJSON(LIVE + name).catch(function () { return fetchJSON(path); });
     }
     return cache[path];
   }
