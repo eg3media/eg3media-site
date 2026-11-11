@@ -248,7 +248,7 @@
   var ALWAYS_AUTOPLAY = false;
 
   // true = plays the black "PORTFOLIO" intro every time the page opens
-  var INTRO = true;
+  var INTRO = (function () { try { var k = 'eg3IntroSeen:' + location.pathname.replace(/\/$/, ''); if (localStorage.getItem(k)) return false; localStorage.setItem(k, '1'); } catch (e) {} return true; })();  // plays the first time someone opens this page, then never again
 
   // intro timing in milliseconds (matches the homepage Welcome)
   var LETTER_STAGGER = 80;   // delay between letters

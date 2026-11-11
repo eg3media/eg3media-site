@@ -238,7 +238,7 @@
 <script>
 (function () {
   /* ========= SETTINGS ========= */
-  var INTRO = true;                // false = skip the opening animation
+  var INTRO = (function () { try { var k = 'eg3IntroSeen:' + location.pathname.replace(/\/$/, ''); if (localStorage.getItem(k)) return false; localStorage.setItem(k, '1'); } catch (e) {} return true; })();  // plays the first time someone opens this page, then never again
   var LETTER_STAGGER = 80, LETTER_DUR = 600, WORD_HOLD = 320, WORD_OUT = 700;
   var INQUIRY_EMAIL = 'elijah@eg3media.com';   // where the contact form sends
   /* ============================ */

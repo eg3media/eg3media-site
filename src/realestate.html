@@ -756,7 +756,7 @@
 <script>
 (function () {
   /* ========= SETTINGS ========= */
-  var INTRO = true;                // false = skip the opening animation
+  var INTRO = (function () { try { var k = 'eg3IntroSeen:' + location.pathname.replace(/\/$/, ''); if (localStorage.getItem(k)) return false; localStorage.setItem(k, '1'); } catch (e) {} return true; })();  // plays the first time someone opens this page, then never again
   var WORD = 'Real Estate';        // word on the black screen
   var GIF = 'https://media.eg3media.com/site/sq/realestategif-ezgif.com-video-to-gif-converter.gif';
   // swap this GIF from /site-media: put the new one under the "Real Estate header" heading there

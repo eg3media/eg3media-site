@@ -260,7 +260,7 @@
     var WORD_DUR = 1000;
     var INTRO_ZOOM = 0.25;             // how zoomed in the base picture starts
     var FLY_DISTANCE = 0.6;            // how far off-screen words start (share of screen width)
-    var FULL_INTRO_ONCE = false;       // false = full intro plays on every reload
+    var FULL_INTRO_ONCE = true;        // full intro plays the first visit only; after that it starts right after Welcome
 
     var layers = [];
     var urls = [];
@@ -687,8 +687,8 @@
     /* ---------- Run the opening sequence ---------- */
     var seenBefore = false;
     if (FULL_INTRO_ONCE) {
-      try { seenBefore = sessionStorage.getItem('eg3IntroSeenV2') === '1'; } catch (e) {}
-      try { sessionStorage.setItem('eg3IntroSeenV2', '1'); } catch (e) {}
+      try { seenBefore = localStorage.getItem('eg3IntroSeenV2') === '1'; } catch (e) {}
+      try { localStorage.setItem('eg3IntroSeenV2', '1'); } catch (e) {}
     }
     // repeat visits and skips land right after Welcome is gone
     var startOffset = seenBefore ? WELCOME_GONE : 0;
