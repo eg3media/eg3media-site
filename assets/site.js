@@ -18,6 +18,8 @@
       }).join('') + (path === '/realestate' ? '' : '<a class="eg3-hdr__quote" href="/quote">Get a quote</a>') + '</nav>';
     body.insertBefore(nav, body.firstChild);
     var tog = nav.querySelector('.eg3-hdr__toggle');
+    // order number for the staggered phone menu
+    Array.prototype.forEach.call(nav.querySelectorAll('.eg3-hdr__links a'), function (a, i) { a.style.setProperty('--i', i); });
     function setOpen(on) {
       nav.classList.toggle('is-open', on); tog.setAttribute('aria-expanded', on ? 'true' : 'false');
       tog.setAttribute('aria-label', on ? 'Close menu' : 'Open menu');
@@ -25,7 +27,9 @@
     }
     tog.addEventListener('click', function () { setOpen(!nav.classList.contains('is-open')); });
     nav.querySelector('.eg3-hdr__links').addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('is-open')) { setOpen(false); tog.focus(); } });
+    // rotating a phone or widening the window past the phone layout closes the menu
+    window.addEventListener('resize', function () { if (window.innerWidth > 900 && nav.classList.contains('is-open')) setOpen(false); });
     // tuck away while scrolling down, come back when scrolling up
     var lastY = window.pageYOffset, ticking = false;
     window.addEventListener('scroll', function () {
@@ -46,6 +50,21 @@
       setTimeout(function () { nav.style.opacity = '1'; clearInterval(t); }, 9000);
     }
   }
+
+  // Warm up the next page when someone points at or touches a link, so it opens faster.
+  // Fetches the page only; nothing on it runs until they actually go there.
+  var warmed = {};
+  function warm(e) {
+    var a = e.target.closest && e.target.closest('a[href]'); if (!a) return;
+    var u; try { u = new URL(a.href, location.href); } catch (err) { return; }
+    if (u.origin !== location.origin || u.pathname === location.pathname || warmed[u.pathname] || /\.[a-z0-9]+$/i.test(u.pathname)) return;
+    var c = navigator.connection; if (c && (c.saveData || /2g/.test(c.effectiveType || ''))) return;
+    warmed[u.pathname] = 1;
+    var l = document.createElement('link'); l.rel = 'prefetch'; l.href = u.pathname; document.head.appendChild(l);
+  }
+  document.addEventListener('pointerover', warm, { passive: true });
+  document.addEventListener('touchstart', warm, { passive: true, capture: true });
+  document.addEventListener('focusin', warm);
 
   // footer
   var foot = document.createElement('footer');

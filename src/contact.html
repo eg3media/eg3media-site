@@ -39,10 +39,10 @@
       </fieldset>
 
       <label class="eg3k-field" for="eg3k-name">Name
-        <input id="eg3k-name" name="name" type="text" autocomplete="name" required>
+        <input id="eg3k-name" name="name" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="next" required>
       </label>
       <label class="eg3k-field" for="eg3k-mail">Email
-        <input id="eg3k-mail" name="email" type="email" autocomplete="email" required>
+        <input id="eg3k-mail" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" enterkeyhint="next" required>
       </label>
       <label class="eg3k-field" for="eg3k-msg">Tell me about the project
         <textarea id="eg3k-msg" name="message" rows="5" required></textarea>
@@ -84,7 +84,6 @@
 </div>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
   html, body { overflow-x: clip; }
   .eg3c { position: relative; width: 100vw; margin-left: calc(50% - 50vw); background: #000; color: #fff; }
   .eg3c * { box-sizing: border-box; }
@@ -209,6 +208,8 @@
   .eg3k-status { margin: 0 !important; min-height: 1.3em; font-size: 15px !important; color: #ccc !important; }
   .eg3k-status.ok { color: #7fc48a !important; }
   .eg3k-status.err { color: #ff8a80 !important; }
+  .eg3k-status.hint { color: #999 !important; }
+  .eg3k-field input[aria-invalid="true"], .eg3k-field textarea[aria-invalid="true"] { border-color: #ff8a80; }
 </style>
 
 <script>
@@ -389,7 +390,26 @@
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailEl.value.trim());
   }
   function refresh() { send.disabled = sending || !valid(); }
-  [nameEl, mailEl, msgEl].forEach(function (f) { f.addEventListener('input', refresh); });
+  // Once someone has filled part of the form and moved on, say what's still needed to send.
+  var touched = false;
+  function missing() {
+    var m = [];
+    if (nameEl.value.trim().length <= 1) m.push('your name');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailEl.value.trim())) m.push(mailEl.value.trim() ? 'a valid email' : 'your email');
+    if (msgEl.value.trim().length <= 2) m.push('a few words about the project');
+    return m;
+  }
+  function hint() {
+    if (sending || /\b(ok|err)\b/.test(status.className)) return;
+    var m = touched ? missing() : [];
+    status.className = 'eg3k-status' + (m.length ? ' hint' : '');
+    status.textContent = m.length ? 'Add ' + (m.length > 1 ? m.slice(0, -1).join(', ') + ' and ' + m[m.length - 1] : m[0]) + ' to send.' : '';
+    mailEl.setAttribute('aria-invalid', touched && mailEl.value.trim() && m.some(function (x) { return x === 'a valid email'; }) ? 'true' : 'false');
+  }
+  [nameEl, mailEl, msgEl].forEach(function (f) {
+    f.addEventListener('input', function () { refresh(); if (/\b(ok|err)\b/.test(status.className)) status.className = 'eg3k-status'; hint(); });
+    f.addEventListener('blur', function () { if (f.value.trim()) touched = true; hint(); });
+  });
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -418,7 +438,7 @@
         status.textContent = 'Sent! Elijah will get back to you soon.';
         status.className = 'eg3k-status ok';
         send.textContent = 'Sent';
-        form.reset();
+        form.reset(); touched = false; mailEl.setAttribute('aria-invalid', 'false');
         types.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
         setTimeout(function () { send.textContent = 'Send'; sending = false; refresh(); }, 3000);
       })

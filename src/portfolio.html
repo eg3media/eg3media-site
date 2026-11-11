@@ -7,7 +7,6 @@
 <div class="eg3-grid" id="eg3-grid"></div>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
   html, body { overflow-x: clip; }
 
@@ -41,14 +40,21 @@
     pointer-events: none;
     transition: transform .6s ease, filter .4s ease, opacity .4s ease;
   }
-  .eg3-tile img { filter: brightness(0.8); }
+  .eg3-tile img { filter: brightness(0.8); opacity: 0; }
+  .eg3-tile img.is-loaded { opacity: 1; }   /* thumbnails fade in as they arrive */
   .eg3-tile video { opacity: 0; }
   .eg3-tile.is-playing video,
   .eg3-tile.has-poster video { opacity: 1; }
 
   /* grow on hover */
   .eg3-tile:hover img,
-  .eg3-tile:hover video { transform: scale(1.05); filter: brightness(1); }
+  .eg3-tile:hover video,
+  .eg3-tile:focus-visible img,
+  .eg3-tile:focus-visible video { transform: scale(1.05); filter: brightness(1); }
+  /* a small press-in when clicked or tapped */
+  .eg3-tile:active img,
+  .eg3-tile:active video { transform: scale(1.02); transition-duration: .15s; }
+  .eg3-tile:focus-visible { outline: 2px solid #fff; outline-offset: -2px; z-index: 1; }
 
   .eg3-tile span {
     position: absolute;
@@ -385,6 +391,9 @@
     if (useHover) {
       tile.addEventListener('mouseenter', function () { timer = setTimeout(play, 80); });
       tile.addEventListener('mouseleave', stop);
+      // keyboard: tabbing onto a tile previews it too
+      tile.addEventListener('focus', function () { if (tile.matches(':focus-visible')) play(); });
+      tile.addEventListener('blur', stop);
     } else {
       tile._eg3 = { play: play, stop: stop };
     }
@@ -487,109 +496,6 @@
 
 
   /* the still Squarespace shows when a video's page is shared (used when no custom thumbnail is saved) */
-  var eg3OgCache = {};
-  function eg3PageStill(url) {
-    if (!eg3OgCache[url]) {
-      eg3OgCache[url] = fetch(url, { credentials: 'same-origin' })
-        .then(function (r) { return r.text(); })
-        .then(function (html) {
-          var m = html.match(/<meta[^>]+property=["']og:image["'][^>]*content=["']([^"']+)["']/i) ||
-                  html.match(/<meta[^>]+content=["']([^"']+)["'][^>]*property=["']og:image["']/i);
-          if (!m) return null;
-          var u = m[1].replace(/&amp;/g, '&').replace(/^http:/, 'https:');
-          if (/EG3MEDIA\.png/i.test(u) || /\/(\?|$)/.test(u.split('?')[0] + '?')) return null;   // logo or placeholder
-          return u.indexOf('?') === -1 ? u + '?format=1500w' : u;
-        })
-        .catch(function () { return null; });
-    }
-    return eg3OgCache[url];
-  }
-
-  /* ---------- read everything from /work (titles, thumbnails, videos, categories) ---------- */
-  function eg3LoadWork(path) {
-    path = path || '/work';
-    var items = [], catNames = {}, catList = [];
-
-    function collectCats(obj, depth) {
-      if (!obj || typeof obj !== 'object' || depth > 4) return;
-      if (Array.isArray(obj.categories)) {
-        obj.categories.forEach(function (c) {
-          if (c && typeof c === 'object' && c.id && (c.displayName || c.name)) {
-            if (!catNames[c.id]) catList.push(c);
-            catNames[c.id] = c.displayName || c.name;
-          }
-        });
-      }
-      Object.keys(obj).forEach(function (k) {
-        if (k !== 'items' && obj[k] && typeof obj[k] === 'object') collectCats(obj[k], depth + 1);
-      });
-    }
-
-    function getPage(url) {
-      return fetch(url, { credentials: 'same-origin' })
-        .then(function (r) { return r.json(); })
-        .then(function (d) {
-          collectCats(d, 0);
-          items = items.concat(d.items || []);
-          if (d.pagination && d.pagination.nextPage && d.pagination.nextPageUrl) {
-            var u = new URL(d.pagination.nextPageUrl, location.origin);
-            u.searchParams.set('format', 'json');
-            return getPage(u.pathname + u.search);
-          }
-        });
-    }
-
-    function videoBase(it) {
-      var sc = it.structuredContent || {};
-      var alex = sc.alexandriaUrl || it.alexandriaUrl;
-      if (alex) return alex.replace('{variant}', '').replace(/\/$/, '');
-      var m = JSON.stringify(it).match(/https?:\/\/video\.squarespace-cdn\.com\/content\/v1\/[\w-]+\/[\w-]+/);
-      return m ? m[0] : null;
-    }
-
-    function norm(it) {
-      var slug = (it.urlId || it.fullUrl || '').split('/').pop();
-      var base = videoBase(it);
-      var names = [];
-      (it.categoryIds || []).forEach(function (id) { if (catNames[id]) names.push(catNames[id]); });
-      (it.categories || []).forEach(function (c) {
-        if (typeof c === 'string') names.push(catNames[c] || c);
-        else if (c && (c.displayName || c.name)) names.push(c.displayName || c.name);
-      });
-      // custom thumbnail if one is saved; otherwise the still from the video's own page is fetched later
-      var thumb = (it.assetUrl || '').replace(/^http:/, 'https:');
-      if (/\.(mov|mp4|m4v|webm)(\?|$)/i.test(thumb)) thumb = '';
-      if (/\/(\?|$)/.test(thumb)) thumb = '';            // folder with no file = Squarespace placeholder
-      if (thumb && thumb.indexOf('?') === -1) thumb += '?format=1500w';
-      return {
-        slug: slug,
-        title: it.title || '',
-        url: it.fullUrl || (path + '/v/' + slug),
-        base: base,
-        thumb: thumb,
-        frameThumb: false,
-        cats: names.map(function (n) { return String(n).trim().toLowerCase(); }).filter(Boolean)
-      };
-    }
-
-    return getPage(path + '?format=json').then(function () {
-      var list = items.map(norm).filter(function (v) { return v.slug; });
-      var anyCats = list.some(function (v) { return v.cats.length; });
-      if (anyCats || !catList.length) return list;
-      // backup: ask each category page which videos it holds
-      return Promise.all(catList.map(function (c) {
-        var url = (c.fullUrl || (path + '/' + (c.shortSlug || c.urlId || ''))) + '?format=json';
-        return fetch(url, { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (d) {
-          var got = (d.items || []);
-          if (!got.length || got.length >= items.length) return;   // page isn't filtered, ignore it
-          got.forEach(function (it) {
-            var s = (it.urlId || it.fullUrl || '').split('/').pop();
-            list.forEach(function (v) { if (v.slug === s) v.cats.push(String(c.displayName || c.name).toLowerCase()); });
-          });
-        }).catch(function () {});
-      })).then(function () { return list; });
-    });
-  }
 
   function makeTile(v) {
     var a = document.createElement('a');
@@ -607,10 +513,12 @@
     function tail(u) { return String(u).split('/').slice(-2).join('/').slice(0, 70); }
     function addImg(src, onFail, kind) {
       var img = document.createElement('img');
+      img.decoding = 'async';
       img.src = src;
       img.alt = v.title;
       note(kind + ' loading: ' + tail(src));
       img.onload = function () {
+        img.classList.add('is-loaded');
         note(kind + ' OK ' + img.naturalWidth + 'x' + img.naturalHeight + ': ' + tail(src));
         if (img.naturalWidth === img.naturalHeight && img.naturalWidth <= 300) {   // Squarespace placeholder
           note(kind + ' was a placeholder');
@@ -624,7 +532,7 @@
     function useFrame() { note('using video frame'); v.frameThumb = true; if (a._prime) a._prime(); }
     function usePageStill() {
       note('checking page still');
-      eg3PageStill(v.url).then(function (u) { if (u) addImg(u, useFrame, 'page still'); else { note('no page still'); useFrame(); } });
+      Promise.resolve(null).then(function (u) { if (u) addImg(u, useFrame, 'page still'); else { note('no page still'); useFrame(); } });
     }
     if (v.thumb) addImg(v.thumb, usePageStill, 'custom'); else usePageStill();
     var t = document.createElement('span');
@@ -634,7 +542,7 @@
   }
 
   // build the grid from /work, then the menu
-  var ready = eg3LoadWork('/work').then(function (list) {
+  var ready = EG3.work().then(function (list) {
     list.forEach(function (v) { grid.appendChild(makeTile(v)); });
     var tiles = grid.querySelectorAll('.eg3-tile');
     tiles.forEach(function (t) {

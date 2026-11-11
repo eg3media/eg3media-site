@@ -1,5 +1,4 @@
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
   /* Hide the site header on the homepage only */
   #header,
@@ -285,92 +284,9 @@
     function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
     function easeInOutSine(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
 
-    /* ---------- /site-media: the heading above each image decides where it goes ---------- */
-    function eg3SiteMedia(cb) {
-      var PAGE = '/site-media', KEY = 'eg3SiteMediaV1';
-      var NAMES = [['realestate', /realestate/], ['commercial', /commercial/], ['content', /content/],
-        ['sports', /sport/], ['portfolio', /portfolio/], ['about', /about/], ['contact', /contact/]];
-      function slotFor(text) {
-        var t = (text || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        if (!t) return null;
-        for (var i = 0; i < NAMES.length; i++) {
-          if (NAMES[i][1].test(t)) return (/header|banner|hero|landing/.test(t) ? 'header.' : 'home.') + NAMES[i][0];
-        }
-        if (/home|base/.test(t)) return 'base';
-        return '';   // some other heading: images under it are ignored
-      }
-      function clean(u) {
-        if (!u || !/^(https?:)?\/\//.test(u)) return null;
-        if (u.indexOf('//') === 0) u = 'https:' + u;
-        var bare = u.split('?')[0];
-        // GIFs load at full size so they keep animating; photos load at a sensible size
-        if (/\.gif$/i.test(bare) || !/squarespace-cdn\.com/.test(bare)) return bare;
-        return bare + '?format=2500w';
-      }
-      function imgUrl(el) {
-        var u = el.getAttribute('data-src') || el.getAttribute('data-image') || el.getAttribute('src') || '';
-        if (!u && el.getAttribute('srcset')) u = el.getAttribute('srcset').split(',')[0].trim().split(' ')[0];
-        return clean(u);
-      }
-      // Fluid Engine places blocks with CSS grid, so put blocks in their on-screen order (row, then column)
-      function gridOrder(doc) {
-        var pos = {}, css = '';
-        Array.prototype.forEach.call(doc.querySelectorAll('style'), function (s) { css += s.textContent + '\n'; });
-        var re = /\.fe-block-([\w-]+)\s*\{[^}]*?grid-area:\s*(\d+)\s*\/\s*(\d+)/g, m;
-        while ((m = re.exec(css))) pos[m[1]] = [+m[2], +m[3]];   // later rules (desktop) win
-        Array.prototype.forEach.call(doc.querySelectorAll('.fluid-engine'), function (grid) {
-          var blocks = Array.prototype.filter.call(grid.children, function (c) { return /\bfe-block\b/.test(c.className); });
-          var keyed = blocks.map(function (b, i) {
-            var id = (b.className.match(/fe-block-([\w-]+)/) || [])[1];
-            var p = (id && pos[id]) || [9999, 9999];
-            return { el: b, r: p[0], c: p[1], i: i };
-          });
-          keyed.sort(function (a, b) { return a.r - b.r || a.c - b.c || a.i - b.i; });
-          keyed.forEach(function (k) { grid.appendChild(k.el); });
-        });
-      }
-      function parse(html) {
-        var map = {};
-        if (!html) return map;
-        var doc = new DOMParser().parseFromString(html, 'text/html');
-        var scope = doc.querySelector('#sections') || doc.querySelector('main') || doc.body;
-        if (!scope) return map;
-        gridOrder(doc);
-        var cur = null;
-        Array.prototype.forEach.call(scope.querySelectorAll('h1,h2,h3,h4,h5,h6,img'), function (el) {
-          if (el.closest('[data-eg3-ignore], noscript, header, footer')) return;
-          if (el.tagName !== 'IMG') { cur = slotFor(el.textContent); return; }
-          if (!cur || map[cur]) return;
-          var u = imgUrl(el);
-          if (u) map[cur] = u;
-        });
-        return map;
-      }
-      var cached = null;
-      try { cached = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
-      if (cached) cb(cached);
-      if (!window.fetch || !window.DOMParser) return;
-      fetch(PAGE + '?format=json', { credentials: 'same-origin' })
-        .then(function (r) { if (!r.ok) throw 0; return r.json(); })
-        .then(function (j) { var m = parse(j && j.mainContent); if (!Object.keys(m).length) throw 0; return m; })
-        .catch(function () {
-          return fetch(PAGE, { credentials: 'same-origin' })
-            .then(function (r) { if (!r.ok) throw 0; return r.text(); })
-            .then(parse);
-        })
-        .then(function (map) {
-          if (!map || !Object.keys(map).length) return;
-          var s = JSON.stringify(map);
-          if (cached && s === JSON.stringify(cached)) return;
-          try { localStorage.setItem(KEY, s); } catch (e) {}
-          cb(map);
-        })
-        .catch(function () {});
-    }
-
     // read /site-media first (instant from the last visit), so pictures come from there
     var media = null, layersReady = false;
-    eg3SiteMedia(function (map) { media = map; if (layersReady) applyMedia(); });
+    EG3.media(function (map) { media = map; if (layersReady) applyMedia(); });
     function slotOf(link) {
       return link.getAttribute('data-slot') ||
         (link.getAttribute('href') || '').split('?')[0].split('/').filter(Boolean).pop() || '';
