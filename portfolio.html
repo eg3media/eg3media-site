@@ -98,7 +98,8 @@
   .eg3-filters {
     display: flex;
     justify-content: center;
-    padding: 36px 16px 32px;
+    /* room for the fixed menu bar (about 76px) above the filters */
+    padding: calc(112px + env(safe-area-inset-top, 0px)) 16px 32px;
     background: #000;
     width: 100vw;
     margin-left: calc(50% - 50vw);
