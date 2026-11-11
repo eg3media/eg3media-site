@@ -821,6 +821,7 @@
         if (v.thumb) addImg(v.thumb, usePageStill); else usePageStill();
       })(s, v);
       s._v = v;
+      if (v.vertical) markVertical(s);
       if (v.base || v.file) sources[v.slug] = v.base || v.file;
       slidesBox.appendChild(s);
       slides.push(s);

@@ -372,6 +372,10 @@
   .eg3c-carousel.is-single .eg3c-arrow,
   .eg3c-carousel.is-single .eg3c-count { display: none; }
   .eg3c-carousel.is-empty { display: none; }
+  /* vertical videos: shown whole in the middle, with a blurred copy filling the sides */
+  .eg3c-slide.is-vertical video,
+  .eg3c-slide.is-vertical img:not(.eg3c-fill) { object-fit: contain; }
+  .eg3c-slide .eg3c-fill { filter: blur(28px) brightness(.4); transform: scale(1.2); }
   .eg3c-story.no-videos { grid-template-columns: 1fr; max-width: 900px; }
 </style>
 
@@ -784,7 +788,8 @@
           img.alt = v.title;
           img.onerror = function () { img.remove(); if (onFail) onFail(); };
           img.onload = function () {
-            if (img.naturalWidth === img.naturalHeight && img.naturalWidth <= 300) { img.remove(); if (onFail) onFail(); }
+            if (img.naturalWidth === img.naturalHeight && img.naturalWidth <= 300) { img.remove(); if (onFail) onFail(); return; }
+            if (img.naturalHeight > img.naturalWidth) markVertical(s);
           };
           s.insertBefore(img, s.firstChild);
         }
@@ -792,6 +797,7 @@
         if (v.thumb) addImg(v.thumb, usePageStill); else usePageStill();
       })(s, v);
       s._v = v;
+      if (v.vertical) markVertical(s);
       if (v.base) sources[v.slug] = v.base;
       slidesBox.appendChild(s);
       slides.push(s);
@@ -804,6 +810,20 @@
     if (slides.length < 2) carousel.classList.add('is-single');
     go(0);
     if (started) playCurrent();
+  }
+
+  function markVertical(s) {
+    if (s.classList.contains('is-vertical')) return;
+    s.classList.add('is-vertical');
+    var img = s.querySelector('img:not(.eg3c-fill)');
+    if (img) {
+      var fill = img.cloneNode();
+      fill.className = 'eg3c-fill';
+      fill.alt = '';
+      fill.removeAttribute('onerror');
+      fill.onload = fill.onerror = null;
+      s.insertBefore(fill, s.firstChild);
+    }
   }
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -842,6 +862,9 @@
     s.appendChild(video);
     s._video = video;
     video.addEventListener('playing', function () { s.classList.add('is-playing'); clearTimeout(failTimer); });
+    video.addEventListener('loadedmetadata', function () {
+      if (video.videoHeight > video.videoWidth) markVertical(s);
+    });
     video.addEventListener('ended', function () { if (slides[idx] === s) go(idx + 1); });
     video.addEventListener('timeupdate', function () {
       if (slides[idx] === s && video.duration) progressEl.style.width = (video.currentTime / video.duration * 100) + '%';
