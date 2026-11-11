@@ -92,7 +92,8 @@
     pointer-events: none;
   }
   .eg3-tile:hover span { opacity: 1; transform: none; }
-  .eg3-tile:not(:has(img)):not(.is-playing) span { opacity: 1; transform: none; }
+  /* titles always show (phones have no hover); hidden only while the video plays */
+  .eg3-tile:not(.is-playing) span { opacity: 1; transform: none; }
 
   .eg3-filters {
     display: flex;
