@@ -173,62 +173,58 @@
     will-change: transform, opacity, filter;
   }
 
-  /* ---------- hero grid shown first; scrolling moves it out and the word menu floats in ---------- */
-  .eg3-hero {
-    position: absolute; inset: 0; z-index: 4;
-    display: grid; gap: 10px;
-    padding: 14px clamp(12px, 2vw, 24px) clamp(14px, 2.2vw, 26px);
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, .8fr);
-    grid-template-rows: auto 1fr 1fr .9fr .7fr;
-    grid-template-areas: "nav nav nav" "title main card" "title main text" "media main text" "desc main cta";
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f4f4f2;
-  }
-  .eg3-hero-bg { position: absolute; inset: 0; background: #000; z-index: 3; pointer-events: none; }
-  .eg3-hero > * { min-width: 0; min-height: 0; will-change: transform, opacity; }
-  .h-tile { position: relative; overflow: hidden; border-radius: 14px; background: #0f0f0f; border: 1px solid #1d1d1d; color: inherit; text-decoration: none; }
-  .h-tile .h-fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: center / cover no-repeat; }
-  a.h-tile { transition: border-color .25s; } a.h-tile:hover { border-color: #3a3a3a; }
-  a.h-tile:active { transform: scale(.98); }
-  .h-label { font-size: 10.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #9a9a96; }
-  .h-nav { grid-area: nav; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 2px 4px 4px; }
-  .h-nav b { font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 18px; letter-spacing: .14em; }
-  .h-nav nav { display: flex; gap: clamp(12px, 2.4vw, 28px); }
-  .h-nav nav a { color: #cfcfcb; text-decoration: none; font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
-  .h-nav nav a:hover { color: #fff; }
-  .h-title { grid-area: title; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 8px 6px; }
-  .h-title h1 { margin: 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(2.6rem, 6.4vw, 6.6rem); line-height: .92; letter-spacing: .03em; }
-  .h-title p { margin: 0; color: #9a9a96; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
-  .h-main { grid-area: main; background: radial-gradient(120% 90% at 50% 40%, #232323 0%, #121212 55%, #0a0a0a 100%); cursor: grab; touch-action: pan-y; }
+  /* ---------- hero shown first: one open scene, the rig big in the middle, small pieces at the edges. Scrolling moves it out and the word menu floats in ---------- */
+  .eg3-hero { position: absolute; inset: 0; z-index: 4; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f4f4f2; }
+  .eg3-hero-bg { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: radial-gradient(80% 70% at 62% 52%, #2a2a2a 0%, #141414 45%, #070707 100%); }
+  .eg3-hero-bg::after { content: ''; position: absolute; inset: 0; opacity: .07; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .eg3-hero > * { position: absolute; will-change: transform, opacity; }
+  .eg3-hero a { color: inherit; text-decoration: none; }
+  .h-label { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #8f8f8a; }
+  .h-main { inset: 0; cursor: grab; touch-action: pan-y; }
   .h-main:active { cursor: grabbing; }
   .h-cam { position: absolute; inset: 0; }
-  .h-cam canvas { width: 100% !important; height: 100% !important; display: block; opacity: 0; transition: opacity 1.2s; }
+  .h-cam canvas { width: 100% !important; height: 100% !important; display: block; opacity: 0; transition: opacity 1.4s; }
   .h-cam.ready canvas { opacity: 1; }
-  .h-main::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.45)); pointer-events: none; }
-  .h-main .h-tag { position: absolute; left: 16px; bottom: 14px; z-index: 1; }
-  .h-card { grid-area: card; }
-  .h-card .h-cap { position: absolute; left: 12px; right: 12px; bottom: 10px; z-index: 1; display: grid; gap: 2px; }
-  .h-card .h-cap b { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .h-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.75)); }
-  .h-text { grid-area: text; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 14px 16px; }
-  .h-text a { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-top: 1px solid #1f1f1f; color: #f4f4f2; text-decoration: none; font-family: 'Anton', 'Impact', sans-serif; font-size: 19px; letter-spacing: .05em; text-transform: uppercase; }
-  .h-text a:first-of-type { border-top: 0; }
-  .h-text a span { color: #6f6f6b; font-family: 'Helvetica Neue', Arial, sans-serif; transition: transform .2s; }
-  .h-text a:hover span { transform: translateX(4px); color: #fff; }
-  .h-media { grid-area: media; display: flex; align-items: flex-end; }
-  .h-media .h-play { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; margin: 12px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-  .h-media .h-play i { width: 34px; height: 34px; border-radius: 50%; background: #f4f4f2; display: grid; place-items: center; }
-  .h-media .h-play i::after { content: ''; border-left: 10px solid #000; border-top: 6px solid transparent; border-bottom: 6px solid transparent; margin-left: 3px; }
-  .h-media::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,.35); }
-  .h-desc { grid-area: desc; display: flex; align-items: flex-end; padding: 0 6px 4px; color: #9a9a96; font-size: 13px; line-height: 1.5; max-width: 34ch; }
-  .h-cta { grid-area: cta; background: #f4f4f2; color: #0c0c0c; border-color: #f4f4f2; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; font-family: 'Anton', 'Impact', sans-serif; font-size: clamp(18px, 1.8vw, 24px); letter-spacing: .06em; text-transform: uppercase; }
-  .h-cta span { font-family: 'Helvetica Neue', Arial, sans-serif; transition: transform .2s; }
-  .h-cta:hover span { transform: translateX(5px); }
-  .eg3-scrollhint { position: absolute; left: 50%; bottom: 10px; z-index: 5; transform: translateX(-50%); font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: #8c8c87; pointer-events: none; }
+  .h-nav { left: clamp(18px, 3vw, 44px); right: clamp(18px, 3vw, 44px); top: 18px; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+  .h-nav > * { pointer-events: auto; }
+  .h-nav b { font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 15px; letter-spacing: .2em; }
+  .h-nav nav { display: flex; gap: clamp(14px, 2.6vw, 34px); }
+  .h-nav nav a { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #b9b9b4; transition: color .2s; }
+  .h-nav nav a:hover { color: #fff; }
+  .h-title { left: clamp(18px, 3vw, 44px); top: clamp(70px, 14vh, 150px); pointer-events: none; }
+  .h-title h1 { margin: 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(3.2rem, 9.2vw, 10rem); line-height: .86; letter-spacing: .02em; }
+  .h-title h1 span { display: block; }
+  .h-title h1 small { display: inline-block; vertical-align: bottom; margin-left: 14px; margin-bottom: .55em; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; line-height: 1.35; letter-spacing: .2em; color: #8f8f8a; }
+  .h-card { right: clamp(18px, 3vw, 44px); top: clamp(70px, 14vh, 150px); width: clamp(140px, 13vw, 200px); display: grid; gap: 8px; }
+  .h-card .h-pic { aspect-ratio: 4 / 3; background: #1a1a1a center / cover no-repeat; border-radius: 2px; overflow: hidden; position: relative; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  .h-card:hover .h-pic { transform: scale(1.03); }
+  .h-card b { font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; line-height: 1.35; }
+  .h-text { right: clamp(18px, 3vw, 44px); top: 52%; width: clamp(170px, 16vw, 240px); text-align: right; display: grid; gap: 10px; }
+  .h-text p { margin: 0; font-size: 11.5px; line-height: 1.5; color: #a9a9a4; }
+  .h-text .h-svc { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 12px; }
+  .h-text .h-svc a { font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #d6d6d2; }
+  .h-text .h-svc a:hover { color: #fff; }
+  .h-media { left: clamp(18px, 3vw, 44px); bottom: clamp(20px, 4vh, 40px); width: clamp(190px, 17vw, 260px); display: grid; gap: 10px; }
+  .h-media .h-vid { position: relative; height: clamp(58px, 7vw, 84px); display: flex; overflow: hidden; border-radius: 2px; background: #1a1a1a; }
+  .h-media .h-vid i { flex: none; width: clamp(58px, 7vw, 84px); background: #f4f4f2; display: grid; place-items: center; }
+  .h-media .h-vid i::after { content: ''; border-left: 12px solid #000; border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px; }
+  .h-media .h-vid .h-fill { position: relative; flex: 1; background: center / cover no-repeat; }
+  .h-media .h-vid .h-fill video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .h-media p { margin: 0; font-size: 11px; line-height: 1.5; color: #a9a9a4; }
+  .h-cta { right: clamp(18px, 3vw, 44px); bottom: clamp(20px, 4vh, 40px); display: flex; align-items: center; gap: 12px; font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+  .h-cta i { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #5a5a56; display: grid; place-items: center; font-style: normal; transition: background .2s, color .2s; }
+  .h-cta:hover i { background: #f4f4f2; color: #000; }
+  .eg3-scrollhint { position: absolute; left: 50%; bottom: 14px; z-index: 5; transform: translateX(-50%); font-size: 9px; letter-spacing: .34em; text-transform: uppercase; color: #6f6f6b; pointer-events: none; }
   @media (max-width: 760px) {
-    .eg3-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) 21vh 64px; grid-template-areas: "nav nav" "title title" "main main" "media card" "cta cta"; gap: 8px; }
     .h-nav nav a:not(:last-child) { display: none; }
-    .h-text, .h-desc { display: none; }
-    .h-title { padding: 6px 2px 2px; gap: 8px; }
+    .h-title { top: 64px; }
+    .h-title h1 { font-size: 17vw; }
+    .h-title h1 small { display: block; margin: 10px 0 0; }
+    .h-card { top: auto; bottom: 118px; width: 120px; }
+    .h-text { display: none; }
+    .h-media { width: 170px; bottom: 26px; }
+    .h-media p { display: none; }
+    .h-cta { bottom: 34px; }
     .eg3-scrollhint { display: none; }
   }
 </style>
@@ -250,14 +246,12 @@
     <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
     <div class="eg3-hero-bg"></div>
     <div class="eg3-hero" aria-label="EG3 Media">
-      <div class="h-nav" data-hx="0" data-hy="-1"><b>EG3 MEDIA</b><nav><a href="https://www.eg3media.com/portfolio">Portfolio</a><a href="https://www.eg3media.com/about">About</a><a href="https://www.eg3media.com/contact">Contact</a></nav></div>
-      <div class="h-title" data-hx="-1" data-hy="0"><h1>Video that<br>moves people</h1><p>Cinematography &middot; Production &middot; Color<br>Abilene, Texas</p></div>
-      <div class="h-tile h-main" data-hx="0" data-hy="0" data-main="1"><div class="h-cam" id="h-cam" aria-hidden="true"></div><span class="h-label h-tag">Nikon ZR &middot; Vespid &middot; Ninja &middot; drag to turn</span></div>
-      <a class="h-tile h-card" data-hx="1" data-hy="-1" href="https://www.eg3media.com/portfolio"><div class="h-fill" data-feature="1"></div><span class="h-cap"><span class="h-label">Featured</span><b data-feature-title>Portfolio</b></span></a>
-      <div class="h-tile h-text" data-hx="1" data-hy="0"><span class="h-label" style="margin-bottom:6px">Services</span><a href="https://www.eg3media.com/commercial">Commercial <span>&rarr;</span></a><a href="https://www.eg3media.com/content">Content <span>&rarr;</span></a><a href="https://www.eg3media.com/sports">Sports <span>&rarr;</span></a><a href="https://www.eg3media.com/realestate">Real Estate <span>&rarr;</span></a></div>
-      <a class="h-tile h-media" data-hx="-1" data-hy="1" href="https://www.eg3media.com/portfolio"><div class="h-fill" data-slot="home.commercial"></div><span class="h-play"><i></i>Watch the work</span></a>
-      <div class="h-desc" data-hx="-1" data-hy="1">Brand films, social content, sports and real estate video. Shot, edited and color graded by Elijah Gravitt.</div>
-      <a class="h-tile h-cta" data-hx="1" data-hy="1" href="https://www.eg3media.com/quote">Get a quote <span>&rarr;</span></a>
+      <div class="h-main" data-hx="0" data-hy="0" data-main="1"><div class="h-cam" id="h-cam" aria-hidden="true"></div></div>
+      <div class="h-nav" data-hx="0" data-hy="-1"><b>EG3</b><nav><a href="https://www.eg3media.com/portfolio">Portfolio</a><a href="https://www.eg3media.com/about">About</a><a href="https://www.eg3media.com/contact">Contact</a></nav></div>
+      <div class="h-title" data-hx="-1" data-hy="0"><h1><span>EG3</span><span>Media<small>Video production<br>Abilene, Texas</small></span></h1></div>
+      <a class="h-card" data-hx="1" data-hy="-1" href="https://www.eg3media.com/portfolio"><div class="h-pic" data-feature="1"></div><b data-feature-title>See the latest work</b></a>
+      <div class="h-text" data-hx="1" data-hy="0"><span class="h-label">Shot on</span><p>Nikon ZR, DZOFilm Vespid, Atomos Ninja. Brand films, social content, sports and real estate for businesses across West Texas.</p><div class="h-svc"><a href="https://www.eg3media.com/commercial">Commercial</a><a href="https://www.eg3media.com/content">Content</a><a href="https://www.eg3media.com/sports">Sports</a><a href="https://www.eg3media.com/realestate">Real Estate</a></div></div>
+      <a class="h-media" data-hx="-1" data-hy="1" href="https://www.eg3media.com/portfolio"><span class="h-vid"><i></i><span class="h-fill" data-slot="home.portfolio"></span></span><p>Watch the reel. Shot, edited and color graded by Elijah Gravitt.</p></a>
     </div>
     <div class="eg3-scrollhint">Scroll</div>
     <div class="eg3-intro">
@@ -642,7 +636,7 @@
       var f = list.filter(function (v) { return v.thumb && !v.vertical; })[0] || list[0]; if (!f) return;
       var box = wrap.querySelector('[data-feature]'); if (f.thumb) box.style.backgroundImage = 'url("' + f.thumb + '")'; else if (f.file) putMedia(box, f.file);
       var t = wrap.querySelector('[data-feature-title]'); if (t) t.textContent = f.title || 'Portfolio';
-      var a = box.parentNode; if (a && f.url) a.setAttribute('href', f.url);
+      var a = box.closest('a'); if (a && f.url) a.setAttribute('href', f.url);
     }).catch(function () {});
 
 
@@ -653,21 +647,21 @@
         var THREE = m[0], RBox = m[1].RoundedBoxGeometry, Room = m[2].RoomEnvironment;
         var r = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-        r.outputColorSpace = THREE.SRGBColorSpace; r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.05;
+        r.outputColorSpace = THREE.SRGBColorSpace; r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.45;
         box.appendChild(r.domElement);
         var scene = new THREE.Scene();
         var pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new Room(), 0.04).texture;
         var cam = new THREE.PerspectiveCamera(26, 1, 0.1, 50); cam.position.set(0, 0.5, 6.4); cam.lookAt(0, 0, 0);
-        var key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(2.5, 3, 4); scene.add(key);
+        var key = new THREE.DirectionalLight(0xffffff, 2.6); key.position.set(2.5, 3, 4); scene.add(key);
         var rim = new THREE.DirectionalLight(0xbcd2ff, 1.2); rim.position.set(-3, 1.5, -3); scene.add(rim);
-        scene.add(new THREE.AmbientLight(0xffffff, 0.15));
+        scene.add(new THREE.AmbientLight(0xffffff, 0.35)); var fillL = new THREE.DirectionalLight(0xffe6cc, 0.8); fillL.position.set(-4, -1, 3); scene.add(fillL);
 
-        var body = new THREE.MeshStandardMaterial({ color: 0x17181a, roughness: 0.5, metalness: 0.25 });
+        var body = new THREE.MeshStandardMaterial({ color: 0x26272a, roughness: 0.42, metalness: 0.35 });
         var grain = new THREE.MeshStandardMaterial({ color: 0x111214, roughness: 0.85, metalness: 0.05 });
         var rubber = new THREE.MeshStandardMaterial({ color: 0x0c0c0d, roughness: 0.95, metalness: 0 });
         var metal = new THREE.MeshStandardMaterial({ color: 0xc9cbcf, roughness: 0.28, metalness: 1 });
         var dark = new THREE.MeshStandardMaterial({ color: 0x2a2b2e, roughness: 0.35, metalness: 0.8 });
-        var glass = new THREE.MeshPhysicalMaterial({ color: 0x0b1020, roughness: 0.04, metalness: 0.2, clearcoat: 1, clearcoatRoughness: 0.03, iridescence: 0.6, iridescenceIOR: 1.4 });
+        var glass = new THREE.MeshPhysicalMaterial({ color: 0x0b1020, roughness: 0.04, metalness: 0.2, clearcoat: 1, clearcoatRoughness: 0.03, iridescence: 0.25, iridescenceIOR: 1.3 });
         var red = new THREE.MeshStandardMaterial({ color: 0xd8342a, roughness: 0.4, emissive: 0x3a0503 });
         var white = new THREE.MeshStandardMaterial({ color: 0xe8e8e4, roughness: 0.6 });
 
@@ -788,7 +782,7 @@
 
         cm.rotation.y = -0.5; rig.rotation.x = 0.12;
         var spin = -0.5, drag = null, vel = 0, tiltX = 0, tiltY = 0, lastT = performance.now(), visible = true, reduce = reduceMotion;
-        function size() { var w = box.clientWidth, h = box.clientHeight; if (!w || !h) return; r.setSize(w, h, false); cam.aspect = w / h; cam.position.z = w / h < 1 ? 8.2 : 6.4; cam.updateProjectionMatrix(); }
+        function size() { var w = box.clientWidth, h = box.clientHeight; if (!w || !h) return; r.setSize(w, h, false); cam.aspect = w / h; var wide = w / h >= 1; cam.position.z = wide ? 9 : 12; rig.position.x = wide ? 0.9 : 0; rig.position.y = wide ? -0.05 : -0.25; cam.updateProjectionMatrix(); }
         size(); if (window.ResizeObserver) new ResizeObserver(size).observe(box); else window.addEventListener('resize', size);
         var tile = box.parentNode;
         tile.addEventListener('pointerdown', function (e) { drag = { x: e.clientX, s: spin }; vel = 0; try { tile.setPointerCapture(e.pointerId); } catch (x) {} });
@@ -807,7 +801,7 @@
           cm.rotation.y += (spin - cm.rotation.y) * 0.12;
           rig.rotation.x += (0.12 + tiltX - rig.rotation.x) * 0.06;
           rig.rotation.z += (-tiltY * 0.2 - rig.rotation.z) * 0.06;
-          rig.position.y = reduce ? 0 : Math.sin(now / 1600) * 0.04;
+          cm.position.y = -0.3 + (reduce ? 0 : Math.sin(now / 1600) * 0.04);
           paintScreen(now);
           r.render(scene, cam);
           box.classList.add('ready');
