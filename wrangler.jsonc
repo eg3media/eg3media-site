@@ -7,5 +7,7 @@
     "directory": ".",
     "not_found_handling": "404-page",
     "html_handling": "auto-trailing-slash"
-  }
+  },
+  // test versions of other branches get their own preview link (npx wrangler preview)
+  "previews": {}
 }
