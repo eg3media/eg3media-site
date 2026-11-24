@@ -1,13 +1,13 @@
 {
-  "_help": "Header media. Each value is an image, GIF or MP4 address. Homepage: 'base' is the first picture, 'home.<page>' is the background behind each word. 'header.<page>' is that landing page's header. Put new files in /media and use /media/filename.",
-  "base": "https://media.eg3media.com/site/sq/NolanP-TIGE-4AM-0189-2.JPG",
-  "home.portfolio": "https://media.eg3media.com/site/sq/eg3header-ezgif.com-video-to-gif-converter.gif",
-  "home.commercial": "https://media.eg3media.com/site/sq/commercialgif-ezgif.com-video-to-gif-converter.gif",
-  "home.content": "https://media.eg3media.com/site/sq/contentgif-ezgif.com-video-to-gif-converter.gif",
-  "home.sports": "https://media.eg3media.com/site/sq/sportsgif-ezgif.com-video-to-gif-converter.gif",
-  "home.realestate": "https://media.eg3media.com/site/sq/realestategif-ezgif.com-video-to-gif-converter.gif",
-  "header.commercial": "https://media.eg3media.com/site/sq/commercialgif-ezgif.com-video-to-gif-converter.gif",
-  "header.content": "https://media.eg3media.com/site/sq/contentgif-ezgif.com-video-to-gif-converter.gif",
-  "header.sports": "https://media.eg3media.com/site/sq/sportsgif-ezgif.com-video-to-gif-converter.gif",
-  "header.realestate": "https://media.eg3media.com/site/sq/realestategif-ezgif.com-video-to-gif-converter.gif"
+ "_help": "Header media. Each value is an image, GIF or MP4 address. Homepage: 'base' is the first picture, 'home.<page>' is the background behind each word. 'header.<page>' is that landing page's header. Put new files in /media and use /media/filename.",
+ "base": "https://media.eg3media.com/site/sq/NolanP-TIGE-4AM-0189-2.JPG",
+ "home.portfolio": "https://media.eg3media.com/site/header/home-portfolio-mwce3oup.mp4",
+ "home.commercial": "https://media.eg3media.com/site/header/home-commercial-mwce3r0m.mp4",
+ "home.content": "https://media.eg3media.com/site/header/home-content-mwce3seo.mp4",
+ "home.sports": "https://media.eg3media.com/site/header/home-sports-mwce3tss.mp4",
+ "home.realestate": "https://media.eg3media.com/site/header/home-realestate-mwce9cbu.mp4",
+ "header.commercial": "https://media.eg3media.com/site/header/header-commercial-mwce19u0.mp4",
+ "header.content": "https://media.eg3media.com/site/header/header-content-mwce1b84.mp4",
+ "header.sports": "https://media.eg3media.com/site/header/header-sports-mwce1cm6.mp4",
+ "header.realestate": "https://media.eg3media.com/site/header/header-realestate-mwce9a5y.mp4"
 }
