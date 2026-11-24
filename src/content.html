@@ -370,9 +370,7 @@
   .eg3c-carousel.is-single .eg3c-count { display: none; }
   .eg3c-carousel.is-empty { display: none; }
 
-  /* vertical videos: shown whole in the middle, with a blurred copy filling the sides */
-  .eg3c-slide.is-vertical video,
-  .eg3c-slide.is-vertical img:not(.eg3c-fill) { object-fit: contain; }
+  /* vertical videos get their own tall card: the wide card turned on its side (sized in fan()) */
   .eg3c-slide .eg3c-fill { filter: blur(28px) brightness(.4); transform: scale(1.2); }
   .eg3c-story.no-videos { grid-template-columns: 1fr; max-width: 900px; }
 
@@ -653,15 +651,7 @@
   function markVertical(s) {
     if (s.classList.contains('is-vertical')) return;
     s.classList.add('is-vertical');
-    var img = s.querySelector('img:not(.eg3c-fill)');
-    if (img) {
-      var fill = img.cloneNode();
-      fill.className = 'eg3c-fill';
-      fill.alt = '';
-      fill.removeAttribute('onerror');
-      fill.onload = fill.onerror = null;
-      s.insertBefore(fill, s.firstChild);
-    }
+    if (slides.length) fan();
   }
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -753,12 +743,32 @@
   // wind the cards around a spiral: the playing one in front, the rest stepping back and up or down around it
   function fan() {
     var n = slides.length, W = carousel.clientWidth, R = W * 0.78;
+    // card size: wide cards are 16:9; a vertical card is the same card turned on its side
+    var cw = W * (W < 600 ? 0.68 : 0.62), ch = cw * 9 / 16;
+    var tall = slides.some(function (s) { return s.classList.contains('is-vertical'); });
+    var H = tall ? Math.round(cw * 1.12) : Math.round(W * 9 / 16);
+    carousel.style.aspectRatio = 'auto'; carousel.style.height = H + 'px';
+    var act = slides[idx], aw = act && act.classList.contains('is-vertical') ? ch : cw, ah = aw === ch ? cw : ch;
+    fan.box = { l: (W - aw) / 2 / W, r: (W + aw) / 2 / W, t: (H - ah) / 2 / H, b: (H + ah) / 2 / H };
+    var bars = carousel.querySelectorAll('.eg3c-bar, .eg3c-progress');
+    for (var k = 0; k < bars.length; k++) {
+      bars[k].style.setProperty('left', ((W - aw) / 2) + 'px', 'important');
+      bars[k].style.setProperty('right', ((W - aw) / 2) + 'px', 'important');
+      bars[k].style.setProperty('bottom', ((H - ah) / 2) + 'px', 'important');
+    }
+    var arrowX = Math.max(8, (W - aw) / 2 - 46) + 'px';
+    var pv = carousel.querySelector('.eg3c-prev'), nx = carousel.querySelector('.eg3c-next');
+    if (pv) pv.style.setProperty('left', arrowX, 'important');
+    if (nx) nx.style.setProperty('right', arrowX, 'important');
     slides.forEach(function (s, i) {
+      var v = s.classList.contains('is-vertical'), w = v ? ch : cw, h = v ? cw : ch;
+      s.style.inset = 'auto'; s.style.width = w + 'px'; s.style.height = h + 'px';
+      s.style.left = ((W - w) / 2) + 'px'; s.style.top = ((H - h) / 2) + 'px';
       var d = i - idx;
       if (n > 2) { if (d > n / 2) d -= n; if (d < -n / 2) d += n; }
       var a = Math.abs(d), show = a <= 3, th = d * 44 * Math.PI / 180;
-      var x = Math.sin(th) * R, z = (Math.cos(th) - 1) * R - a * W * 0.22, y = d * 10;
-      s.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y + '%,' + z.toFixed(1) + 'px) rotateY(' + (d * 44) + 'deg) rotateZ(' + (-d * 3) + 'deg)';
+      var x = Math.sin(th) * R, z = (Math.cos(th) - 1) * R - a * W * 0.22, y = d * ch * 0.1;
+      s.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,' + z.toFixed(1) + 'px) rotateY(' + (d * 44) + 'deg) rotateZ(' + (-d * 3) + 'deg)';
       s.style.opacity = show ? [1, .82, .5, .25][a] : 0;
       s.style.filter = a === 0 ? 'none' : 'brightness(' + [1, .7, .5, .35][a] + ')';
       s.style.zIndex = 10 - a;
@@ -775,9 +785,10 @@
   // which part of the carousel the pointer is over: left of the video, the video, or right of it
   carousel.addEventListener('mousemove', function (e) {
     var b = carousel.getBoundingClientRect(), fx = (e.clientX - b.left) / b.width, fy = (e.clientY - b.top) / b.height;
-    var inX = fx > 0.19 && fx < 0.81, inY = fy > 0.19 && fy < 0.81;
-    carousel.classList.toggle('hover-left', fx <= 0.19);
-    carousel.classList.toggle('hover-right', fx >= 0.81);
+    var bx = fan.box || { l: .19, r: .81, t: .19, b: .81 };
+    var inX = fx > bx.l && fx < bx.r, inY = fy > bx.t && fy < bx.b;
+    carousel.classList.toggle('hover-left', fx <= bx.l);
+    carousel.classList.toggle('hover-right', fx >= bx.r);
     carousel.classList.toggle('hover-video', inX && inY);
   });
   carousel.addEventListener('mouseleave', function () { carousel.classList.remove('hover-left', 'hover-right', 'hover-video'); });
