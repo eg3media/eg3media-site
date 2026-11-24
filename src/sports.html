@@ -375,15 +375,28 @@
   .eg3c-slide .eg3c-fill { filter: blur(28px) brightness(.4); transform: scale(1.2); }
   .eg3c-story.no-videos { grid-template-columns: 1fr; max-width: 900px; }
 
-  /* curved 3D carousel: the playing video in front, the next ones fanned out on a curve behind it (same spot on the page) */
-  .eg3c-carousel { background: radial-gradient(70% 80% at 50% 50%, #1c1c1c 0%, #0b0b0b 70%, #070707 100%); perspective: 1300px; perspective-origin: 50% 45%; }
-  .eg3c-slides { transform-style: preserve-3d; animation: eg3c-sway 14s ease-in-out infinite; }
-  @keyframes eg3c-sway { 0%, 100% { transform: rotateY(-2.5deg) rotateX(1deg); } 50% { transform: rotateY(2.5deg) rotateX(-1deg); } }
-  .eg3c-slides .eg3c-slide { inset: 19% 19%; border-radius: 6px; overflow: hidden; background: #111; box-shadow: 0 30px 70px rgba(0,0,0,.6); cursor: pointer;
-    transition: transform .9s cubic-bezier(.2,.8,.2,1), opacity .7s ease, filter .7s ease; will-change: transform; }
+  /* spiral 3D carousel: the playing video in front, the others winding back around it on a spiral (same spot on the page, no box) */
+  .eg3c-carousel { background: transparent; perspective: 1300px; perspective-origin: 50% 45%; overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%); }
+  .eg3c-slides { transform-style: preserve-3d; animation: eg3c-sway 16s ease-in-out infinite; }
+  @keyframes eg3c-sway { 0%, 100% { transform: rotateY(-3deg) rotateX(2deg); } 50% { transform: rotateY(3deg) rotateX(-1deg); } }
+  .eg3c-slides .eg3c-slide { inset: 19% 19%; border-radius: 6px; overflow: hidden; background: #111; box-shadow: 0 30px 70px rgba(0,0,0,.55); cursor: pointer;
+    transition: transform 1s cubic-bezier(.2,.8,.2,1), opacity .8s ease, filter .8s ease; will-change: transform; }
   .eg3c-slides .eg3c-slide.is-active { cursor: default; }
-  .eg3c-slides .eg3c-slide:not(.is-active):hover { filter: brightness(.95) !important; }
   @media (max-width: 760px) { .eg3c-slides .eg3c-slide { inset: 16% 16%; } }
+  /* arrows: small, only when the pointer is left or right of the playing video */
+  .eg3c-carousel .eg3c-arrow { width: 34px !important; height: 34px !important; border: 0 !important; background: rgba(0,0,0,.45) !important; backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity .25s ease, background-color .2s; }
+  .eg3c-carousel .eg3c-arrow svg { width: 16px !important; height: 16px !important; }
+  .eg3c-carousel .eg3c-arrow { margin-top: -17px !important; }
+  .eg3c-carousel .eg3c-prev { left: 11% !important; } .eg3c-carousel .eg3c-next { right: 11% !important; }
+  .eg3c-carousel.hover-left .eg3c-prev, .eg3c-carousel.hover-right .eg3c-next, .eg3c-carousel .eg3c-arrow:focus-visible { opacity: 1; pointer-events: auto; }
+  .eg3c-carousel .eg3c-arrow:hover { background: rgba(0,0,0,.7) !important; }
+  /* the title and progress show only while the pointer is over the playing video; the sound button stays */
+  .eg3c-carousel .eg3c-bar { background: none !important; left: 19% !important; right: 19% !important; bottom: 19% !important; padding: 0 12px 10px !important; }
+  .eg3c-carousel .eg3c-title, .eg3c-carousel .eg3c-progress { opacity: 0; transition: opacity .25s ease; }
+  .eg3c-carousel.hover-video .eg3c-title, .eg3c-carousel.hover-video .eg3c-progress, .eg3c-carousel.show-title .eg3c-title { opacity: 1; }
+  .eg3c-carousel .eg3c-progress { left: 19% !important; right: 19% !important; bottom: 19% !important; }
+  @media (max-width: 760px) { .eg3c-carousel .eg3c-bar, .eg3c-carousel .eg3c-progress { left: 16% !important; right: 16% !important; bottom: 16% !important; } }
   @media (prefers-reduced-motion: reduce) { .eg3c-slides { animation: none; } .eg3c-slides .eg3c-slide { transition: opacity .3s ease; } }
 </style>
 
@@ -732,26 +745,38 @@
   }
 
 
-  // lay the cards out on a curve: the playing one in front, two on each side tipped back into the frame
+  // wind the cards around a spiral: the playing one in front, the rest stepping back and up or down around it
   function fan() {
-    var n = slides.length, wide = carousel.clientWidth > 700;
+    var n = slides.length, W = carousel.clientWidth, R = W * 0.78;
     slides.forEach(function (s, i) {
       var d = i - idx;
       if (n > 2) { if (d > n / 2) d -= n; if (d < -n / 2) d += n; }
-      var a = Math.abs(d), show = a <= 2;
-      var x = d * (wide ? 70 : 74) - (a > 1 ? d * 8 : 0), z = -a * (wide ? 300 : 240), ry = -d * 40, y = a * 1.5;
-      s.style.transform = 'translate3d(' + x + '%,' + y + '%,' + z + 'px) rotateY(' + ry + 'deg)';
-      s.style.opacity = show ? (a === 0 ? 1 : a === 1 ? .85 : .45) : 0;
-      s.style.filter = a === 0 ? 'none' : 'brightness(' + (a === 1 ? .62 : .4) + ')';
+      var a = Math.abs(d), show = a <= 3, th = d * 44 * Math.PI / 180;
+      var x = Math.sin(th) * R, z = (Math.cos(th) - 1) * R - a * W * 0.22, y = d * 10;
+      s.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y + '%,' + z.toFixed(1) + 'px) rotateY(' + (d * 44) + 'deg) rotateZ(' + (-d * 3) + 'deg)';
+      s.style.opacity = show ? [1, .82, .5, .25][a] : 0;
+      s.style.filter = a === 0 ? 'none' : 'brightness(' + [1, .7, .5, .35][a] + ')';
       s.style.zIndex = 10 - a;
       s.style.pointerEvents = show ? 'auto' : 'none';
       s.setAttribute('aria-hidden', a === 0 ? 'false' : 'true');
     });
+    // on phones there's no hover, so the title shows for a moment after each change
+    if (!window.matchMedia('(hover: hover)').matches) { carousel.classList.add('show-title'); clearTimeout(fan._t); fan._t = setTimeout(function () { carousel.classList.remove('show-title'); }, 2600); }
   }
   slidesBox.addEventListener('click', function (e) {
     var s = e.target.closest('.eg3c-slide'); if (!s || s.classList.contains('is-active')) return;
     var i = slides.indexOf(s); if (i >= 0) go(i);
   });
+  // which part of the carousel the pointer is over: left of the video, the video, or right of it
+  carousel.addEventListener('mousemove', function (e) {
+    var b = carousel.getBoundingClientRect(), fx = (e.clientX - b.left) / b.width, fy = (e.clientY - b.top) / b.height;
+    var inX = fx > 0.19 && fx < 0.81, inY = fy > 0.19 && fy < 0.81;
+    carousel.classList.toggle('hover-left', fx <= 0.19);
+    carousel.classList.toggle('hover-right', fx >= 0.81);
+    carousel.classList.toggle('hover-video', inX && inY);
+  });
+  carousel.addEventListener('mouseleave', function () { carousel.classList.remove('hover-left', 'hover-right', 'hover-video'); });
+  window.addEventListener('resize', function () { if (slides.length) fan(); });
 
   function go(n) {
     if (!slides.length) return;
