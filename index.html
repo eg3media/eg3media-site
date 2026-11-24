@@ -267,59 +267,35 @@
     will-change: transform, opacity, filter;
   }
 
-  /* ---------- hero shown first: one open scene, the rig big in the middle, small pieces at the edges. Scrolling moves it out and the word menu floats in ---------- */
+  /* ---------- hero shown first: a full-screen header video with the headline over it. Scrolling moves it out and the word menu floats in ---------- */
   .eg3-hero { position: absolute; inset: 0; z-index: 4; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #f4f4f2; }
-  .eg3-hero-bg { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: radial-gradient(80% 70% at 62% 52%, #2a2a2a 0%, #141414 45%, #070707 100%); }
-  .eg3-hero-bg::after { content: ''; position: absolute; inset: 0; opacity: .07; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .eg3-hero-bg { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: #000; }
   .eg3-hero > * { position: absolute; will-change: transform, opacity; }
   .eg3-hero a { color: inherit; text-decoration: none; }
-  .h-label { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #8f8f8a; }
-  .h-main { inset: 0; cursor: grab; touch-action: pan-y; }
-  .h-main:active { cursor: grabbing; }
-  .h-cam { position: absolute; inset: 0; }
-  .h-cam canvas { width: 100% !important; height: 100% !important; display: block; opacity: 0; transition: opacity 1.4s; }
-  .h-cam.ready canvas { opacity: 1; }
-  .h-nav { left: clamp(18px, 3vw, 44px); right: clamp(18px, 3vw, 44px); top: 18px; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
-  .h-nav > * { pointer-events: auto; }
-  .h-nav b { font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; font-size: 15px; letter-spacing: .2em; }
-  .h-nav nav { display: flex; gap: clamp(14px, 2.6vw, 34px); }
-  .h-nav nav a { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #b9b9b4; transition: color .2s; }
-  .h-nav nav a:hover { color: #fff; }
-  .h-title { left: clamp(18px, 3vw, 44px); top: clamp(70px, 14vh, 150px); pointer-events: none; }
-  .h-title h1 { margin: 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(3rem, 7.4vw, 8.4rem); line-height: .88; letter-spacing: .02em; }
-  .h-title h1 span { display: block; }
-  .h-kick { display: block; margin-bottom: 14px; color: #b9b9b4; }
-  .h-title h1 small { display: inline-block; vertical-align: bottom; margin-left: 14px; margin-bottom: .55em; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; line-height: 1.35; letter-spacing: .2em; color: #8f8f8a; }
-  .h-card { right: clamp(18px, 3vw, 44px); top: clamp(70px, 14vh, 150px); width: clamp(140px, 13vw, 200px); display: grid; gap: 8px; }
-  .h-card .h-pic { aspect-ratio: 4 / 3; background: #1a1a1a center / cover no-repeat; border-radius: 2px; overflow: hidden; position: relative; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
-  .h-card:hover .h-pic { transform: scale(1.03); }
-  .h-card b { font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; line-height: 1.35; }
-  .h-text { right: clamp(18px, 3vw, 44px); top: 52%; width: clamp(170px, 16vw, 240px); text-align: right; display: grid; gap: 10px; }
-  .h-text p { margin: 0; font-size: 11.5px; line-height: 1.5; color: #a9a9a4; }
-  .h-text .h-svc { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 12px; }
-  .h-text .h-svc a { font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #d6d6d2; }
-  .h-text .h-svc a:hover { color: #fff; }
-  .h-media { left: clamp(18px, 3vw, 44px); bottom: clamp(20px, 4vh, 40px); width: clamp(190px, 17vw, 260px); display: grid; gap: 10px; }
-  .h-media .h-vid { position: relative; height: clamp(58px, 7vw, 84px); display: flex; overflow: hidden; border-radius: 2px; background: #1a1a1a; }
-  .h-media .h-vid i { flex: none; width: clamp(58px, 7vw, 84px); background: #f4f4f2; display: grid; place-items: center; }
-  .h-media .h-vid i::after { content: ''; border-left: 12px solid #000; border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px; }
-  .h-media .h-vid .h-fill { position: relative; flex: 1; background: center / cover no-repeat; }
-  .h-media .h-vid .h-fill video { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .h-media p { margin: 0; font-size: 11px; line-height: 1.5; color: #a9a9a4; }
-  .h-cta { right: clamp(18px, 3vw, 44px); bottom: clamp(20px, 4vh, 40px); display: flex; align-items: center; gap: 12px; font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
-  .h-cta i { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #5a5a56; display: grid; place-items: center; font-style: normal; transition: background .2s, color .2s; }
-  .h-cta:hover i { background: #f4f4f2; color: #000; }
-  .eg3-scrollhint { position: absolute; left: 50%; bottom: 14px; z-index: 5; transform: translateX(-50%); font-size: 9px; letter-spacing: .34em; text-transform: uppercase; color: #6f6f6b; pointer-events: none; }
+  .h-film { inset: 0; overflow: hidden; }
+  .h-film .h-fill, .h-film video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000 center / cover no-repeat; }
+  .h-film::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 45%, rgba(0,0,0,.78) 100%), linear-gradient(90deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 60%); }
+  .h-nav { left: clamp(20px, 4vw, 56px); right: clamp(20px, 4vw, 56px); top: 22px; display: flex; justify-content: space-between; align-items: center; }
+  .h-logo { display: block; width: 74px; }
+  .h-logo svg { display: block; width: 100%; height: auto; }
+  .h-nav nav { display: flex; gap: clamp(16px, 2.6vw, 34px); }
+  .h-nav nav a { font-family: 'Anton', 'Impact', sans-serif; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; opacity: .82; transition: opacity .2s; }
+  .h-nav nav a:hover { opacity: 1; }
+  .h-copy { left: clamp(20px, 4vw, 56px); right: clamp(20px, 4vw, 56px); bottom: clamp(36px, 9vh, 96px); max-width: 980px; }
+  .h-copy h1 { margin: 0 0 18px; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(2.8rem, 7.2vw, 7.6rem); line-height: .92; letter-spacing: .02em; }
+  .h-copy h1 span { display: block; }
+  .h-copy p { margin: 0 0 26px; max-width: 46ch; font-size: clamp(15px, 1.3vw, 18px); line-height: 1.5; color: #d9d9d4; }
+  .h-acts { display: flex; flex-wrap: wrap; gap: 12px; }
+  .h-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 26px; border: 1px solid rgba(255,255,255,.6); border-radius: 999px; font-family: 'Anton', 'Impact', sans-serif; font-size: 15px; letter-spacing: .12em; text-transform: uppercase; transition: background-color .2s, color .2s, border-color .2s, transform .15s; }
+  .h-btn:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+  .h-btn:active { transform: scale(.97); }
+  .h-btn--solid { background: #f4f4f2; color: #000 !important; border-color: #f4f4f2; }
+  .h-btn--solid:hover { background: #fff; }
+  .eg3-scrollhint { position: absolute; left: 50%; bottom: 16px; z-index: 5; transform: translateX(-50%); font-size: 10px; letter-spacing: .32em; text-transform: uppercase; color: #9a9a96; pointer-events: none; }
   @media (max-width: 760px) {
     .h-nav nav a:not(:last-child) { display: none; }
-    .h-title { top: 64px; }
-    .h-title h1 { font-size: 17vw; }
-    .h-title h1 small { display: block; margin: 10px 0 0; }
-    .h-card { top: auto; bottom: 118px; width: 120px; }
-    .h-text { display: none; }
-    .h-media { width: 170px; bottom: 26px; }
-    .h-media p { display: none; }
-    .h-cta { bottom: 34px; }
+    .h-copy h1 { font-size: 15vw; }
+    .h-acts .h-btn { flex: 1 1 100%; }
     .eg3-scrollhint { display: none; }
   }
 </style>
@@ -338,15 +314,15 @@
     </nav>
 
 
-    <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
     <div class="eg3-hero-bg"></div>
     <div class="eg3-hero" aria-label="EG3 Media">
-      <div class="h-main" data-hx="0" data-hy="0" data-main="1"><div class="h-cam" id="h-cam" aria-hidden="true"></div></div>
-      <div class="h-nav" data-hx="0" data-hy="-1"><b>EG3</b><nav><a href="/portfolio">Portfolio</a><a href="/about">About</a><a href="/contact">Contact</a></nav></div>
-      <div class="h-title" data-hx="-1" data-hy="0"><span class="h-label h-kick">EG3 Media</span><h1><span>Abilene</span><span>video</span><span>production<small>Commercial, content,<br>sports, real estate</small></span></h1></div>
-      <a class="h-card" data-hx="1" data-hy="-1" href="/portfolio"><div class="h-pic" data-feature="1"></div><b data-feature-title>See the latest work</b></a>
-      <div class="h-text" data-hx="1" data-hy="0"><span class="h-label">Shot, cut and color graded in house</span><p>Every project is filmed on cinema lenses and finished by the same person, from the first call to the final grade. Based in Abilene, working across West Texas.</p><div class="h-svc"><a href="/commercial">Commercial</a><a href="/content">Content</a><a href="/sports">Sports</a><a href="/realestate">Real Estate</a></div></div>
-      <a class="h-media" data-hx="-1" data-hy="1" href="/portfolio"><span class="h-vid"><i></i><span class="h-fill" data-slot="home.portfolio"></span></span><p>Watch the reel. Shot, edited and color graded by Elijah Gravitt.</p></a>
+      <div class="h-film" data-hx="0" data-hy="0" data-main="1"><div class="h-fill" data-slot="home.portfolio"></div></div>
+      <div class="h-nav" data-hx="0" data-hy="-1"><a class="h-logo" href="/" aria-label="EG3 Media home"><svg viewBox="670 325 565 368" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#fff" stroke="#fff" stroke-linejoin="round" stroke-linecap="round"><path stroke-width="10" d="M959.75,447.45l-9,36h46.38c13.01,0,22.56,12.23,19.4,24.85l-8,32.02c-2.22,8.9-10.21,15.14-19.38,15.15l-236.67.24,18.27-72.26h72s9-36,9-36h-108l-36,144h324l36-144h-36s-72,0-72,0Z"/><path stroke-width="10" d="M887.75,519.45l32.22-128.87c2.22-8.9,10.21-15.14,19.38-15.15l210.46-.22c13.04-.01,22.61,12.26,19.41,24.9l-8.15,32.23c-2.24,8.88-10.23,15.1-19.39,15.1h-56.43s-9,36-9,36h108l36-144h-323.5l-45,180h36Z"/><polygon stroke-width="10" points="879.25 339.43 869.75 375.45 797.75 375.45 784.25 429.45 748.25 429.45 770.75 339.45 879.25 339.43"/><path stroke-width="10" d="M1049.25,591.46l9.5-36.02h56.38c9.18,0,17.18-6.25,19.4-15.15l9.71-38.85h36l-22.5,90-108.5.02Z"/><polygon stroke-width="3" points="698.75 609.75 716.75 609.75 698.75 681.75 680.75 681.75 698.75 609.75"/><polygon stroke-width="3" points="725.75 609.75 743.75 609.75 725.75 681.75 707.75 681.75 725.75 609.75"/><polygon stroke-width="3" points="752.75 609.75 770.75 609.75 752.75 681.75 734.75 681.75 752.75 609.75"/><polygon stroke-width="3" points="847.25 627.75 851.75 609.75 779.75 609.75 775.25 627.33 847.25 627.75"/><polygon stroke-width="3" points="840.5 654.75 845 636.75 773 636.75 768.5 654.33 840.5 654.75"/><polygon stroke-width="3" points="833.75 681.75 838.25 663.75 766.25 663.75 761.75 681.33 833.75 681.75"/><path stroke-width="3" d="M860.75,609.75l-4.5,18h9c20.06.25,20.25,3.27,20.25,18s-.19,18-29.25,18h-9l-4.5,18h9c33.56,0,51.75,0,51.75-36,0-42.07-18.19-36-33.75-36h-9Z"/><polygon stroke-width="3" points="923.75 609.75 941.75 609.75 923.75 681.75 905.75 681.75 923.75 609.75"/><polygon stroke-width="3" points="955.25 609.75 973.25 609.75 955.25 681.75 937.25 681.75 955.25 609.75"/><polygon stroke-width="3" points="982.25 609.75 964.25 609.75 982.25 681.75 1000.25 681.75 982.25 609.75"/><polygon stroke-width="3" points="1155.5 609.45 993.5 609.45 1011.5 681.45 1142 681.45 1155.5 609.45"/></g></svg></a><nav><a href="/portfolio">Portfolio</a><a href="/about">About</a><a href="/contact">Contact</a></nav></div>
+      <div class="h-copy" data-hx="-1" data-hy="0">
+        <h1><span>Abilene</span><span>video production</span></h1>
+        <p>Commercial, content, sports and real estate video for businesses in Abilene and West Texas.</p>
+        <div class="h-acts"><a class="h-btn h-btn--solid" href="/quote">Get a quote</a><a class="h-btn" href="/portfolio">See the work</a></div>
+      </div>
     </div>
     <div class="eg3-scrollhint">Scroll</div>
     <div class="eg3-intro">
@@ -725,187 +701,8 @@
     EG3.media(function (map) {
       Array.prototype.forEach.call(wrap.querySelectorAll('.eg3-hero [data-slot]'), function (b) { putMedia(b, map[b.getAttribute('data-slot')]); });
     });
-    if (EG3.work) EG3.work().then(function (list) {
-      var f = list.filter(function (v) { return v.thumb && !v.vertical; })[0] || list[0]; if (!f) return;
-      var box = wrap.querySelector('[data-feature]'); if (f.thumb) box.style.backgroundImage = 'url("' + f.thumb + '")'; else if (f.file) putMedia(box, f.file);
-      var t = wrap.querySelector('[data-feature-title]'); if (t) t.textContent = f.title || 'Portfolio';
-      var a = box.closest('a'); if (a && f.url) a.setAttribute('href', f.url);
-    }).catch(function () {});
 
 
-    /* ---------- the 3D camera in the big tile: Elijah's rig, built in code (Nikon ZR, DZOFilm Vespid, top handle with Atomos Ninja, side handle with Sennheiser MKE 600) ---------- */
-    (function () {
-      var box = document.getElementById('h-cam'); if (!box) return;
-      Promise.all([import('three'), import('three/addons/geometries/RoundedBoxGeometry.js'), import('three/addons/environments/RoomEnvironment.js')]).then(function (m) {
-        var THREE = m[0], RBox = m[1].RoundedBoxGeometry, Room = m[2].RoomEnvironment;
-        var r = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-        r.outputColorSpace = THREE.SRGBColorSpace; r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.45;
-        box.appendChild(r.domElement);
-        var scene = new THREE.Scene();
-        var pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new Room(), 0.04).texture;
-        var cam = new THREE.PerspectiveCamera(26, 1, 0.1, 50); cam.position.set(0, 0.5, 6.4); cam.lookAt(0, 0, 0);
-        var key = new THREE.DirectionalLight(0xffffff, 2.6); key.position.set(2.5, 3, 4); scene.add(key);
-        var rim = new THREE.DirectionalLight(0xbcd2ff, 1.2); rim.position.set(-3, 1.5, -3); scene.add(rim);
-        scene.add(new THREE.AmbientLight(0xffffff, 0.35)); var fillL = new THREE.DirectionalLight(0xffe6cc, 0.8); fillL.position.set(-4, -1, 3); scene.add(fillL);
-
-        var body = new THREE.MeshStandardMaterial({ color: 0x26272a, roughness: 0.42, metalness: 0.35 });
-        var grain = new THREE.MeshStandardMaterial({ color: 0x111214, roughness: 0.85, metalness: 0.05 });
-        var rubber = new THREE.MeshStandardMaterial({ color: 0x0c0c0d, roughness: 0.95, metalness: 0 });
-        var metal = new THREE.MeshStandardMaterial({ color: 0xc9cbcf, roughness: 0.28, metalness: 1 });
-        var dark = new THREE.MeshStandardMaterial({ color: 0x2a2b2e, roughness: 0.35, metalness: 0.8 });
-        var glass = new THREE.MeshPhysicalMaterial({ color: 0x0b1020, roughness: 0.04, metalness: 0.2, clearcoat: 1, clearcoatRoughness: 0.03, iridescence: 0.25, iridescenceIOR: 1.3 });
-        var red = new THREE.MeshStandardMaterial({ color: 0xd8342a, roughness: 0.4, emissive: 0x3a0503 });
-        var white = new THREE.MeshStandardMaterial({ color: 0xe8e8e4, roughness: 0.6 });
-
-        var rig = new THREE.Group(), cm = new THREE.Group(); rig.add(cm); scene.add(rig); cm.position.set(-0.1, -0.3, -0.3);
-        function add(geo, mat, x, y, z, rx, ry, rz, parent) { var o = new THREE.Mesh(geo, mat); o.position.set(x || 0, y || 0, z || 0); o.rotation.set(rx || 0, ry || 0, rz || 0); (parent || cm).add(o); return o; }
-        function cyl(r1, len, seg, r2) { var g = new THREE.CylinderGeometry(r2 == null ? r1 : r2, r1, len, seg || 64); g.rotateX(Math.PI / 2); return g; }
-        function ribs(rad, len, z, n, mat) { for (var i = 0; i < n; i++) { var a = i / n * Math.PI * 2; add(new THREE.BoxGeometry(0.018, 0.022, len), mat, Math.cos(a) * rad, Math.sin(a) * rad, z, 0, 0, a); } }
-
-        // body: 133 x 80 x 49 mm box with soft edges (1 unit = 100 mm)
-        add(new RBox(1.33, 0.8, 0.49, 6, 0.07), body);
-        add(new RBox(0.5, 0.74, 0.08, 4, 0.03), grain, 0.42, -0.01, 0.235);                  // front grip pad
-        add(new RBox(1.2, 0.08, 0.5, 4, 0.03), grain, 0, -0.33, 0);                         // lower band
-        // Z mount and a DZOFilm Vespid cine prime: black barrel, focus and iris gear rings, wide front
-        var LX = -0.1, LY = -0.02;
-        add(new THREE.TorusGeometry(0.29, 0.025, 16, 80), metal, LX, LY, 0.25);
-        add(cyl(0.3, 0.12), dark, LX, LY, 0.31);
-        add(cyl(0.34, 0.16), body, LX, LY, 0.45);
-        function gearRing(rad, len, z, teeth) { add(cyl(rad - 0.02, len), dark, LX, LY, z); for (var i = 0; i < teeth; i++) { var a2 = i / teeth * Math.PI * 2; add(new THREE.BoxGeometry(0.03, 0.035, len), dark, LX + Math.cos(a2) * rad, LY + Math.sin(a2) * rad, z, 0, 0, a2); } }
-        gearRing(0.39, 0.1, 0.6, 64);                                                       // iris gear
-        add(cyl(0.355, 0.14), body, LX, LY, 0.73);
-        var yellow = new THREE.MeshStandardMaterial({ color: 0xf2c230, roughness: 0.5, emissive: 0x2a1f00 });
-        add(cyl(0.33, 0.2), metal, LX, LY, 0.36);                                            // silver Z-mount adapter
-        for (var ym = 0; ym < 7; ym++) { var ya = 0.5 + ym * 0.16; add(new THREE.BoxGeometry(0.008, 0.035, 0.012), yellow, LX + Math.cos(ya) * 0.358, LY + Math.sin(ya) * 0.358, 0.7, 0, 0, ya); }
-        add(new THREE.TorusGeometry(0.357, 0.004, 8, 80), yellow, LX, LY, 0.66);             // T-stop and distance scales
-        add(new THREE.TorusGeometry(0.362, 0.004, 8, 80), yellow, LX, LY, 0.97);
-        gearRing(0.4, 0.12, 0.87, 66);                                                      // focus gear
-        add(cyl(0.36, 0.18, 64, 0.4), body, LX, LY, 1.02);
-        add(cyl(0.42, 0.08), dark, LX, LY, 1.15);                                           // 80 mm front
-        add(new THREE.TorusGeometry(0.4, 0.012, 12, 80), red, LX, LY, 1.19);
-        add(new THREE.CircleGeometry(0.36, 64), glass, LX, LY, 1.192);
-        add(new THREE.CircleGeometry(0.16, 48), new THREE.MeshPhysicalMaterial({ color: 0x1a2550, roughness: 0.02, clearcoat: 1, metalness: 0.5 }), LX, LY, 1.193);
-        // top: hot shoe, mode dial, shutter and red record button
-        add(new THREE.BoxGeometry(0.22, 0.03, 0.2), metal, -0.1, 0.415, 0);
-        add(cyl(0.11, 0.06), dark, 0.42, 0.43, -0.02, Math.PI / 2);
-        for (var k = 0; k < 40; k++) { var a = k / 40 * Math.PI * 2; add(new THREE.BoxGeometry(0.008, 0.055, 0.015), body, 0.42 + Math.cos(a) * 0.112, 0.43, -0.02 + Math.sin(a) * 0.112, 0, -a, 0); }
-        add(cyl(0.04, 0.04), metal, 0.52, 0.42, 0.14, Math.PI / 2);
-        add(cyl(0.032, 0.03), red, 0.33, 0.415, 0.14, Math.PI / 2);
-        add(new THREE.TorusGeometry(0.035, 0.01, 8, 20), metal, 0.68, 0.28, 0, 0, Math.PI / 2);
-        add(new THREE.TorusGeometry(0.035, 0.01, 8, 20), metal, -0.68, 0.28, 0, 0, Math.PI / 2);
-        add(new RBox(0.02, 0.36, 0.3, 3, 0.008), grain, -0.67, -0.04, 0);
-        // the camera's own screen folded flat on the back
-        add(new RBox(1.0, 0.62, 0.05, 4, 0.02), body, 0, 0.02, -0.27);
-        // top handle: two posts and a rubber grip bar running front to back
-        add(new RBox(0.12, 0.05, 0.62, 3, 0.02), dark, -0.1, 0.45, -0.02);
-        add(new RBox(0.1, 0.3, 0.1, 3, 0.03), dark, -0.1, 0.6, 0.18);
-        add(new RBox(0.1, 0.3, 0.1, 3, 0.03), dark, -0.1, 0.6, -0.22);
-        add(new RBox(0.13, 0.12, 0.95, 4, 0.05), rubber, -0.1, 0.78, 0.0);
-        for (var hg = 0; hg < 9; hg++) add(new THREE.BoxGeometry(0.135, 0.125, 0.012), grain, -0.1, 0.78, -0.32 + hg * 0.08);
-        // Atomos Ninja (5 in.) on a short arm off the top handle, angled toward the operator
-        add(new THREE.BoxGeometry(0.06, 0.2, 0.06), metal, -0.1, 0.93, -0.3);
-        var mon = new THREE.Group(); mon.position.set(-0.1, 1.18, -0.42); mon.rotation.x = 0.22; cm.add(mon);
-        add(new RBox(1.48, 0.86, 0.26, 5, 0.06), body, 0, 0, 0, 0, 0, 0, mon);
-        add(new RBox(1.36, 0.72, 0.1, 4, 0.03), grain, 0, 0, 0.14, 0, 0, 0, mon);           // back with fan vents
-        for (var fv = 0; fv < 7; fv++) add(new THREE.BoxGeometry(0.5, 0.012, 0.02), dark, 0.25, -0.2 + fv * 0.06, 0.2, 0, 0, 0, mon);
-        add(new RBox(0.3, 0.5, 0.22, 3, 0.04), dark, 0.62, -0.05, 0.12, 0, 0, 0, mon);     // SSD bay
-        add(new RBox(0.42, 0.62, 0.2, 3, 0.04), rubber, -0.52, -0.02, 0.16, 0, 0, 0, mon); // NP battery
-        var cloth = new THREE.MeshStandardMaterial({ color: 0x111113, roughness: 1, side: THREE.DoubleSide });
-        [[1.5, 0.02, 0.7, 0, 0.45, -0.45, 0.18, 0], [0.02, 0.9, 0.7, 0.75, 0, -0.45, 0, -0.12], [0.02, 0.9, 0.7, -0.75, 0, -0.45, 0, 0.12]].forEach(function (q) { add(new THREE.BoxGeometry(q[0], q[1], q[2]), cloth, q[3], q[4], q[5], q[6], q[7], 0, mon); });
-        var screenParent = mon, SX = 0, SY = 0, SZ = -0.132, SW = 1.32, SH = 0.74;
-        // side handle on the right with a Sennheiser MKE 600 in a shock mount on top
-        add(new RBox(0.05, 0.5, 0.36, 3, 0.02), dark, 0.69, 0, 0);
-        add(new RBox(0.2, 0.06, 0.08, 3, 0.02), dark, 0.78, 0.0, 0.05);
-        var walnut = new THREE.MeshStandardMaterial({ color: 0x6b3f22, roughness: 0.55, metalness: 0 });
-        add(new RBox(0.24, 0.92, 0.3, 5, 0.1), walnut, 0.93, -0.05, 0.08);                  // walnut side handle
-        for (var sg = 0; sg < 3; sg++) add(new RBox(0.02, 0.1, 0.24, 2, 0.01), new THREE.MeshStandardMaterial({ color: 0x4a2a16, roughness: 0.6 }), 1.045, 0.22 - sg * 0.2, 0.08);  // finger grooves
-        // MKE 600 in its shock mount on top, foam windscreen out front, blue coiled cable from the back
-        var MX = 0.45, MYm = 1.02;
-        add(new THREE.CylinderGeometry(0.04, 0.04, 0.5, 16), dark, MX, 0.7, 0.1);
-        add(new THREE.BoxGeometry(0.12, 0.1, 0.4), dark, MX, MYm - 0.1, 0.1);
-        add(new THREE.TorusGeometry(0.08, 0.014, 10, 40), dark, MX, MYm, 0.25);
-        add(new THREE.TorusGeometry(0.08, 0.014, 10, 40), dark, MX, MYm, -0.05);
-        var micMat = new THREE.MeshStandardMaterial({ color: 0x1b1c1e, roughness: 0.45, metalness: 0.6 });
-        add(cyl(0.055, 1.1), micMat, MX, MYm, 0.2);
-        add(cyl(0.06, 0.12), metal, MX, MYm, -0.38);                                           // XLR end
-        var foam = new THREE.MeshStandardMaterial({ color: 0x0e0e10, roughness: 1, metalness: 0 });
-        var ws = add(new THREE.CapsuleGeometry(0.16, 0.62, 10, 24), foam, MX, MYm, 1.05, Math.PI / 2, 0, 0);
-        var coilPts = [];
-        for (var c = 0; c <= 320; c++) { var t = c / 320, ca = t * Math.PI * 2 * 16;
-          var bx = MX + 0.05 + Math.sin(t * Math.PI) * 0.45, by = MYm - t * 0.95 - Math.sin(t * Math.PI) * 0.2, bz = -0.45 - Math.sin(t * Math.PI) * 0.15 + t * 0.2;
-          coilPts.push(new THREE.Vector3(bx + Math.cos(ca) * 0.04, by + Math.sin(ca) * 0.04, bz)); }
-        add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(coilPts), 600, 0.011, 6, false), new THREE.MeshStandardMaterial({ color: 0x3a9ad9, roughness: 0.4 }));
-        // 15 mm carbon rods under the lens with the white follow focus wheel on the left
-        var carbon = new THREE.MeshStandardMaterial({ color: 0x1c1c1e, roughness: 0.3, metalness: 0.5 });
-        add(new RBox(0.9, 0.08, 0.3, 3, 0.03), dark, LX, -0.47, 0.3);                           // rod clamp
-        add(cyl(0.035, 1.8), carbon, LX - 0.2, -0.47, 0.9); add(cyl(0.035, 1.8), carbon, LX + 0.2, -0.47, 0.9);
-        add(new THREE.BoxGeometry(0.16, 0.42, 0.12), dark, LX - 0.42, -0.28, 0.87);
-        add(cyl(0.2, 0.08), white, LX - 0.5, -0.12, 0.87, 0, Math.PI / 2, 0);
-        add(cyl(0.15, 0.09), dark, LX - 0.53, -0.12, 0.87, 0, Math.PI / 2, 0);
-        // clamp-on matte box with a carbon top flag
-        var MB = 1.32;
-        add(cyl(0.45, 0.1), dark, LX, LY, MB - 0.04);
-        [[1.25, 0.05, 0.42, 0, 0.47], [1.25, 0.05, 0.42, 0, -0.47], [0.05, 0.9, 0.42, 0.62, 0], [0.05, 0.9, 0.42, -0.62, 0]].forEach(function (q) { add(new THREE.BoxGeometry(q[0], q[1], q[2]), dark, LX + q[3], LY + q[4], MB + 0.17); });
-        add(new THREE.BoxGeometry(1.25, 0.015, 0.75), carbon, LX, LY + 0.62, MB + 0.6, -0.35, 0, 0);
-        add(new THREE.BoxGeometry(0.14, 0.4, 0.3), metal, LX + 0.66, LY - 0.1, MB + 0.05);
-        // V-mount battery on the back
-        add(new RBox(1.05, 0.95, 0.12, 3, 0.03), dark, 0.05, 0.02, -0.42);
-        add(new RBox(0.95, 1.05, 0.38, 4, 0.06), body, 0.05, 0.05, -0.68);
-        for (var vb = 0; vb < 6; vb++) add(new THREE.BoxGeometry(0.01, 0.35, 0.08), grain, 0.53, -0.2, -0.82 + vb * 0.05, 0, 0, 0.5);
-        var cv = document.createElement('canvas'); cv.width = 512; cv.height = 300; var cx = cv.getContext('2d');
-        var tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
-        add(new THREE.PlaneGeometry(SW, SH), new THREE.MeshBasicMaterial({ map: tex, toneMapped: false }), SX, SY, SZ, 0, Math.PI, 0, screenParent);
-        var shot = new Image(); shot.crossOrigin = 'anonymous';
-        function paintScreen(t) {
-          var g = cx.createLinearGradient(0, 0, 512, 300); g.addColorStop(0, '#24313d'); g.addColorStop(1, '#0d0f12');
-          cx.fillStyle = g; cx.fillRect(0, 0, 512, 300);
-          if (shot.complete && shot.naturalWidth) { var w = shot.naturalWidth, h = shot.naturalHeight, s2 = Math.max(512 / w, 300 / h); cx.drawImage(shot, (512 - w * s2) / 2, (300 - h * s2) / 2, w * s2, h * s2); }
-          cx.fillStyle = 'rgba(0,0,0,.35)'; cx.fillRect(0, 0, 512, 34); cx.fillRect(0, 266, 512, 34);
-          cx.font = '700 18px Helvetica, Arial, sans-serif'; cx.fillStyle = '#fff'; cx.fillText('ATOMOS   ProRes RAW   4K 60', 14, 24);
-          var on = Math.floor(t / 600) % 2 === 0; cx.fillStyle = on ? '#e5352b' : 'rgba(229,53,43,.35)'; cx.beginPath(); cx.arc(440, 18, 7, 0, 7); cx.fill();
-          cx.fillStyle = '#fff'; cx.fillText('REC', 454, 24);
-          var sec = Math.floor(t / 1000), fr = Math.floor((t % 1000) / 41.7);
-          function p2(n) { return (n < 10 ? '0' : '') + n; }
-          cx.fillText('00:' + p2(Math.floor(sec / 60) % 60) + ':' + p2(sec % 60) + ':' + p2(fr), 14, 290);
-          cx.strokeStyle = 'rgba(255,255,255,.35)'; cx.lineWidth = 1; cx.strokeRect(171, 100, 170, 100);
-          tex.needsUpdate = true;
-        }
-        if (media && media.base) shot.src = media.base; else EG3.media(function (mp) { if (mp.base) shot.src = mp.base; });
-
-        cm.rotation.y = -0.5; rig.rotation.x = 0.12;
-        var spin = -0.5, drag = null, vel = 0, tiltX = 0, tiltY = 0, lastT = performance.now(), visible = true, reduce = reduceMotion;
-        function size() { var w = box.clientWidth, h = box.clientHeight; if (!w || !h) return; r.setSize(w, h, false); cam.aspect = w / h; var wide = w / h >= 1; cam.position.z = wide ? 9 : 12; rig.position.x = wide ? 0.9 : 0; rig.position.y = wide ? -0.05 : -0.25; cam.updateProjectionMatrix(); }
-        size(); if (window.ResizeObserver) new ResizeObserver(size).observe(box); else window.addEventListener('resize', size);
-        var tile = box.parentNode;
-        tile.addEventListener('pointerdown', function (e) { drag = { x: e.clientX, s: spin }; vel = 0; try { tile.setPointerCapture(e.pointerId); } catch (x) {} });
-        tile.addEventListener('pointermove', function (e) {
-          var b = tile.getBoundingClientRect(); tiltX = ((e.clientY - b.top) / b.height - 0.5) * 0.25; tiltY = ((e.clientX - b.left) / b.width - 0.5) * 0.3;
-          if (drag) { var ns = drag.s + (e.clientX - drag.x) * 0.01; vel = ns - spin; spin = ns; }
-        });
-        ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (ev) { tile.addEventListener(ev, function () { drag = null; }); });
-        if (window.IntersectionObserver) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) loop(); }).observe(box);
-        var going = false;
-        function loop() { if (going) return; going = true; requestAnimationFrame(frame); }
-        function frame(now) {
-          going = false;
-          var dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
-          if (!drag) { if (Math.abs(vel) > 0.0005) { spin += vel; vel *= 0.94; } else if (!reduce) spin += dt * 0.32; }
-          cm.rotation.y += (spin - cm.rotation.y) * 0.12;
-          rig.rotation.x += (0.12 + tiltX - rig.rotation.x) * 0.06;
-          rig.rotation.z += (-tiltY * 0.2 - rig.rotation.z) * 0.06;
-          cm.position.y = -0.3 + (reduce ? 0 : Math.sin(now / 1600) * 0.04);
-          paintScreen(now);
-          r.render(scene, cam);
-          box.classList.add('ready');
-          var shown = heroBg ? +heroBg.style.opacity || 0 : 1;
-          if (visible && !document.hidden && (shown > 0.02 || heroBg.style.opacity === '')) loop();
-          else setTimeout(function () { if (visible) loop(); }, 400);
-        }
-        document.addEventListener('visibilitychange', function () { if (!document.hidden) loop(); });
-        loop();
-      }).catch(function (e) { console.warn('EG3: 3D camera did not load', e); });
-    })();
 
     function render(p) {
       renderIntro();

@@ -11,7 +11,6 @@
   <header class="eg3c-hero" id="eg3c-hero"></header>
   <div class="eg3c-headrow">
     <h1 class="eg3c-headline" id="eg3c-headline"><span>Scroll-stopping content.</span> <span>Built to perform.</span></h1>
-    <div class="eg3c-cam" id="eg3c-cam" aria-hidden="true"></div>
   </div>
 
   <!-- carousel + story -->
@@ -26,7 +25,6 @@
       </button>
       <div class="eg3c-bar">
         <a class="eg3c-title" id="eg3c-title" href="#"></a>
-        <span class="eg3c-count" id="eg3c-count"></span>
         <button class="eg3c-sound" id="eg3c-sound" type="button" aria-label="Turn sound on">
           <svg class="off" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>
           <svg class="on" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 8.5a5 5 0 010 7M19.5 6a8.5 8.5 0 010 12"/></svg>
@@ -161,7 +159,7 @@
   }
   .eg3c-headrow {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(220px, 36vw);
+    grid-template-columns: minmax(0, 1fr);
     align-items: center;
     gap: clamp(8px, 2vw, 32px);
     padding: clamp(28px, 4vw, 56px) clamp(16px, 6vw, 110px) 0;
@@ -384,7 +382,7 @@
   /* ========= SETTINGS ========= */
   var INTRO = (function () { try { var k = 'eg3IntroSeen:' + location.pathname.replace(/\/$/, ''); if (localStorage.getItem(k)) return false; localStorage.setItem(k, '1'); } catch (e) {} return true; })();  // plays the first time someone opens this page, then never again
   var WORD = 'Content';            // word on the black screen
-  var GIF = 'https://media.eg3media.com/site/sq/contentgif-ezgif.com-video-to-gif-converter.gif';
+  var GIF = 'https://media.eg3media.com/site/header/header-content-mwce1b84.mp4';
   // swap this GIF from /site-media: put the new one under the "Content header" heading there
   // (if that's empty it uses the "Content gif" homepage image, then the address above)
   var MEDIA_SLOT = 'content';
@@ -734,7 +732,6 @@
     var v = slides[idx]._v;
     titleEl.textContent = v.title;
     titleEl.href = v.url;
-    countEl.textContent = pad(idx + 1) + ' / ' + pad(slides.length);
     progressEl.style.width = '0';
     if (started) playCurrent();
   }
@@ -1040,7 +1037,6 @@
       kick();
     }).catch(function () { box.remove(); });
   }
-  initCamera();
 
   runIntro();
 })();
