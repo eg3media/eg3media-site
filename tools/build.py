@@ -216,7 +216,7 @@ PORTFOLIO_PLAYER = r"""
 
 def shell(key, cfg, body):
     url = 'https://www.eg3media.com' + ('/' if key == 'index' else '/' + key)
-    head = ['<!doctype html>', '<html lang="en">', '<head>',
+    head = ['<!doctype html>', '<html lang="en" style="color-scheme: dark">', '<head>',
       '<meta charset="utf-8">',
       '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
       '<title>%s</title>' % html.escape(cfg['title']),
@@ -231,8 +231,8 @@ def shell(key, cfg, body):
       '<meta name="twitter:card" content="summary_large_image">',
       '<meta name="theme-color" content="#000000">',
       '<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">',
-      '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-      '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">',
+      '<link rel="preload" href="/assets/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>',
+      '<style>@font-face{font-family:"Anton";src:url(/assets/fonts/anton.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}</style>',
       '<link rel="stylesheet" href="/assets/site.css">',
       '<script src="/assets/eg3-data.js"></script>']
     if key == 'index': head.append(HOME_SEO)

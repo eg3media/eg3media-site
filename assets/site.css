@@ -72,7 +72,7 @@ img, video { max-width: 100%; }
 .eg3-foot a { color: #ddd; text-decoration: none; transition: color .2s; }
 .eg3-foot a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 .eg3-foot li a { display: inline-block; padding: 3px 0; }
-.eg3-foot__bottom { max-width: 1280px; margin: 32px auto 0; padding-top: 18px; border-top: 1px solid #1d1d1d; font-size: 13px; color: #777; display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+.eg3-foot__bottom { max-width: 1280px; margin: 32px auto 0; padding-top: 18px; border-top: 1px solid #1d1d1d; font-size: 13px; color: #a3a39e; display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
 /* page content sits above the topo background layer */
 .eg3bg-host > *:not(.eg3bg) { position: relative; z-index: 1; }
 
@@ -87,3 +87,9 @@ button.eg3c-arrow:active, button.eg3c-sound:active { transform: scale(.92); tran
 @media (prefers-reduced-motion: reduce) { .eg3c-spin { animation-duration: 2s; } .eg3c-progress div { transition: none; } }
 /* the floating quote button steps aside while the phone menu or the video player is open */
 html.eg3-hdr-lock .eg3qb-btn, html.eg3pl-lock .eg3qb-btn { visibility: hidden; }
+
+/* headings never end on one lonely word */
+h1, h2, h3 { text-wrap: balance; }
+
+/* footer links are easy to tap on phones */
+@media (max-width: 760px) { .eg3-foot ul { gap: 0; } .eg3-foot ul a { display: inline-flex; align-items: center; min-height: 44px; } }

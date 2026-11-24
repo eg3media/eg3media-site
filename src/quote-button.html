@@ -241,7 +241,7 @@ window.EG3Quote = window.EG3Quote || function (mount, opts) {
           '<div class="eg3w-range">' + money(e.low) + ' - ' + money(e.high) + '</div>' +
           '<p class="eg3w-sub">Based on what you picked. Your final quote depends on the details, and Elijah will follow up within 1-2 business days to lock it in.' + (S.who.nonprofit ? ' Nonprofits get 15% off the final quote.' : '') + '</p>' +
           '<ul class="eg3w-list">' + e.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>' +
-          '<div class="eg3w-status ' + (sent === false ? 'err' : 'ok') + '">' + (sent === false ? 'We couldn\'t send the email copy. Reach us at ' + EMAIL + ' and we\'ll get you sorted.' : 'A copy is on its way to ' + esc(S.who.email) + '.') + '</div>' +
+          '<div role="status" class="eg3w-status ' + (sent === false ? 'err' : 'ok') + '">' + (sent === false ? 'We couldn\'t send the email copy. Reach us at ' + EMAIL + ' and we\'ll get you sorted.' : 'A copy is on its way to ' + esc(S.who.email) + '.') + '</div>' +
           '<div class="eg3w-nav"><button type="button" class="eg3w-back" data-restart>Start a new quote</button><a class="eg3w-btn" href="/portfolio#' + S.cat + '">See our ' + CATS[S.cat].toLowerCase() + ' work</a></div></div>';
     }
     return '';
@@ -322,7 +322,7 @@ window.EG3Quote = window.EG3Quote || function (mount, opts) {
       var name = steps()[step]; if (!canNext(name)) return;
       if (name === 'contact') {
         if (mount.querySelector('[data-honey]').value) return;
-        b.disabled = true; b.textContent = 'Working it out...';
+        b.disabled = true; b.textContent = 'Working it out\u2026';
         sendEmail().then(function () { sent = true; }, function () { sent = false; }).then(function () { step++; render(); scrollTop(); });
         return;
       }

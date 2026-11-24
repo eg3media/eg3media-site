@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="color-scheme: dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -15,8 +15,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">
+<link rel="preload" href="/assets/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
+<style>@font-face{font-family:"Anton";src:url(/assets/fonts/anton.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}</style>
 <link rel="stylesheet" href="/assets/site.css">
 <script src="/assets/eg3-data.js"></script>
 <!-- EG3 Media business details for Google. Paste as its own Code block on the homepage. -->
@@ -286,8 +286,9 @@
   .h-nav nav a { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #b9b9b4; transition: color .2s; }
   .h-nav nav a:hover { color: #fff; }
   .h-title { left: clamp(18px, 3vw, 44px); top: clamp(70px, 14vh, 150px); pointer-events: none; }
-  .h-title h1 { margin: 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(3.2rem, 9.2vw, 10rem); line-height: .86; letter-spacing: .02em; }
+  .h-title h1 { margin: 0; font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(3rem, 7.4vw, 8.4rem); line-height: .88; letter-spacing: .02em; }
   .h-title h1 span { display: block; }
+  .h-kick { display: block; margin-bottom: 14px; color: #b9b9b4; }
   .h-title h1 small { display: inline-block; vertical-align: bottom; margin-left: 14px; margin-bottom: .55em; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; line-height: 1.35; letter-spacing: .2em; color: #8f8f8a; }
   .h-card { right: clamp(18px, 3vw, 44px); top: clamp(70px, 14vh, 150px); width: clamp(140px, 13vw, 200px); display: grid; gap: 8px; }
   .h-card .h-pic { aspect-ratio: 4 / 3; background: #1a1a1a center / cover no-repeat; border-radius: 2px; overflow: hidden; position: relative; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
@@ -342,9 +343,9 @@
     <div class="eg3-hero" aria-label="EG3 Media">
       <div class="h-main" data-hx="0" data-hy="0" data-main="1"><div class="h-cam" id="h-cam" aria-hidden="true"></div></div>
       <div class="h-nav" data-hx="0" data-hy="-1"><b>EG3</b><nav><a href="/portfolio">Portfolio</a><a href="/about">About</a><a href="/contact">Contact</a></nav></div>
-      <div class="h-title" data-hx="-1" data-hy="0"><h1><span>EG3</span><span>Media<small>Video production<br>Abilene, Texas</small></span></h1></div>
+      <div class="h-title" data-hx="-1" data-hy="0"><span class="h-label h-kick">EG3 Media</span><h1><span>Abilene</span><span>video</span><span>production<small>Commercial, content,<br>sports, real estate</small></span></h1></div>
       <a class="h-card" data-hx="1" data-hy="-1" href="/portfolio"><div class="h-pic" data-feature="1"></div><b data-feature-title>See the latest work</b></a>
-      <div class="h-text" data-hx="1" data-hy="0"><span class="h-label">Shot on</span><p>Nikon ZR, DZOFilm Vespid, Atomos Ninja. Brand films, social content, sports and real estate for businesses across West Texas.</p><div class="h-svc"><a href="/commercial">Commercial</a><a href="/content">Content</a><a href="/sports">Sports</a><a href="/realestate">Real Estate</a></div></div>
+      <div class="h-text" data-hx="1" data-hy="0"><span class="h-label">Shot, cut and color graded in house</span><p>Every project is filmed on cinema lenses and finished by the same person, from the first call to the final grade. Based in Abilene, working across West Texas.</p><div class="h-svc"><a href="/commercial">Commercial</a><a href="/content">Content</a><a href="/sports">Sports</a><a href="/realestate">Real Estate</a></div></div>
       <a class="h-media" data-hx="-1" data-hy="1" href="/portfolio"><span class="h-vid"><i></i><span class="h-fill" data-slot="home.portfolio"></span></span><p>Watch the reel. Shot, edited and color graded by Elijah Gravitt.</p></a>
     </div>
     <div class="eg3-scrollhint">Scroll</div>
@@ -1284,7 +1285,7 @@ window.EG3Quote = window.EG3Quote || function (mount, opts) {
           '<div class="eg3w-range">' + money(e.low) + ' - ' + money(e.high) + '</div>' +
           '<p class="eg3w-sub">Based on what you picked. Your final quote depends on the details, and Elijah will follow up within 1-2 business days to lock it in.' + (S.who.nonprofit ? ' Nonprofits get 15% off the final quote.' : '') + '</p>' +
           '<ul class="eg3w-list">' + e.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>' +
-          '<div class="eg3w-status ' + (sent === false ? 'err' : 'ok') + '">' + (sent === false ? 'We couldn\'t send the email copy. Reach us at ' + EMAIL + ' and we\'ll get you sorted.' : 'A copy is on its way to ' + esc(S.who.email) + '.') + '</div>' +
+          '<div role="status" class="eg3w-status ' + (sent === false ? 'err' : 'ok') + '">' + (sent === false ? 'We couldn\'t send the email copy. Reach us at ' + EMAIL + ' and we\'ll get you sorted.' : 'A copy is on its way to ' + esc(S.who.email) + '.') + '</div>' +
           '<div class="eg3w-nav"><button type="button" class="eg3w-back" data-restart>Start a new quote</button><a class="eg3w-btn" href="/portfolio#' + S.cat + '">See our ' + CATS[S.cat].toLowerCase() + ' work</a></div></div>';
     }
     return '';
@@ -1365,7 +1366,7 @@ window.EG3Quote = window.EG3Quote || function (mount, opts) {
       var name = steps()[step]; if (!canNext(name)) return;
       if (name === 'contact') {
         if (mount.querySelector('[data-honey]').value) return;
-        b.disabled = true; b.textContent = 'Working it out...';
+        b.disabled = true; b.textContent = 'Working it out\u2026';
         sendEmail().then(function () { sent = true; }, function () { sent = false; }).then(function () { step++; render(); scrollTop(); });
         return;
       }
