@@ -399,6 +399,17 @@
   .eg3c-slide.is-vertical img:not(.eg3c-fill) { object-fit: contain; }
   .eg3c-slide .eg3c-fill { filter: blur(28px) brightness(.4); transform: scale(1.2); }
   .eg3c-story.no-videos { grid-template-columns: 1fr; max-width: 900px; }
+
+  /* curved 3D carousel: the playing video in front, the next ones fanned out on a curve behind it (same spot on the page) */
+  .eg3c-carousel { background: radial-gradient(70% 80% at 50% 50%, #1c1c1c 0%, #0b0b0b 70%, #070707 100%); perspective: 1300px; perspective-origin: 50% 45%; }
+  .eg3c-slides { transform-style: preserve-3d; animation: eg3c-sway 14s ease-in-out infinite; }
+  @keyframes eg3c-sway { 0%, 100% { transform: rotateY(-2.5deg) rotateX(1deg); } 50% { transform: rotateY(2.5deg) rotateX(-1deg); } }
+  .eg3c-slides .eg3c-slide { inset: 19% 19%; border-radius: 6px; overflow: hidden; background: #111; box-shadow: 0 30px 70px rgba(0,0,0,.6); cursor: pointer;
+    transition: transform .9s cubic-bezier(.2,.8,.2,1), opacity .7s ease, filter .7s ease; will-change: transform; }
+  .eg3c-slides .eg3c-slide.is-active { cursor: default; }
+  .eg3c-slides .eg3c-slide:not(.is-active):hover { filter: brightness(.95) !important; }
+  @media (max-width: 760px) { .eg3c-slides .eg3c-slide { inset: 16% 16%; } }
+  @media (prefers-reduced-motion: reduce) { .eg3c-slides { animation: none; } .eg3c-slides .eg3c-slide { transition: opacity .3s ease; } }
 </style>
 
 <script>
@@ -745,6 +756,28 @@
     });
   }
 
+
+  // lay the cards out on a curve: the playing one in front, two on each side tipped back into the frame
+  function fan() {
+    var n = slides.length, wide = carousel.clientWidth > 700;
+    slides.forEach(function (s, i) {
+      var d = i - idx;
+      if (n > 2) { if (d > n / 2) d -= n; if (d < -n / 2) d += n; }
+      var a = Math.abs(d), show = a <= 2;
+      var x = d * (wide ? 70 : 74) - (a > 1 ? d * 8 : 0), z = -a * (wide ? 300 : 240), ry = -d * 40, y = a * 1.5;
+      s.style.transform = 'translate3d(' + x + '%,' + y + '%,' + z + 'px) rotateY(' + ry + 'deg)';
+      s.style.opacity = show ? (a === 0 ? 1 : a === 1 ? .85 : .45) : 0;
+      s.style.filter = a === 0 ? 'none' : 'brightness(' + (a === 1 ? .62 : .4) + ')';
+      s.style.zIndex = 10 - a;
+      s.style.pointerEvents = show ? 'auto' : 'none';
+      s.setAttribute('aria-hidden', a === 0 ? 'false' : 'true');
+    });
+  }
+  slidesBox.addEventListener('click', function (e) {
+    var s = e.target.closest('.eg3c-slide'); if (!s || s.classList.contains('is-active')) return;
+    var i = slides.indexOf(s); if (i >= 0) go(i);
+  });
+
   function go(n) {
     if (!slides.length) return;
     var old = slides[idx];
@@ -753,6 +786,7 @@
     carousel.classList.remove('is-loading');
     idx = (n + slides.length) % slides.length;
     slides.forEach(function (s, i) { s.classList.toggle('is-active', i === idx); });
+    fan();
     var v = slides[idx]._v;
     titleEl.textContent = v.title;
     titleEl.href = v.url;
